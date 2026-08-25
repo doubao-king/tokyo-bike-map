@@ -3,9 +3,11 @@ import '../styles.css';
 import { classUrlValues, comfortClasses, defaultVisibleClasses } from './config';
 import { loadSegments } from './data/loadSegments';
 import { createCyclingMap } from './map/createMap';
+import { initializeAds } from './ui/ads';
 import { bindControls, renderClassCounts } from './ui/controls';
 import { setLoadingFailure } from './ui/detailPanel';
 import { renderSourceRegistry } from './ui/sources';
+import { initializeViewCounter } from './ui/viewCounter';
 
 const detailPanel = document.getElementById('detailPanel');
 const visibleCount = document.getElementById('visibleCount');
@@ -40,6 +42,16 @@ document.querySelectorAll<HTMLInputElement>('[data-class]').forEach((input) => {
   input.checked = initialVisibleClasses.has(input.dataset.class as (typeof comfortClasses)[number]);
 });
 bindControls(cyclingMap);
+
+const viewCounter = document.getElementById('viewCounter');
+if (viewCounter) {
+  void initializeViewCounter(viewCounter);
+}
+
+const adPanel = document.getElementById('adPanel');
+if (adPanel) {
+  initializeAds(adPanel);
+}
 
 const sourceList = document.getElementById('sourceList');
 if (sourceList) {

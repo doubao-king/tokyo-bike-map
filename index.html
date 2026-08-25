@@ -31,6 +31,11 @@
         <label class="filter-row"><input type="checkbox" data-class="D"><span class="swatch d"></span><span><b>車道混在</b><small>ナビライン・ナビマーク</small></span><span class="filter-count" data-count-class="D">—</span></label>
       </section>
 
+      <section class="panel ad-panel" id="adPanel" aria-label="広告" hidden>
+        <div class="ad-label">広告</div>
+        <ins id="adsenseSlot" class="adsbygoogle" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+      </section>
+
       <section class="panel area-panel">
         <h2>エリアから見る</h2>
         <div class="area-grid" id="areaButtons"></div>
@@ -67,6 +72,7 @@
         <div class="map-summary">
           <span><strong id="visibleCount">0</strong> 区間を表示中</span>
           <span class="data-pill">OSM暫定</span>
+          <span class="view-counter" id="viewCounter" aria-label="累計閲覧回数" hidden>閲覧 <strong id="viewCount">—</strong></span>
         </div>
         <div class="topbar-actions">
           <button id="shareBtn" class="ghost" type="button">共有</button>

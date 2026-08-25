@@ -149,9 +149,22 @@ npm run deploy:cloudflare
 
 現在の公開先は `https://tokyo-bike-map.tokyo-bike-map.workers.dev` です。`public/_headers` はセキュリティヘッダーと静的データのキャッシュ方針を設定します。広告はAdSenseの承認と同意管理の準備が整うまで読み込みません。
 
+### 閲覧カウンター
+
+`/api/views` だけをCloudflare Workerで処理し、D1の `page_views` テーブルへ累計回数を保存します。ブラウザ側はセッションストレージを使い、同じタブでの再読み込みを重複計上しません。個人を識別する値はD1へ保存しません。
+
+```bash
+npm run db:migrate:local
+npm run dev:cloudflare
+```
+
+### 広告の有効化
+
+広告枠は既定で非表示で、Googleへ通信しません。AdSenseでサイトが「準備完了」になり、Googleの「プライバシーとメッセージ」で必要な同意設定を終えた後、`.env.production.local` に `VITE_ADSENSE_CLIENT` と `VITE_ADSENSE_SLOT` を設定してビルドします。公開前に正しい `ads.txt` も追加してください。値が未設定または不正な場合、広告コードは読み込まれません。
+
 ## 静的構成
 
-バックエンドはありません。OSMと行政データの取得・正規化は開発時に実行し、Vite buildでは生成済みGeoJSONをそのまま配信します。ブラウザ側はLeafletで静的ファイルを描画するだけです。
+地図データや検索用のバックエンドはありません。OSMと行政データの取得・正規化は開発時に実行し、Vite buildでは生成済みGeoJSONをそのまま配信します。ブラウザ側はLeafletで静的ファイルを描画し、閲覧カウンターだけがCloudflare WorkerとD1を使用します。
 
 ## 次の実装候補
 

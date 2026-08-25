@@ -3,6 +3,7 @@ node_modules/
 .env*
 !.env.example
 dist/
+.wrangler/
 data/osm/*.geojson
 data/cache/
 data/raw/tokyo-metropolitan/recommended-routes/*/
