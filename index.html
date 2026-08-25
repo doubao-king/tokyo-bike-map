@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="theme-color" content="#fffef9" />
+  <title>東京じてんしゃマップ</title>
+  <meta name="description" content="車が怖い人のための東京自転車マップ。道路を安心度で分類して表示します。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="東京じてんしゃマップ" />
+  <meta property="og:description" content="車が怖い人のための東京自転車マップ。道路を走りやすさで分類して表示します。" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="eyebrow">東京都内の自転車通行環境</div>
+        <h1>東京じてんしゃマップ</h1>
+        <p class="tagline">車が怖い人のための自転車マップ。</p>
+      </div>
+
+      <section class="panel">
+        <h2>表示する道</h2>
+        <label class="filter-row filter-group-row"><input type="checkbox" id="comfortableGroup" checked><span class="swatch-pair"><i class="a"></i><i class="b"></i></span><span><b>走りやすい道</b></span><span class="filter-count" data-count-group="comfortable">—</span></label>
+        <div class="subfilter-list">
+          <label class="filter-row subfilter-row"><input type="checkbox" data-class="A" checked><span class="swatch a"></span><span><b>車と物理分離</b></span><span class="filter-count" data-count-class="A">—</span></label>
+          <label class="filter-row subfilter-row"><input type="checkbox" data-class="B" checked><span class="swatch b"></span><span><b>広い歩道内・緑道・河川敷</b></span><span class="filter-count" data-count-class="B">—</span></label>
+        </div>
+        <label class="filter-row"><input type="checkbox" data-class="C" checked><span class="swatch c"></span><span><b>自転車レーン</b><small>車道上の専用通行帯</small></span><span class="filter-count" data-count-class="C">—</span></label>
+        <label class="filter-row"><input type="checkbox" data-class="D"><span class="swatch d"></span><span><b>車道混在</b><small>ナビライン・ナビマーク</small></span><span class="filter-count" data-count-class="D">—</span></label>
+      </section>
+
+      <section class="panel area-panel">
+        <h2>エリアから見る</h2>
+        <div class="area-grid" id="areaButtons"></div>
+      </section>
+
+      <section class="panel detail-panel" id="detailPanel">
+        <h2>区間情報</h2>
+        <p class="muted">地図上の色付き区間をタップしてください。</p>
+      </section>
+
+      <section class="panel note">
+        <h2>データと現地状況について</h2>
+        <p>現在の安心度表示にはOpenStreetMapを使用し、東京都・区市町村・国の公式公開資料を調査・参照しています。公開時点や工事などにより、実際の道路状況と異なる場合があります。</p>
+        <p class="muted">安心度は主にOSMタグからの暫定分類です。公式公開情報を定期的に確認して更新します。地域により公開情報量に差があります。走行時は現地の標識・規制を優先してください。</p>
+      </section>
+
+      <details class="panel source-disclosure">
+        <summary>データ出典一覧</summary>
+        <div class="source-list" id="sourceList"></div>
+      </details>
+
+      <nav class="site-links" aria-label="サイト情報">
+        <a href="/about/index.html">このマップについて</a>
+        <a href="/methodology/index.html">データと判定方法</a>
+        <a href="/updates/index.html">更新履歴</a>
+        <a href="/contact/index.html">情報の修正・お問い合わせ</a>
+        <a href="/privacy/index.html">プライバシー</a>
+        <a href="/terms/index.html">利用規約</a>
+      </nav>
+    </aside>
+
+    <main class="map-wrap">
+      <div class="topbar">
+        <div class="map-summary">
+          <span><strong id="visibleCount">0</strong> 区間を表示中</span>
+          <span class="data-pill">OSM暫定</span>
+        </div>
+        <div class="topbar-actions">
+          <button id="shareBtn" class="ghost" type="button">共有</button>
+          <button id="resetBtn" class="ghost" type="button">東京本土</button>
+        </div>
+      </div>
+      <div id="map" aria-label="東京の自転車通行環境地図"></div>
+      <div class="legend-mobile">
+        <span class="legend-comfortable"><i class="a"></i><i class="b"></i>走りやすい</span><span><i class="c"></i>レーン</span><span><i class="d"></i>車道混在</span>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

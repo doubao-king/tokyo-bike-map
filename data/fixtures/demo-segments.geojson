@@ -1,0 +1,230 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "demo-ikebukuro-kanamecho-001",
+        "name": "池袋西口〜要町（サンプル）",
+        "comfort_class": "B",
+        "facility_type": "wide_sidewalk_bicycle_space",
+        "legal_type": "自転車通行空間",
+        "car_separation": "yes",
+        "pedestrian_shared": "partial",
+        "parking_conflict": "low",
+        "surface": "unknown",
+        "direction": "both",
+        "verification": "demo",
+        "verified_at": "2026-08",
+        "source": {
+          "name": "Demo placeholder",
+          "source_date": "2026-08-24",
+          "reference_date": "demo only"
+        },
+        "status": "unknown",
+        "notes": "MVP表示確認用。公開前に現地・行政資料で線形を確定。"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[139.708, 35.7307], [139.7017, 35.733], [139.6942, 35.7334]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "demo-imperial-palace-001",
+        "name": "皇居外苑（サンプル）",
+        "comfort_class": "A",
+        "facility_type": "separated_cycle_pedestrian_space",
+        "legal_type": "構造分離型自転車歩行者空間",
+        "car_separation": "yes",
+        "pedestrian_shared": "partial",
+        "parking_conflict": "low",
+        "surface": "unknown",
+        "direction": "both",
+        "verification": "demo",
+        "verified_at": "2026-08",
+        "source": {
+          "name": "Demo placeholder",
+          "source_date": "2026-08-24",
+          "reference_date": "demo only"
+        },
+        "status": "unknown",
+        "notes": "千代田区の分類体系を想定したサンプル。"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[139.7586, 35.6845], [139.7557, 35.6814], [139.7505, 35.6796], [139.7462, 35.6816]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "demo-aoyama-cemetery-319-001",
+        "name": "青山墓地周辺・都道319（サンプル）",
+        "comfort_class": "A",
+        "facility_type": "protected_cycleway",
+        "legal_type": "自転車道 / 分離空間",
+        "car_separation": "yes",
+        "pedestrian_shared": "partial",
+        "parking_conflict": "low",
+        "surface": "unknown",
+        "direction": "both",
+        "verification": "demo",
+        "verified_at": "2026-08",
+        "source": {
+          "name": "Demo placeholder",
+          "source_date": "2026-08-24",
+          "reference_date": "demo only"
+        },
+        "status": "unknown",
+        "warning": "乃木坂方面で施設が途切れる想定サンプルです。",
+        "notes": "乃木坂側への連続性が課題。"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[139.7228, 35.6675], [139.7217, 35.6702], [139.7211, 35.6732]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "demo-nogi-shrine-319-001",
+        "name": "乃木神社付近・都道319（サンプル）",
+        "comfort_class": "D",
+        "facility_type": "mixed_traffic_marking",
+        "legal_type": "車道混在",
+        "car_separation": "no",
+        "pedestrian_shared": "no",
+        "parking_conflict": "medium",
+        "surface": "unknown",
+        "direction": "both",
+        "verification": "demo",
+        "verified_at": "2026-08",
+        "source": {
+          "name": "Demo placeholder",
+          "source_date": "2026-08-24",
+          "reference_date": "demo only"
+        },
+        "status": "unknown",
+        "notes": "広い歩道がある一方、自転車空間が連続していない区間を想定。"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[139.726, 35.6698], [139.7273, 35.6677], [139.7285, 35.6659]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "demo-aoyama-dori-001",
+        "name": "青山通り（サンプル）",
+        "comfort_class": "C",
+        "facility_type": "painted_bike_lane",
+        "legal_type": "自転車通行帯 / 分離整備混在",
+        "car_separation": "partial",
+        "pedestrian_shared": "partial",
+        "parking_conflict": "medium",
+        "surface": "unknown",
+        "direction": "both",
+        "verification": "demo",
+        "verified_at": "2026-08",
+        "source": {
+          "name": "Demo placeholder",
+          "source_date": "2026-08-24",
+          "reference_date": "demo only"
+        },
+        "status": "unknown",
+        "notes": "整備形態が区間ごとに異なるため、公開版では分割が必要。"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[139.7241, 35.672], [139.7312, 35.6747], [139.739, 35.6767]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "demo-toyosu-ariake-001",
+        "name": "豊洲〜有明（サンプル）",
+        "comfort_class": "B",
+        "facility_type": "wide_sidewalk_bicycle_space",
+        "legal_type": "広幅員歩道・自転車空間",
+        "car_separation": "yes",
+        "pedestrian_shared": "partial",
+        "parking_conflict": "low",
+        "surface": "unknown",
+        "direction": "both",
+        "verification": "demo",
+        "verified_at": "2026-08",
+        "source": {
+          "name": "Demo placeholder",
+          "source_date": "2026-08-24",
+          "reference_date": "demo only"
+        },
+        "status": "unknown",
+        "notes": "湾岸の快適性イメージを示すサンプル。"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[139.7962, 35.655], [139.7914, 35.6485], [139.7898, 35.6406], [139.7929, 35.6324]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "demo-bunkyo-naviline-001",
+        "name": "文京区ナビライン例（サンプル）",
+        "comfort_class": "D",
+        "facility_type": "naviline",
+        "legal_type": "ナビライン",
+        "car_separation": "no",
+        "pedestrian_shared": "no",
+        "parking_conflict": "high",
+        "surface": "unknown",
+        "direction": "both",
+        "verification": "demo",
+        "verified_at": "2026-08",
+        "source": {
+          "name": "Demo placeholder",
+          "source_date": "2026-08-24",
+          "reference_date": "demo only"
+        },
+        "status": "unknown",
+        "notes": "2025年度工事で多い整備形態をUI上で示すための例。"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[139.7435, 35.716], [139.746, 35.7115], [139.7483, 35.707]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "demo-high-parking-risk-001",
+        "name": "混雑・駐停車リスク高（サンプル）",
+        "comfort_class": "E",
+        "facility_type": "mixed_traffic",
+        "legal_type": "混在道路",
+        "car_separation": "no",
+        "pedestrian_shared": "no",
+        "parking_conflict": "high",
+        "surface": "unknown",
+        "direction": "both",
+        "verification": "demo",
+        "verified_at": "2026-08",
+        "source": {
+          "name": "Demo placeholder",
+          "source_date": "2026-08-24",
+          "reference_date": "demo only"
+        },
+        "status": "unknown",
+        "notes": "Avoidクラスの見え方確認用。"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[139.712, 35.728], [139.7162, 35.7252], [139.72, 35.7225]]
+      }
+    }
+  ]
+}

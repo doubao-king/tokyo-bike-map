@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+.env*
+!.env.example
+dist/
+data/osm/*.geojson
+data/cache/
+data/raw/tokyo-metropolitan/recommended-routes/*/
+data/raw/tokyo-metropolitan/priority-sections/*/

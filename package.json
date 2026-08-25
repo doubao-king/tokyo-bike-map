@@ -1,0 +1,33 @@
+{
+  "name": "tokyo-bike-map",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run validate:data && tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "npm run test:classifier && npm run test:conflation && npm run test:schema && npm run test:launch-config",
+    "test:classifier": "tsx scripts/osm/classifier.test.ts",
+    "test:conflation": "tsx scripts/osm/conflate.test.ts",
+    "test:schema": "tsx scripts/data-schema.test.ts",
+    "test:launch-config": "tsx scripts/launch-config.test.ts",
+    "check:launch": "tsx scripts/check-launch.ts && npm test && npm run build",
+    "validate:data": "tsx scripts/validate-data.ts",
+    "ingest:osm": "tsx scripts/ingest-osm.ts",
+    "import:official": "tsx scripts/import-official.ts"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.20",
+    "@types/node": "^24.3.0",
+    "@types/shapefile": "^0.6.4",
+    "proj4": "^2.21.0",
+    "shapefile": "^0.6.6",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.3"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "last_checked": "2026-08-26",
+  "sources": [
+    {
+      "id": "openstreetmap-tokyo-cycling",
+      "publisher": "OpenStreetMap contributors",
+      "title": "東京都内の自転車関連道路データ",
+      "url": "https://www.openstreetmap.org/copyright",
+      "format": "Overpass JSON / generated GeoJSON",
+      "map_role": "comfort_geometry_and_tag_inference",
+      "notes": "Refreshed at build time. Comfort classes are inferred from OSM tags and are not an official safety assessment."
+    },
+    {
+      "id": "tokyo-metropolitan-cycling-space",
+      "publisher": "東京都建設局",
+      "title": "自転車走行空間について",
+      "url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t000014d0000000026",
+      "format": "Shapefile",
+      "map_role": "official_reference_geometry",
+      "reference_dates": ["2012-10", "2015-04"],
+      "notes": "Machine-readable line geometry. Attributes do not provide a reliable comfort classification."
+    },
+    {
+      "id": "toshima-cycling-environment-plan",
+      "publisher": "豊島区",
+      "title": "豊島区自転車走行環境計画",
+      "url": "https://www.city.toshima.lg.jp/576/kuse/shisaku/shisaku/kekaku/022209/1807301330.html",
+      "format": "PDF",
+      "map_role": "provenance_only",
+      "notes": "Do not trace into authoritative geometry without an as-built GIS source or field verification."
+    },
+    {
+      "id": "bunkyo-cycling-space-status",
+      "publisher": "文京区",
+      "title": "通行空間の整備状況について",
+      "url": "https://www.city.bunkyo.lg.jp/b034/p001081.html",
+      "format": "PDF",
+      "map_role": "provenance_only",
+      "notes": "Includes a planned network map and a March 2024 status map."
+    },
+    {
+      "id": "chiyoda-bicycle-promotion-plan",
+      "publisher": "千代田区",
+      "title": "千代田区自転車活用推進計画",
+      "url": "https://www.city.chiyoda.lg.jp/koho/machizukuri/kotsu/kyogikai.html",
+      "format": "PDF",
+      "map_role": "provenance_only",
+      "reference_dates": ["2026-03"],
+      "notes": "Current official plan; use as planning evidence, not as-built geometry."
+    },
+    {
+      "id": "minato-cycling-space-plan",
+      "publisher": "港区",
+      "title": "港区自転車通行空間整備計画",
+      "url": "https://www.city.minato.tokyo.jp/koutsutaisaku/jitenshatuukoukuukan.html",
+      "format": "PDF",
+      "map_role": "provenance_only",
+      "notes": "Official network and facility planning reference."
+    },
+    {
+      "id": "mlit-tokyo-national-roads-plan",
+      "publisher": "国土交通省 関東地方整備局 東京国道事務所",
+      "title": "東京23区内における直轄国道の自転車通行空間の整備計画",
+      "url": "https://www.ktr.mlit.go.jp/toukoku/toukoku00177.html",
+      "format": "PDF",
+      "map_role": "provenance_only",
+      "notes": "National-road planning source; planned corridors are not proof of completed infrastructure."
+    }
+  ]
+}
