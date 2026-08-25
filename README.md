@@ -138,10 +138,16 @@ npm run check:launch
 ## 公開構成
 
 - GitHub: ソース管理と変更履歴
-- Cloudflare Pages: 静的ファイル配信、HTTPS、DDoS対策
+- Cloudflare Workers Static Assets: 静的ファイル配信、HTTPS、DDoS対策
 - Stadia Maps: 商用利用可能な背景地図タイル
 
-Cloudflare Pagesのビルド設定は `npm run build`、出力先は `dist` です。`public/_headers` はセキュリティヘッダーと静的データのキャッシュ方針を設定します。広告はAdSenseの承認と同意管理の準備が整うまで読み込みません。
+`wrangler.jsonc` は `dist` を静的アセットとして配信します。Cloudflareへログイン済みの環境では、公開前チェックを含む次のコマンドでデプロイできます。
+
+```bash
+npm run deploy:cloudflare
+```
+
+現在の公開先は `https://tokyo-bike-map.tokyo-bike-map.workers.dev` です。`public/_headers` はセキュリティヘッダーと静的データのキャッシュ方針を設定します。広告はAdSenseの承認と同意管理の準備が整うまで読み込みません。
 
 ## 静的構成
 
