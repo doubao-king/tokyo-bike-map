@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "npm run validate:data && tsc --noEmit && vite build",
     "preview": "vite preview",
+    "deploy:cloudflare": "npm run check:launch && wrangler deploy",
     "test": "npm run test:classifier && npm run test:conflation && npm run test:schema && npm run test:launch-config",
     "test:classifier": "tsx scripts/osm/classifier.test.ts",
     "test:conflation": "tsx scripts/osm/conflate.test.ts",
@@ -28,6 +29,7 @@
     "shapefile": "^0.6.6",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
-    "vite": "^7.1.3"
+    "vite": "^7.1.3",
+    "wrangler": "^4.125.0"
   }
 }
