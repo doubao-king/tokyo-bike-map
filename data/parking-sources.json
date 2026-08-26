@@ -1,33 +1,18 @@
 {
   "last_checked": "2026-08-27",
-  "sources": [
-    { "package_id": "t131016d0000000009", "publisher": "千代田区", "title": "公営駐輪場一覧" },
-    { "package_id": "t131024d0000000022", "publisher": "中央区", "title": "公営駐輪場一覧" },
-    { "package_id": "t131059d0109020001", "publisher": "文京区", "title": "自転車駐車場" },
-    { "package_id": "t131067d0000000388", "publisher": "台東区", "title": "公営駐輪場一覧" },
-    { "package_id": "t131075d0000000140", "publisher": "墨田区", "title": "公営駐輪場一覧" },
-    { "package_id": "t131091d0000000117", "publisher": "品川区", "title": "区営自転車駐輪場" },
-    { "package_id": "t131105d0000000206", "publisher": "目黒区", "title": "自転車等駐輪場一覧" },
-    { "package_id": "t131121d0000000011", "publisher": "世田谷区", "title": "公営駐輪場一覧" },
-    { "package_id": "t131148d0000000155", "publisher": "中野区", "title": "区営自転車駐車場設置箇所" },
-    { "package_id": "t131156d0000000211", "publisher": "杉並区", "title": "公営駐輪場一覧" },
-    { "package_id": "t131199d0000000008", "publisher": "板橋区", "title": "公営駐輪場一覧" },
-    { "package_id": "t131202d0000000133", "publisher": "練馬区", "title": "公営駐輪場一覧" },
-    { "package_id": "t131229d0000000013", "publisher": "葛飾区", "title": "公営駐輪場一覧" },
-    { "package_id": "t132012d0000000094", "publisher": "八王子市", "title": "公営駐輪場一覧" },
-    { "package_id": "t132012d0000000095", "publisher": "八王子市", "title": "公営駐輪場一覧（施設一覧）" },
-    { "package_id": "t132039d0000000008", "publisher": "武蔵野市", "title": "公営駐輪場一覧" },
-    { "package_id": "t132080d3100001971", "publisher": "調布市", "title": "公営駐輪場一覧" },
-    { "package_id": "t132101d0000000036", "publisher": "小金井市", "title": "公営駐輪場一覧" },
-    { "package_id": "t132110d0000000009", "publisher": "小平市", "title": "公営駐輪場一覧" },
-    { "package_id": "t132136d3100000025", "publisher": "東村山市", "title": "公営駐輪場一覧" },
-    { "package_id": "t132136d3100000026", "publisher": "東村山市", "title": "公営駐輪場施設情報" },
-    { "package_id": "t132144d3100000013", "publisher": "国分寺市", "title": "公営駐輪場一覧" },
-    { "package_id": "t132152d0000000018", "publisher": "国立市", "title": "公営駐輪場一覧" },
-    { "package_id": "t132195d0000000392", "publisher": "狛江市", "title": "公営駐輪場一覧" },
-    { "package_id": "t132209d0000000012", "publisher": "東大和市", "title": "公営駐輪場一覧" },
-    { "package_id": "t132225d0000000008", "publisher": "東久留米市", "title": "公営駐輪場一覧" },
-    { "package_id": "t132276d0000000013", "publisher": "羽村市", "title": "公営駐輪場一覧" },
-    { "package_id": "t132284d3100000008", "publisher": "あきる野市", "title": "公営駐輪場一覧" }
+  "primary": {
+    "publisher": "東京都都民安全総合対策本部",
+    "title": "自転車駐輪場情報",
+    "data_url": "https://www.tomin-anzen.metro.tokyo.lg.jp/documents/d/tomin-anzen/r7churinjou",
+    "source_url": "https://www.tomin-anzen.metro.tokyo.lg.jp/kotsu/jitensha/seisaku-jyourei/churinjou",
+    "source_updated_at": "2026-04-02"
+  },
+  "supplements": [
+    {
+      "publisher": "武蔵野市",
+      "title": "公営駐輪場一覧",
+      "data_url": "https://www.opendata.metro.tokyo.lg.jp/musashino/132039_bicycle_parking.csv",
+      "source_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t132039d0000000008"
+    }
   ]
 }

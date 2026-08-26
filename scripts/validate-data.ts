@@ -58,7 +58,12 @@ const municipalities = new Set(
   parkingPayload.features.map((feature) => feature.properties.municipality)
 );
 
-if (parkingPayload.features.length < 100 || municipalities.size < 10) {
+if (
+  parkingPayload.features.length < 1_700 ||
+  municipalities.size < 50 ||
+  parkingPayload.metadata.coverage.wards !== 23 ||
+  parkingPayload.metadata.coverage.cities !== 26
+) {
   throw new Error('Official bicycle-parking coverage dropped below the expected minimum.');
 }
 

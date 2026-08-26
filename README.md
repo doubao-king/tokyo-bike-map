@@ -131,13 +131,13 @@ npm run import:official
 
 ## 公式駐輪場データ
 
-`data/parking-sources.json` に登録した東京都オープンデータカタログの自治体データセットを取得し、座標を持つ施設を静的GeoJSONへ変換します。
+`data/parking-sources.json` に登録した東京都の「自転車駐輪場情報」を取得し、座標を持つ施設を静的GeoJSONへ変換します。東京都データに含まれない武蔵野市は、市の公式オープンデータで補完します。
 
 ```bash
 npm run import:parking
 ```
 
-生成先は `public/data/bicycle-parking.geojson` です。現在の配布データは22自治体・672施設を収録しています。自治体ごとに公開形式や座標の有無が異なるため、東京都内の全施設を網羅するものではありません。
+生成先は `public/data/bicycle-parking.geojson` です。現在の配布データは51区市町・1,768施設を収録し、23区と26市をすべて含みます。東京都が把握していない施設や、公開データに有効な座標がない施設は表示されません。
 
 ## 公開前チェック
 

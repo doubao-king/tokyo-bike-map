@@ -85,6 +85,16 @@ export function renderParkingCount(count: number, language: Language): void {
   if (target) target.textContent = new Intl.NumberFormat(localeByLanguage[language]).format(count);
 }
 
+export function renderParkingCoverage(count: number, language: Language): void {
+  const target = document.getElementById('parkingCoverage');
+  if (!target) return;
+
+  target.textContent = messages[language].parkingCoverage.replace(
+    '{count}',
+    new Intl.NumberFormat(localeByLanguage[language]).format(count)
+  );
+}
+
 export function createReportIssueUrl(mapUrl: string, language: Language): string {
   const copy = messages[language];
   const issueUrl = new URL('https://github.com/doubao-king/tokyo-bike-map/issues/new');

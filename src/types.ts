@@ -87,6 +87,7 @@ export interface BicycleParkingProperties {
   municipality: string;
   address?: string;
   capacity?: number;
+  source_publisher?: string;
   source_title: string;
   source_url: string;
   source_updated_at?: string;
@@ -94,4 +95,19 @@ export interface BicycleParkingProperties {
 
 export type BicycleParkingFeature = Feature<Point, BicycleParkingProperties>;
 
-export type BicycleParkingCollection = FeatureCollection<Point, BicycleParkingProperties>;
+export interface BicycleParkingMetadata {
+  coverage: {
+    cities: number;
+    other_municipalities: number;
+    wards: number;
+  };
+  generated_at: string;
+  municipalities: string[];
+  source: string;
+  source_checked: string;
+  source_updated_at: string;
+}
+
+export type BicycleParkingCollection = FeatureCollection<Point, BicycleParkingProperties> & {
+  metadata: BicycleParkingMetadata;
+};

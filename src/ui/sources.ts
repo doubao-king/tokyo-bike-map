@@ -17,7 +17,7 @@ function parkingSourcesFromFeatures(features: BicycleParkingFeature[]): Register
     if (bySource.has(properties.source_url)) return;
     bySource.set(properties.source_url, {
       map_role: 'official_bicycle_parking',
-      publisher: properties.municipality,
+      publisher: properties.source_publisher ?? properties.municipality,
       reference_dates: properties.source_updated_at ? [properties.source_updated_at] : undefined,
       title: properties.source_title,
       url: properties.source_url

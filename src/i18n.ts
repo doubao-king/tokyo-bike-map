@@ -36,6 +36,7 @@ interface Messages {
   parkingAddress: string;
   parkingCapacity: string;
   parkingCount: string;
+  parkingCoverage: string;
   parkingSource: string;
   parkingSpaces: string;
   privacy: string;
@@ -94,11 +95,12 @@ export const messages: Record<Language, Messages> = {
     locateFailed: '現在地を取得できませんでした。',
     mapAria: '東京の自転車通行環境地図',
     methodology: 'データと判定方法',
-    officialParking: '駐輪場（公式データ）',
-    officialParkingHelp: '自治体が公開する登録施設',
+    officialParking: '駐輪場（東京都公開データ）',
+    officialParkingHelp: '東京都の公式データを読み込み中',
     parkingAddress: '所在地',
     parkingCapacity: '最大駐輪台数',
     parkingCount: '登録施設',
+    parkingCoverage: '{count}区市町を収録',
     parkingSource: '公式データを見る',
     parkingSpaces: '台',
     privacy: 'プライバシー',
@@ -155,11 +157,12 @@ export const messages: Record<Language, Messages> = {
     locateFailed: 'Your current location could not be found.',
     mapAria: 'Map of cycling conditions in Tokyo',
     methodology: 'Data and methodology',
-    officialParking: 'Bicycle parking (official data)',
-    officialParkingHelp: 'Facilities published by municipalities',
+    officialParking: 'Bicycle parking (Tokyo data)',
+    officialParkingHelp: 'Loading official Tokyo data',
     parkingAddress: 'Address',
     parkingCapacity: 'Maximum capacity',
     parkingCount: 'Facilities',
+    parkingCoverage: '{count} municipalities covered',
     parkingSource: 'View official data',
     parkingSpaces: 'spaces',
     privacy: 'Privacy',
@@ -216,11 +219,12 @@ export const messages: Record<Language, Messages> = {
     locateFailed: '无法获取当前位置。',
     mapAria: '东京都自行车通行环境地图',
     methodology: '数据与判定方法',
-    officialParking: '自行车停车场（官方数据）',
-    officialParkingHelp: '各地方政府公开的登记设施',
+    officialParking: '自行车停车场（东京都公开数据）',
+    officialParkingHelp: '正在加载东京都官方数据',
     parkingAddress: '地址',
     parkingCapacity: '最大停车数量',
     parkingCount: '设施数量',
+    parkingCoverage: '已收录 {count} 个区市町',
     parkingSource: '查看官方数据',
     parkingSpaces: '辆',
     privacy: '隐私政策',

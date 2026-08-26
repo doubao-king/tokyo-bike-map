@@ -3,6 +3,14 @@ import { assertParkingCollection } from '../src/data/loadParking';
 
 const valid = {
   type: 'FeatureCollection',
+  metadata: {
+    generated_at: '2026-08-27T00:00:00.000Z',
+    municipalities: ['Test City'],
+    source: 'Official source',
+    source_checked: '2026-08-27',
+    source_updated_at: '2026-04-02',
+    coverage: { wards: 0, cities: 1, other_municipalities: 0 }
+  },
   features: [
     {
       type: 'Feature',
@@ -11,6 +19,7 @@ const valid = {
         name: 'Test bicycle parking',
         municipality: 'Test City',
         capacity: 100,
+        source_publisher: 'Test City',
         source_title: 'Official dataset',
         source_url: 'https://example.test/dataset'
       },
@@ -20,6 +29,10 @@ const valid = {
 };
 
 assert.doesNotThrow(() => assertParkingCollection(valid));
+assert.throws(
+  () => assertParkingCollection({ type: 'FeatureCollection', features: valid.features }),
+  /metadata is missing coverage/
+);
 assert.throws(
   () =>
     assertParkingCollection({

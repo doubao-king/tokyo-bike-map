@@ -16,16 +16,17 @@ provenance.
 
 ## Bicycle-parking data
 
-`bicycle-parking.geojson` is compiled from bicycle-parking datasets published by
-Tokyo municipalities through the Tokyo Open Data Catalog. Each feature keeps a
-link to its official dataset page and names the publishing municipality.
+`bicycle-parking.geojson` is compiled primarily from the Tokyo Metropolitan
+Government's consolidated bicycle-parking dataset. Musashino City's official
+open dataset supplements the one city absent from the consolidated source. Each
+feature keeps a link to its official source page.
 
-- Source catalogue: https://catalog.data.metro.tokyo.lg.jp/
-- Publishers: the 22 municipalities listed in the GeoJSON metadata
-- Licence: the licence shown on each linked official dataset page, generally
-  Creative Commons Attribution 4.0 International (CC BY 4.0)
-- Adaptations: source tables are decoded, normalized, joined where necessary,
-  filtered to records with valid coordinates, and converted to GeoJSON.
+- Primary publisher: Tokyo Metropolitan Government, Office for Promotion of Citizen Safety
+- Primary source: https://www.tomin-anzen.metro.tokyo.lg.jp/kotsu/jitensha/seisaku-jyourei/churinjou
+- Supplemental source: https://catalog.data.metro.tokyo.lg.jp/dataset/t132039d0000000008
+- Licence: the terms shown on each linked official source page
+- Adaptations: source tables are decoded, normalized, filtered to bicycle-parking
+  records with valid coordinates, merged, and converted to GeoJSON.
 
 ## Archived Tokyo Metropolitan Government data
 

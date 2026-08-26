@@ -12,7 +12,12 @@ import {
 import { createCyclingMap } from './map/createMap';
 import type { MapOverlay } from './types';
 import { initializeAds } from './ui/ads';
-import { bindControls, renderClassCounts, renderParkingCount } from './ui/controls';
+import {
+  bindControls,
+  renderClassCounts,
+  renderParkingCount,
+  renderParkingCoverage
+} from './ui/controls';
 import { setLoadingFailure } from './ui/detailPanel';
 import { renderSourceRegistry } from './ui/sources';
 import { initializeViewCounter } from './ui/viewCounter';
@@ -93,6 +98,7 @@ void Promise.allSettled([
   loadParking().then((parking) => {
     cyclingMap.setParkingFeatures(parking.features);
     renderParkingCount(parking.features.length, language);
+    renderParkingCoverage(parking.metadata.municipalities.length, language);
     if (sourceList) renderSourceRegistry(sourceList, language, parking.features);
   })
 ]).then((results) => {

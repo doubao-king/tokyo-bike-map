@@ -9,6 +9,18 @@ export function assertParkingCollection(value: unknown): asserts value is Bicycl
     throw new Error('Expected a GeoJSON FeatureCollection of bicycle parking facilities.');
   }
 
+  if (
+    !isRecord(value.metadata) ||
+    !Array.isArray(value.metadata.municipalities) ||
+    value.metadata.municipalities.length === 0 ||
+    !value.metadata.municipalities.every(
+      (municipality) => typeof municipality === 'string' && municipality.trim() !== ''
+    ) ||
+    !isRecord(value.metadata.coverage)
+  ) {
+    throw new Error('Bicycle-parking metadata is missing coverage information.');
+  }
+
   value.features.forEach((feature, index) => {
     if (!isRecord(feature) || feature.type !== 'Feature' || !isRecord(feature.properties)) {
       throw new Error(`Parking feature ${index} is invalid.`);
@@ -43,6 +55,14 @@ export function assertParkingCollection(value: unknown): asserts value is Bicycl
     }
 
     if (
+      feature.properties.source_publisher !== undefined &&
+      (typeof feature.properties.source_publisher !== 'string' ||
+        feature.properties.source_publisher.trim() === '')
+    ) {
+      throw new Error(`Parking feature ${index} has an invalid source publisher.`);
+    }
+
+    if (
       feature.properties.capacity !== undefined &&
       (typeof feature.properties.capacity !== 'number' || feature.properties.capacity < 0)
     ) {
@@ -52,7 +72,7 @@ export function assertParkingCollection(value: unknown): asserts value is Bicycl
 }
 
 export async function loadParking(
-  path = '/data/bicycle-parking.geojson'
+  path = '/data/bicycle-parking.geojson?v=2026-08-27-2'
 ): Promise<BicycleParkingCollection> {
   const response = await fetch(path);
   if (!response.ok) throw new Error(`Unable to load bicycle parking data: ${response.status}`);
