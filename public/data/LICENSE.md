@@ -14,6 +14,28 @@ The adapted database is made available under the ODbL 1.0. Individual feature
 properties retain a link to the corresponding OpenStreetMap way and retrieval
 provenance.
 
+## Bicycle-parking data
+
+`bicycle-parking.geojson` is compiled from bicycle-parking datasets published by
+Tokyo municipalities through the Tokyo Open Data Catalog. Each feature keeps a
+link to its official dataset page and names the publishing municipality.
+
+- Source catalogue: https://catalog.data.metro.tokyo.lg.jp/
+- Publishers: the 22 municipalities listed in the GeoJSON metadata
+- Licence: the licence shown on each linked official dataset page, generally
+  Creative Commons Attribution 4.0 International (CC BY 4.0)
+- Adaptations: source tables are decoded, normalized, joined where necessary,
+  filtered to records with valid coordinates, and converted to GeoJSON.
+
+## Terrain-slope tiles
+
+The optional terrain overlay uses the Geospatial Information Authority of Japan
+(GSI) slope-map tiles. The tiles are requested directly from GSI and are not
+included in this repository.
+
+- Publisher: Geospatial Information Authority of Japan
+- Tile information and terms: https://maps.gsi.go.jp/development/ichiran.html
+
 ## Archived Tokyo Metropolitan Government data
 
 The project archive at `data/processed/official-reference.geojson` is a conversion

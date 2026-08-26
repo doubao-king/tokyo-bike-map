@@ -1,6 +1,8 @@
-import type { Feature, FeatureCollection, LineString, MultiLineString } from 'geojson';
+import type { Feature, FeatureCollection, LineString, MultiLineString, Point } from 'geojson';
 
 export type ComfortClass = 'A' | 'B' | 'C' | 'D';
+
+export type MapOverlay = 'parking' | 'slope';
 
 export type SegmentStatus = 'built' | 'planned' | 'under_construction' | 'unknown';
 
@@ -78,3 +80,18 @@ export type OfficialReferenceCollection = FeatureCollection<
   LineString | MultiLineString,
   OfficialReferenceProperties
 >;
+
+export interface BicycleParkingProperties {
+  id: string;
+  name: string;
+  municipality: string;
+  address?: string;
+  capacity?: number;
+  source_title: string;
+  source_url: string;
+  source_updated_at?: string;
+}
+
+export type BicycleParkingFeature = Feature<Point, BicycleParkingProperties>;
+
+export type BicycleParkingCollection = FeatureCollection<Point, BicycleParkingProperties>;

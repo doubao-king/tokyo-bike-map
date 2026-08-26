@@ -1,4 +1,6 @@
 import sourceRegistry from '../../data/source-registry.json';
+import { messages, type Language } from '../i18n';
+import type { BicycleParkingFeature } from '../types';
 
 interface RegisteredSource {
   map_role: string;
@@ -8,14 +10,44 @@ interface RegisteredSource {
   url: string;
 }
 
-export function renderSourceRegistry(container: HTMLElement): void {
+function parkingSourcesFromFeatures(features: BicycleParkingFeature[]): RegisteredSource[] {
+  const bySource = new Map<string, RegisteredSource>();
+
+  features.forEach(({ properties }) => {
+    if (bySource.has(properties.source_url)) return;
+    bySource.set(properties.source_url, {
+      map_role: 'official_bicycle_parking',
+      publisher: properties.municipality,
+      reference_dates: properties.source_updated_at ? [properties.source_updated_at] : undefined,
+      title: properties.source_title,
+      url: properties.source_url
+    });
+  });
+
+  return [...bySource.values()].sort((left, right) =>
+    left.publisher.localeCompare(right.publisher, 'ja')
+  );
+}
+
+export function renderSourceRegistry(
+  container: HTMLElement,
+  language: Language,
+  parkingFeatures: BicycleParkingFeature[] = []
+): void {
+  const copy = messages[language];
   const sources = sourceRegistry.sources as RegisteredSource[];
+  container.replaceChildren();
   const renderedSources = sources.filter(
     (source) => source.map_role === 'comfort_geometry_and_tag_inference'
   );
+  const parkingSources = parkingSourcesFromFeatures(parkingFeatures);
   const referenceSources = sources.filter(
-    (source) => source.map_role !== 'comfort_geometry_and_tag_inference'
+    (source) =>
+      source.map_role !== 'comfort_geometry_and_tag_inference' &&
+      source.map_role !== 'official_bicycle_parking' &&
+      source.map_role !== 'terrain_overlay'
   );
+  const terrainSources = sources.filter((source) => source.map_role === 'terrain_overlay');
 
   const renderGroup = (title: string, entries: RegisteredSource[]): void => {
     const heading = document.createElement('h3');
@@ -43,23 +75,22 @@ export function renderSourceRegistry(container: HTMLElement): void {
     });
   };
 
-  renderGroup('現在の安心度表示に使用', renderedSources);
-  renderGroup('調査・参考資料（現在の地図には未反映）', referenceSources);
+  renderGroup(copy.sourceCurrent, renderedSources);
+  if (terrainSources.length > 0) renderGroup(copy.slope, terrainSources);
+  if (parkingSources.length > 0) renderGroup(copy.sourceParking, parkingSources);
+  renderGroup(copy.sourceReferences, referenceSources);
 
   const osmWayNote = document.createElement('p');
   osmWayNote.className = 'source-registry-note';
-  osmWayNote.append(
-    '各区間のOpenStreetMap元データは、地図上の区間を選ぶと個別に確認できます。',
-    document.createElement('br')
-  );
+  osmWayNote.append(copy.sourceNote, document.createElement('br'));
   const licenseLink = document.createElement('a');
   licenseLink.href = '/data/LICENSE.md';
-  licenseLink.textContent = 'データライセンスを見る';
+  licenseLink.textContent = copy.sourceLicense;
   osmWayNote.append(licenseLink);
   container.append(osmWayNote);
 
   const checked = document.createElement('p');
   checked.className = 'source-registry-date';
-  checked.textContent = `出典確認日 ${sourceRegistry.last_checked}`;
+  checked.textContent = `${copy.sourceChecked} ${sourceRegistry.last_checked}`;
   container.append(checked);
 }

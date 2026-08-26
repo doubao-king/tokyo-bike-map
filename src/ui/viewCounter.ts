@@ -4,8 +4,8 @@ interface ViewCountResponse {
   count?: unknown;
 }
 
-export function formatViewCount(count: number): string {
-  return new Intl.NumberFormat('ja-JP').format(count);
+export function formatViewCount(count: number, locale = 'ja-JP'): string {
+  return new Intl.NumberFormat(locale).format(count);
 }
 
 export function parseViewCount(payload: ViewCountResponse): number | null {
@@ -30,7 +30,7 @@ function rememberThisTab(): void {
   }
 }
 
-export async function initializeViewCounter(element: HTMLElement): Promise<void> {
+export async function initializeViewCounter(element: HTMLElement, locale = 'ja-JP'): Promise<void> {
   const alreadyCounted = wasCountedInThisTab();
 
   try {
@@ -49,7 +49,7 @@ export async function initializeViewCounter(element: HTMLElement): Promise<void>
     const output = element.querySelector<HTMLElement>('#viewCount');
     if (!output) return;
 
-    output.textContent = formatViewCount(count);
+    output.textContent = formatViewCount(count, locale);
     element.hidden = false;
     if (!alreadyCounted) rememberThisTab();
   } catch {

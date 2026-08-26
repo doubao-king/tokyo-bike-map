@@ -1,5 +1,14 @@
 import { areaTargets, comfortClasses } from '../config';
-import type { ComfortClass, CyclingSegmentFeature } from '../types';
+import {
+  areaGroupText,
+  areaText,
+  languageUrl,
+  localeByLanguage,
+  messages,
+  rememberLanguage,
+  type Language
+} from '../i18n';
+import type { ComfortClass, CyclingSegmentFeature, MapOverlay } from '../types';
 import type { CyclingMap } from '../map/createMap';
 
 const comfortableClasses: ComfortClass[] = ['A', 'B'];
@@ -19,14 +28,18 @@ function syncComfortableGroup(): void {
   group.indeterminate = checkedCount > 0 && checkedCount < children.length;
 }
 
-function populateAreaButtons(container: HTMLElement, cyclingMap: CyclingMap): void {
+function populateAreaButtons(
+  container: HTMLElement,
+  cyclingMap: CyclingMap,
+  language: Language
+): void {
   let currentGroup = '';
 
   areaTargets.forEach((area) => {
     if (area.group !== currentGroup) {
       const heading = document.createElement('h3');
       heading.className = 'area-group-title';
-      heading.textContent = area.group;
+      heading.textContent = areaGroupText[language][area.group] ?? area.group;
       container.append(heading);
       currentGroup = area.group;
     }
@@ -34,14 +47,17 @@ function populateAreaButtons(container: HTMLElement, cyclingMap: CyclingMap): vo
     const button = document.createElement('button');
     button.type = 'button';
     button.dataset.area = area.id;
-    button.textContent = area.label;
+    button.textContent = areaText[language][area.id] ?? area.label;
     button.addEventListener('click', () => cyclingMap.flyTo(area.center, area.zoom));
     container.append(button);
   });
 }
 
-export function renderClassCounts(features: CyclingSegmentFeature[]): void {
-  const formatter = new Intl.NumberFormat('ja-JP');
+export function renderClassCounts(
+  features: CyclingSegmentFeature[],
+  language: Language
+): void {
+  const formatter = new Intl.NumberFormat(localeByLanguage[language]);
 
   comfortClasses.forEach((cls) => {
     const count = features.filter((feature) => feature.properties.comfort_class === cls).length;
@@ -64,7 +80,13 @@ export function renderClassCounts(features: CyclingSegmentFeature[]): void {
   }
 }
 
-export function bindControls(cyclingMap: CyclingMap): void {
+export function renderParkingCount(count: number, language: Language): void {
+  const target = document.getElementById('parkingCount');
+  if (target) target.textContent = new Intl.NumberFormat(localeByLanguage[language]).format(count);
+}
+
+export function bindControls(cyclingMap: CyclingMap, language: Language): void {
+  const copy = messages[language];
   document.querySelectorAll<HTMLInputElement>('[data-class]').forEach((input) => {
     input.addEventListener('change', (event) => {
       const target = event.target as HTMLInputElement;
@@ -89,22 +111,56 @@ export function bindControls(cyclingMap: CyclingMap): void {
 
   const areaButtons = document.getElementById('areaButtons');
   if (areaButtons) {
-    populateAreaButtons(areaButtons, cyclingMap);
+    populateAreaButtons(areaButtons, cyclingMap, language);
+  }
+
+  document.querySelectorAll<HTMLInputElement>('[data-map-layer]').forEach((input) => {
+    input.addEventListener('change', () => {
+      cyclingMap.setOverlayVisibility(input.dataset.mapLayer as MapOverlay, input.checked);
+    });
+  });
+
+  const languageSelect = document.getElementById('languageSelect') as HTMLSelectElement | null;
+  if (languageSelect) {
+    languageSelect.value = language;
+    languageSelect.addEventListener('change', () => {
+      const nextLanguage = languageSelect.value as Language;
+      rememberLanguage(nextLanguage);
+      window.location.assign(languageUrl(nextLanguage));
+    });
   }
 
   document.getElementById('resetBtn')?.addEventListener('click', () => {
     cyclingMap.resetView();
   });
 
+  const locateButton = document.getElementById('locateBtn') as HTMLButtonElement | null;
+  const mapNotice = document.getElementById('mapNotice');
+  locateButton?.addEventListener('click', async () => {
+    locateButton.disabled = true;
+    locateButton.classList.add('is-busy');
+    const result = await cyclingMap.locateUser();
+    locateButton.disabled = false;
+    locateButton.classList.remove('is-busy');
+
+    if (result !== 'success' && mapNotice) {
+      mapNotice.textContent = result === 'denied' ? copy.locateDenied : copy.locateFailed;
+      mapNotice.hidden = false;
+      window.setTimeout(() => {
+        mapNotice.hidden = true;
+      }, 3200);
+    }
+  });
+
   const shareButton = document.getElementById('shareBtn') as HTMLButtonElement | null;
   shareButton?.addEventListener('click', async () => {
-    const originalLabel = shareButton.textContent ?? '共有';
+    const originalLabel = copy.share;
 
     try {
       await navigator.clipboard.writeText(cyclingMap.getShareUrl());
-      shareButton.textContent = 'コピー済み';
+      shareButton.textContent = copy.copied;
     } catch {
-      shareButton.textContent = 'コピー失敗';
+      shareButton.textContent = copy.copyFailed;
     }
 
     window.setTimeout(() => {

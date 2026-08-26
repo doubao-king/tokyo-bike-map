@@ -1,14 +1,23 @@
 import L from 'leaflet';
 import { classMeta, classUrlValues, comfortClasses, tokyoInitialView } from '../config';
 import { countByClass } from '../data/segmentSchema';
+import { localeByLanguage, messages, type Language } from '../i18n';
 import { renderSegmentDetail } from '../ui/detailPanel';
-import type { ComfortClass, CyclingSegmentFeature } from '../types';
+import type {
+  BicycleParkingFeature,
+  ComfortClass,
+  CyclingSegmentFeature,
+  MapOverlay
+} from '../types';
 import { getTileConfig } from './tileConfig';
 
 export interface CyclingMap {
   flyTo(center: [number, number], zoom: number): void;
   getShareUrl(): string;
+  locateUser(): Promise<'denied' | 'failed' | 'success'>;
   rebuild(features: CyclingSegmentFeature[], activeClasses: Set<ComfortClass>): void;
+  setOverlayVisibility(overlay: MapOverlay, visible: boolean): void;
+  setParkingFeatures(features: BicycleParkingFeature[]): void;
   setClassVisibility(cls: ComfortClass, visible: boolean): void;
   resetView(): void;
 }
@@ -22,8 +31,11 @@ interface ComfortLayerSet {
 export function createCyclingMap(
   mapElementId: string,
   detailPanel: HTMLElement,
-  visibleCount: HTMLElement
+  visibleCount: HTMLElement,
+  language: Language,
+  initialOverlays: Set<MapOverlay>
 ): CyclingMap {
+  const copy = messages[language];
   const urlParams = new URLSearchParams(window.location.search);
   const requestedLatitude = Number(urlParams.get('lat'));
   const requestedLongitude = Number(urlParams.get('lng'));
@@ -47,14 +59,22 @@ export function createCyclingMap(
     initialZoom
   );
   const layerByClass = new Map<ComfortClass, ComfortLayerSet>();
+  const activeOverlays = new Set(initialOverlays);
   let features: CyclingSegmentFeature[] = [];
   let activeClasses = new Set<ComfortClass>();
+  let parkingFeatures: BicycleParkingFeature[] = [];
+  let parkingLayer = L.layerGroup();
+  let locationAccuracyLayer: L.Circle | undefined;
+  let locationMarker: L.CircleMarker | undefined;
   let selectedLayer: L.Path | undefined;
   let selectedFeature: CyclingSegmentFeature | undefined;
   let dataReady = false;
 
   map.createPane('comfortCasingPane');
   map.createPane('comfortLinePane');
+  map.createPane('slopePane');
+  map.createPane('parkingPane');
+  map.createPane('locationPane');
   const comfortCasingPane = map.getPane('comfortCasingPane');
   const comfortLinePane = map.getPane('comfortLinePane');
   if (comfortCasingPane) {
@@ -64,11 +84,81 @@ export function createCyclingMap(
   if (comfortLinePane) {
     comfortLinePane.style.zIndex = '410';
   }
+  const slopePane = map.getPane('slopePane');
+  const parkingPane = map.getPane('parkingPane');
+  const locationPane = map.getPane('locationPane');
+  if (slopePane) {
+    slopePane.style.zIndex = '240';
+    slopePane.style.mixBlendMode = 'multiply';
+    slopePane.style.pointerEvents = 'none';
+  }
+  if (parkingPane) parkingPane.style.zIndex = '420';
+  if (locationPane) locationPane.style.zIndex = '430';
+
   const tileConfig = getTileConfig();
   L.tileLayer(tileConfig.url, {
     maxZoom: tileConfig.maxZoom,
     attribution: tileConfig.attribution
   }).addTo(map);
+  const slopeLayer = L.tileLayer(
+    'https://cyberjapandata.gsi.go.jp/xyz/slopemap/{z}/{x}/{y}.png',
+    {
+      attribution:
+        '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank" rel="noreferrer">GSI Maps</a>',
+      maxNativeZoom: 15,
+      maxZoom: tileConfig.maxZoom,
+      minZoom: 3,
+      opacity: 0.58,
+      pane: 'slopePane'
+    }
+  );
+  if (activeOverlays.has('slope')) slopeLayer.addTo(map);
+
+  function escapeHtml(value: string): string {
+    const element = document.createElement('span');
+    element.textContent = value;
+    return element.innerHTML;
+  }
+
+  function parkingPopup(feature: BicycleParkingFeature): string {
+    const properties = feature.properties;
+    const formatter = new Intl.NumberFormat(localeByLanguage[language]);
+    return `
+      <div class="parking-popup">
+        <strong>${escapeHtml(properties.name)}</strong>
+        <span>${escapeHtml(properties.municipality)}</span>
+        ${properties.address ? `<span>${escapeHtml(copy.parkingAddress)}: ${escapeHtml(properties.address)}</span>` : ''}
+        ${properties.capacity !== undefined ? `<span>${escapeHtml(copy.parkingCapacity)}: ${formatter.format(properties.capacity)} ${escapeHtml(copy.parkingSpaces)}</span>` : ''}
+        <a href="${escapeHtml(properties.source_url)}" target="_blank" rel="noreferrer">${escapeHtml(copy.parkingSource)}</a>
+      </div>`;
+  }
+
+  function rebuildParkingLayer(): void {
+    const wasVisible = map.hasLayer(parkingLayer);
+    if (wasVisible) map.removeLayer(parkingLayer);
+
+    parkingLayer = L.layerGroup(
+      parkingFeatures.map((feature) => {
+        const [longitude, latitude] = feature.geometry.coordinates;
+        return L.circleMarker([latitude, longitude], {
+          pane: 'parkingPane',
+          radius: 5,
+          color: '#ffffff',
+          weight: 1.8,
+          fillColor: '#2367a7',
+          fillOpacity: 0.94
+        })
+          .bindTooltip(feature.properties.name, { direction: 'top' })
+          .bindPopup(parkingPopup(feature), {
+            autoPanPaddingTopLeft: L.point(12, 96),
+            autoPanPaddingBottomRight: L.point(12, 84),
+            maxWidth: 280
+          });
+      })
+    );
+
+    if (activeOverlays.has('parking')) parkingLayer.addTo(map);
+  }
   function updateCount(): void {
     visibleCount.textContent = String(countByClass(features, activeClasses));
   }
@@ -145,6 +235,16 @@ export function createCyclingMap(
       'roads',
       comfortClasses.filter((cls) => activeClasses.has(cls)).map((cls) => classUrlValues[cls]).join(',')
     );
+    if (activeOverlays.size > 0) {
+      params.set('layers', [...activeOverlays].sort().join(','));
+    } else {
+      params.delete('layers');
+    }
+    if (language === 'ja') {
+      params.delete('lang');
+    } else {
+      params.set('lang', language);
+    }
     window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
   }
 
@@ -167,7 +267,7 @@ export function createCyclingMap(
         onEachFeature: (feature, layer) => {
           const segment = feature as CyclingSegmentFeature;
           layer.on('click', () => {
-            detailPanel.innerHTML = `<h2>区間情報</h2>${renderSegmentDetail(segment)}`;
+            detailPanel.innerHTML = `<h2>${escapeHtml(copy.detailHeading)}</h2>${renderSegmentDetail(segment, language)}`;
 
             if (layer instanceof L.Path) {
               selectSegment(layer, segment);
@@ -211,6 +311,55 @@ export function createCyclingMap(
     syncUrl();
   }
 
+  function setOverlayVisibility(overlay: MapOverlay, visible: boolean): void {
+    const layer = overlay === 'slope' ? slopeLayer : parkingLayer;
+    if (visible) {
+      activeOverlays.add(overlay);
+      if (!map.hasLayer(layer)) layer.addTo(map);
+    } else {
+      activeOverlays.delete(overlay);
+      if (map.hasLayer(layer)) map.removeLayer(layer);
+    }
+    syncUrl();
+  }
+
+  function locateUser(): Promise<'denied' | 'failed' | 'success'> {
+    if (!navigator.geolocation) return Promise.resolve('failed');
+
+    return new Promise((resolveLocation) => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const center: L.LatLngExpression = [position.coords.latitude, position.coords.longitude];
+          locationMarker?.removeFrom(map);
+          locationAccuracyLayer?.removeFrom(map);
+          locationAccuracyLayer = L.circle(center, {
+            pane: 'locationPane',
+            radius: position.coords.accuracy,
+            color: '#2463a6',
+            weight: 1,
+            fillColor: '#5aa5e6',
+            fillOpacity: 0.1,
+            interactive: false
+          }).addTo(map);
+          locationMarker = L.circleMarker(center, {
+            pane: 'locationPane',
+            radius: 7,
+            color: '#ffffff',
+            weight: 3,
+            fillColor: '#2463a6',
+            fillOpacity: 1
+          })
+            .bindTooltip(copy.locate, { direction: 'top' })
+            .addTo(map);
+          map.flyTo(center, Math.max(map.getZoom(), 15), { duration: 0.7 });
+          resolveLocation('success');
+        },
+        (error) => resolveLocation(error.code === 1 ? 'denied' : 'failed'),
+        { enableHighAccuracy: true, maximumAge: 30_000, timeout: 12_000 }
+      );
+    });
+  }
+
   map.on('zoomend', () => {
     layerByClass.forEach(({ casing, color }) => {
       casing.setStyle((feature) => styleCasing(feature as CyclingSegmentFeature));
@@ -226,7 +375,13 @@ export function createCyclingMap(
       syncUrl();
       return window.location.href;
     },
+    locateUser,
     rebuild,
+    setOverlayVisibility,
+    setParkingFeatures: (nextFeatures) => {
+      parkingFeatures = nextFeatures;
+      rebuildParkingLayer();
+    },
     setClassVisibility,
     resetView: () => map.flyTo(tokyoInitialView.center, tokyoInitialView.zoom)
   };

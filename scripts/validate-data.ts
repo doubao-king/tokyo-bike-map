@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { assertParkingCollection } from '../src/data/loadParking';
 import { assertSegmentCollection } from '../src/data/segmentSchema';
 
 const dataPath = resolve('public/data/osm-segments.geojson');
@@ -48,4 +49,19 @@ console.log(
     .sort(([left], [right]) => left.localeCompare(right))
     .map(([cls, count]) => `${cls}:${count}`)
     .join(' ')})`
+);
+
+const parkingPath = resolve('public/data/bicycle-parking.geojson');
+const parkingPayload: unknown = JSON.parse(await readFile(parkingPath, 'utf8'));
+assertParkingCollection(parkingPayload);
+const municipalities = new Set(
+  parkingPayload.features.map((feature) => feature.properties.municipality)
+);
+
+if (parkingPayload.features.length < 100 || municipalities.size < 10) {
+  throw new Error('Official bicycle-parking coverage dropped below the expected minimum.');
+}
+
+console.log(
+  `Validated ${parkingPayload.features.length} official bicycle-parking facilities (${municipalities.size} municipalities)`
 );

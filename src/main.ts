@@ -1,13 +1,25 @@
 import 'leaflet/dist/leaflet.css';
 import '../styles.css';
 import { classUrlValues, comfortClasses, defaultVisibleClasses } from './config';
+import { loadParking } from './data/loadParking';
 import { loadSegments } from './data/loadSegments';
+import {
+  applyStaticTranslations,
+  getLanguage,
+  localeByLanguage,
+  rememberLanguage
+} from './i18n';
 import { createCyclingMap } from './map/createMap';
+import type { MapOverlay } from './types';
 import { initializeAds } from './ui/ads';
-import { bindControls, renderClassCounts } from './ui/controls';
+import { bindControls, renderClassCounts, renderParkingCount } from './ui/controls';
 import { setLoadingFailure } from './ui/detailPanel';
 import { renderSourceRegistry } from './ui/sources';
 import { initializeViewCounter } from './ui/viewCounter';
+
+const language = getLanguage();
+rememberLanguage(language);
+applyStaticTranslations(language);
 
 const detailPanel = document.getElementById('detailPanel');
 const visibleCount = document.getElementById('visibleCount');
@@ -16,8 +28,20 @@ if (!detailPanel || !visibleCount) {
   throw new Error('Required map UI elements are missing.');
 }
 
-const cyclingMap = createCyclingMap('map', detailPanel, visibleCount);
 const searchParams = new URLSearchParams(window.location.search);
+const supportedOverlays: MapOverlay[] = ['parking', 'slope'];
+const initialOverlays = new Set(
+  (searchParams.get('layers') ?? '')
+    .split(',')
+    .filter((value): value is MapOverlay => supportedOverlays.includes(value as MapOverlay))
+);
+const cyclingMap = createCyclingMap(
+  'map',
+  detailPanel,
+  visibleCount,
+  language,
+  initialOverlays
+);
 const roadParam = searchParams.get('roads');
 const classParam = searchParams.get('classes');
 const initialVisibleClasses =
@@ -41,11 +65,14 @@ const initialVisibleClasses =
 document.querySelectorAll<HTMLInputElement>('[data-class]').forEach((input) => {
   input.checked = initialVisibleClasses.has(input.dataset.class as (typeof comfortClasses)[number]);
 });
-bindControls(cyclingMap);
+document.querySelectorAll<HTMLInputElement>('[data-map-layer]').forEach((input) => {
+  input.checked = initialOverlays.has(input.dataset.mapLayer as MapOverlay);
+});
+bindControls(cyclingMap, language);
 
 const viewCounter = document.getElementById('viewCounter');
 if (viewCounter) {
-  void initializeViewCounter(viewCounter);
+  void initializeViewCounter(viewCounter, localeByLanguage[language]);
 }
 
 const adPanel = document.getElementById('adPanel');
@@ -55,15 +82,29 @@ if (adPanel) {
 
 const sourceList = document.getElementById('sourceList');
 if (sourceList) {
-  renderSourceRegistry(sourceList);
+  renderSourceRegistry(sourceList, language);
 }
 
-loadSegments()
-  .then((segments) => {
+void Promise.allSettled([
+  loadSegments().then((segments) => {
     cyclingMap.rebuild(segments.features, initialVisibleClasses);
-    renderClassCounts(segments.features);
+    renderClassCounts(segments.features, language);
+  }),
+  loadParking().then((parking) => {
+    cyclingMap.setParkingFeatures(parking.features);
+    renderParkingCount(parking.features.length, language);
+    if (sourceList) renderSourceRegistry(sourceList, language, parking.features);
   })
-  .catch((error: unknown) => {
-    console.error(error);
-    setLoadingFailure(detailPanel);
-  });
+]).then((results) => {
+  const segmentResult = results[0];
+  if (segmentResult.status === 'rejected') {
+    console.error(segmentResult.reason);
+    setLoadingFailure(detailPanel, language);
+  }
+
+  const parkingResult = results[1];
+  if (parkingResult.status === 'rejected') {
+    console.error(parkingResult.reason);
+    renderParkingCount(0, language);
+  }
+});

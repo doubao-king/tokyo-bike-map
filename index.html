@@ -16,73 +16,91 @@
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
-        <div class="eyebrow">東京都内の自転車通行環境</div>
-        <h1>東京じてんしゃマップ</h1>
-        <p class="tagline">車が怖い人のための自転車マップ。</p>
+        <div class="brand-tools">
+          <div class="eyebrow" data-i18n="eyebrow">東京都内の自転車通行環境</div>
+          <label class="language-control">
+            <span class="visually-hidden" data-i18n="language">表示言語</span>
+            <select id="languageSelect" aria-label="表示言語" data-i18n-aria="language">
+              <option value="ja">日本語</option>
+              <option value="en">English</option>
+              <option value="zh">中文</option>
+            </select>
+          </label>
+        </div>
+        <h1 data-i18n="title">東京じてんしゃマップ</h1>
+        <p class="tagline" data-i18n="tagline">車が怖い人のための自転車マップ。</p>
       </div>
 
       <section class="panel">
-        <h2>表示する道</h2>
-        <label class="filter-row filter-group-row"><input type="checkbox" id="comfortableGroup" checked><span class="swatch-pair"><i class="a"></i><i class="b"></i></span><span><b>走りやすい道</b></span><span class="filter-count" data-count-group="comfortable">—</span></label>
+        <h2 data-i18n="visibleRoads">表示する道</h2>
+        <label class="filter-row filter-group-row"><input type="checkbox" id="comfortableGroup" checked><span class="swatch-pair"><i class="a"></i><i class="b"></i></span><span><b data-i18n="comfortable">走りやすい道</b></span><span class="filter-count" data-count-group="comfortable">—</span></label>
         <div class="subfilter-list">
-          <label class="filter-row subfilter-row"><input type="checkbox" data-class="A" checked><span class="swatch a"></span><span><b>車と物理分離</b></span><span class="filter-count" data-count-class="A">—</span></label>
-          <label class="filter-row subfilter-row"><input type="checkbox" data-class="B" checked><span class="swatch b"></span><span><b>広い歩道内・緑道・河川敷</b></span><span class="filter-count" data-count-class="B">—</span></label>
+          <label class="filter-row subfilter-row"><input type="checkbox" data-class="A" checked><span class="swatch a"></span><span><b data-class-description="A">車と物理分離</b></span><span class="filter-count" data-count-class="A">—</span></label>
+          <label class="filter-row subfilter-row"><input type="checkbox" data-class="B" checked><span class="swatch b"></span><span><b data-class-description="B">広い歩道内・緑道・河川敷</b></span><span class="filter-count" data-count-class="B">—</span></label>
         </div>
-        <label class="filter-row"><input type="checkbox" data-class="C" checked><span class="swatch c"></span><span><b>自転車レーン</b><small>車道上の専用通行帯</small></span><span class="filter-count" data-count-class="C">—</span></label>
-        <label class="filter-row"><input type="checkbox" data-class="D"><span class="swatch d"></span><span><b>車道混在</b><small>ナビライン・ナビマーク</small></span><span class="filter-count" data-count-class="D">—</span></label>
+        <label class="filter-row"><input type="checkbox" data-class="C" checked><span class="swatch c"></span><span><b data-class-label="C">自転車レーン</b><small data-class-description="C">車道上の専用通行帯</small></span><span class="filter-count" data-count-class="C">—</span></label>
+        <label class="filter-row"><input type="checkbox" data-class="D"><span class="swatch d"></span><span><b data-class-label="D">車道混在</b><small data-class-description="D">ナビライン・ナビマーク</small></span><span class="filter-count" data-count-class="D">—</span></label>
+      </section>
+
+      <section class="panel">
+        <h2 data-i18n="layersHeading">地図レイヤー</h2>
+        <label class="filter-row layer-row"><input type="checkbox" data-map-layer="slope"><span class="layer-swatch slope-swatch" aria-hidden="true"></span><span><b data-i18n="slope">坂・地形</b><small data-i18n="slopeHelp">濃いほど急な地形</small></span></label>
+        <label class="filter-row layer-row"><input type="checkbox" data-map-layer="parking"><span class="layer-swatch parking-swatch" aria-hidden="true">P</span><span><b data-i18n="officialParking">駐輪場（公式データ）</b><small data-i18n="officialParkingHelp">自治体が公開する登録施設</small></span><span class="filter-count" id="parkingCount">—</span></label>
       </section>
 
       <section class="panel ad-panel" id="adPanel" aria-label="広告" hidden>
-        <div class="ad-label">広告</div>
+        <div class="ad-label" data-i18n="ad">広告</div>
         <ins id="adsenseSlot" class="adsbygoogle" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
       </section>
 
       <section class="panel area-panel">
-        <h2>エリアから見る</h2>
+        <h2 data-i18n="areaHeading">エリアから見る</h2>
         <div class="area-grid" id="areaButtons"></div>
       </section>
 
       <section class="panel detail-panel" id="detailPanel">
-        <h2>区間情報</h2>
-        <p class="muted">地図上の色付き区間をタップしてください。</p>
+        <h2 data-i18n="detailHeading">区間情報</h2>
+        <p class="muted" data-i18n="detailPrompt">地図上の色付き区間をタップしてください。</p>
       </section>
 
       <section class="panel note">
-        <h2>データと現地状況について</h2>
-        <p>現在の安心度表示にはOpenStreetMapを使用し、東京都・区市町村・国の公式公開資料を調査・参照しています。公開時点や工事などにより、実際の道路状況と異なる場合があります。</p>
-        <p class="muted">安心度は主にOSMタグからの暫定分類です。公式公開情報を定期的に確認して更新します。地域により公開情報量に差があります。走行時は現地の標識・規制を優先してください。</p>
+        <h2 data-i18n="dataNoteHeading">データと現地状況について</h2>
+        <p data-i18n="dataNoteBody">現在の安心度表示にはOpenStreetMapを使用し、東京都・区市町村・国の公式公開資料を調査・参照しています。公開時点や工事などにより、実際の道路状況と異なる場合があります。</p>
+        <p class="muted" data-i18n="dataNoteSecondary">安心度は主にOSMタグからの暫定分類です。公式公開情報を定期的に確認して更新します。地域により公開情報量に差があります。走行時は現地の標識・規制を優先してください。</p>
       </section>
 
       <details class="panel source-disclosure">
-        <summary>データ出典一覧</summary>
+        <summary data-i18n="sources">データ出典一覧</summary>
         <div class="source-list" id="sourceList"></div>
       </details>
 
-      <nav class="site-links" aria-label="サイト情報">
-        <a href="/about/index.html">このマップについて</a>
-        <a href="/methodology/index.html">データと判定方法</a>
-        <a href="/updates/index.html">更新履歴</a>
-        <a href="/contact/index.html">情報の修正・お問い合わせ</a>
-        <a href="/privacy/index.html">プライバシー</a>
-        <a href="/terms/index.html">利用規約</a>
+      <nav class="site-links" aria-label="サイト情報" data-i18n-aria="siteInfo">
+        <a href="/about/index.html" data-info-link="about" data-i18n="about">このマップについて</a>
+        <a href="/methodology/index.html" data-info-link="methodology" data-i18n="methodology">データと判定方法</a>
+        <a href="/updates/index.html" data-info-link="updates" data-i18n="updates">更新履歴</a>
+        <a href="/contact/index.html" data-info-link="contact" data-i18n="contact">情報の修正・お問い合わせ</a>
+        <a href="/privacy/index.html" data-info-link="privacy" data-i18n="privacy">プライバシー</a>
+        <a href="/terms/index.html" data-info-link="terms" data-i18n="terms">利用規約</a>
       </nav>
     </aside>
 
     <main class="map-wrap">
       <div class="topbar">
         <div class="map-summary">
-          <span><strong id="visibleCount">0</strong> 区間を表示中</span>
-          <span class="data-pill">OSM暫定</span>
-          <span class="view-counter" id="viewCounter" aria-label="累計閲覧回数" hidden>閲覧 <strong id="viewCount">—</strong></span>
+          <span><strong id="visibleCount">0</strong> <span data-i18n="segmentsVisible">区間を表示中</span></span>
+          <span class="data-pill" data-i18n="dataPill">OSM暫定</span>
+          <span class="view-counter" id="viewCounter" aria-label="累計閲覧回数" hidden><span data-i18n="viewCount">閲覧</span> <strong id="viewCount">—</strong></span>
         </div>
         <div class="topbar-actions">
-          <button id="shareBtn" class="ghost" type="button">共有</button>
-          <button id="resetBtn" class="ghost" type="button">東京本土</button>
+          <button id="locateBtn" class="ghost icon-button" type="button" aria-label="現在地を表示" title="現在地を表示" data-i18n-aria="locate" data-i18n-title="locate">⌖</button>
+          <button id="shareBtn" class="ghost" type="button" data-i18n="share">共有</button>
+          <button id="resetBtn" class="ghost" type="button" data-i18n="reset">東京本土</button>
         </div>
       </div>
-      <div id="map" aria-label="東京の自転車通行環境地図"></div>
+      <div id="map" aria-label="東京の自転車通行環境地図" data-i18n-aria="mapAria"></div>
+      <div class="map-notice" id="mapNotice" role="status" aria-live="polite" hidden></div>
       <div class="legend-mobile">
-        <span class="legend-comfortable"><i class="a"></i><i class="b"></i>走りやすい</span><span><i class="c"></i>レーン</span><span><i class="d"></i>車道混在</span>
+        <span class="legend-comfortable"><i class="a"></i><i class="b"></i><span data-i18n="comfortable">走りやすい</span></span><span><i class="c"></i><span data-class-label="C">レーン</span></span><span><i class="d"></i><span data-class-label="D">車道混在</span></span>
       </div>
     </main>
   </div>

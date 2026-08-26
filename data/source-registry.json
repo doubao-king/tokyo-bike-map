@@ -1,5 +1,5 @@
 {
-  "last_checked": "2026-08-26",
+  "last_checked": "2026-08-27",
   "sources": [
     {
       "id": "openstreetmap-tokyo-cycling",
@@ -19,6 +19,16 @@
       "map_role": "official_reference_geometry",
       "reference_dates": ["2012-10", "2015-04"],
       "notes": "Machine-readable line geometry. Attributes do not provide a reliable comfort classification."
+    },
+    {
+      "id": "gsi-slope-map",
+      "publisher": "国土地理院",
+      "title": "地理院タイル 傾斜量図",
+      "url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "format": "XYZ PNG tiles",
+      "map_role": "terrain_overlay",
+      "reference_dates": ["2026-08-27"],
+      "notes": "Terrain slope visualization. It does not measure the grade of an individual road."
     },
     {
       "id": "toshima-cycling-environment-plan",
