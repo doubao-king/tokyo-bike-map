@@ -72,6 +72,7 @@ h1 { font-size: 30px; line-height: 1.08; margin: 7px 0 8px; }
 .report-panel small { display: block; margin-top: 8px; color: var(--muted); font-size: 11px; line-height: 1.45; }
 .warning { margin: 4px 0 12px; padding: 8px 10px; border-left: 3px solid var(--c); background: #fff7df; font-size: 13px; line-height: 1.45; }
 .note p { font-size: 13px; line-height: 1.55; }
+.parking-data-warning { margin-bottom: 0; padding: 9px 10px; border-left: 3px solid var(--c); background: #fff7df; }
 .source-disclosure { font-size: 13px; }
 .source-disclosure summary { cursor: pointer; font-size: 14px; font-weight: 700; list-style-position: outside; margin-left: 16px; }
 .source-disclosure summary::marker { color: var(--muted); }
@@ -101,10 +102,14 @@ h1 { font-size: 30px; line-height: 1.08; margin: 7px 0 8px; }
 .icon-button.is-busy { color: transparent; position: relative; }
 .icon-button.is-busy::after { content: ''; position: absolute; width: 15px; height: 15px; border: 2px solid #aeb8b1; border-top-color: #2463a6; border-radius: 50%; animation: button-spin .7s linear infinite; }
 .map-notice { position: absolute; z-index: 600; left: 50%; top: 76px; transform: translateX(-50%); max-width: min(360px, calc(100% - 24px)); padding: 9px 12px; border: 1px solid #d6c38c; border-radius: 7px; color: #57491f; background: rgba(255, 250, 225, .97); box-shadow: 0 4px 16px rgba(0,0,0,.08); font-size: 13px; text-align: center; }
-.parking-popup { display: grid; gap: 4px; min-width: 180px; line-height: 1.35; }
+.parking-popup { display: grid; gap: 5px; min-width: 220px; line-height: 1.35; }
 .parking-popup strong { font-size: 14px; }
 .parking-popup span { color: var(--muted); font-size: 12px; }
-.parking-popup a { margin-top: 4px; color: #2367a7; font-weight: 700; }
+.parking-popup-caveat { margin-top: 3px; color: #6d5719; font-size: 11px; line-height: 1.4; }
+.parking-popup-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin-top: 4px; }
+.parking-popup-actions a { display: flex; align-items: center; justify-content: center; min-height: 34px; border: 1px solid #2367a7; border-radius: 6px; padding: 6px 7px; color: #174f82; background: #f6faff; font-size: 12px; font-weight: 750; text-align: center; text-decoration: none; }
+.parking-popup-actions a:hover { color: white; background: #2367a7; }
+.parking-popup-source { margin-top: 3px; color: #2367a7; font-size: 12px; font-weight: 650; }
 @keyframes button-spin { to { transform: rotate(360deg); } }
 .legend-mobile { display: none; }
 .leaflet-control-zoom { border: none !important; box-shadow: 0 4px 16px rgba(0,0,0,.08) !important; }

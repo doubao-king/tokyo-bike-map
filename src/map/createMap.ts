@@ -9,6 +9,7 @@ import type {
   CyclingSegmentFeature,
   MapOverlay
 } from '../types';
+import { createParkingMapLinks } from './parkingLinks';
 import { getTileConfig } from './tileConfig';
 
 export interface CyclingMap {
@@ -102,13 +103,19 @@ export function createCyclingMap(
   function parkingPopup(feature: BicycleParkingFeature): string {
     const properties = feature.properties;
     const formatter = new Intl.NumberFormat(localeByLanguage[language]);
+    const mapLinks = createParkingMapLinks(feature);
     return `
       <div class="parking-popup">
         <strong>${escapeHtml(properties.name)}</strong>
         <span>${escapeHtml(properties.municipality)}</span>
         ${properties.address ? `<span>${escapeHtml(copy.parkingAddress)}: ${escapeHtml(properties.address)}</span>` : ''}
         ${properties.capacity !== undefined ? `<span>${escapeHtml(copy.parkingCapacity)}: ${formatter.format(properties.capacity)} ${escapeHtml(copy.parkingSpaces)}</span>` : ''}
-        <a href="${escapeHtml(properties.source_url)}" target="_blank" rel="noreferrer">${escapeHtml(copy.parkingSource)}</a>
+        <small class="parking-popup-caveat">${escapeHtml(copy.parkingStatusCheck)}</small>
+        <div class="parking-popup-actions" aria-label="${escapeHtml(copy.parkingOpenMaps)}">
+          <a href="${escapeHtml(mapLinks.google)}" target="_blank" rel="noreferrer">Google Maps</a>
+          <a href="${escapeHtml(mapLinks.apple)}" target="_blank" rel="noreferrer">Apple Maps</a>
+        </div>
+        <a class="parking-popup-source" href="${escapeHtml(properties.source_url)}" target="_blank" rel="noreferrer">${escapeHtml(copy.parkingSource)}</a>
       </div>`;
   }
 

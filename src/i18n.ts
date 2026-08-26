@@ -37,8 +37,11 @@ interface Messages {
   parkingCapacity: string;
   parkingCount: string;
   parkingCoverage: string;
+  parkingDataWarning: string;
+  parkingOpenMaps: string;
   parkingSource: string;
   parkingSpaces: string;
+  parkingStatusCheck: string;
   privacy: string;
   reportAction: string;
   reportBody: string;
@@ -101,8 +104,12 @@ export const messages: Record<Language, Messages> = {
     parkingCapacity: '最大駐輪台数',
     parkingCount: '登録施設',
     parkingCoverage: '{count}区市町を収録',
+    parkingDataWarning:
+      '駐輪場情報も公開時点の内容です。閉鎖・休止・移転、営業時間や利用条件の変更が反映されていない場合があります。利用前に施設・自治体の最新情報や現地表示を確認してください。',
+    parkingOpenMaps: '地図アプリで開く',
     parkingSource: '公式データを見る',
     parkingSpaces: '台',
+    parkingStatusCheck: '閉鎖・移転などが未反映の場合があります。現地情報をご確認ください。',
     privacy: 'プライバシー',
     reportAction: '地図情報を報告',
     reportBody: '現在の表示位置を付けて、修正情報を送れます。',
@@ -163,8 +170,12 @@ export const messages: Record<Language, Messages> = {
     parkingCapacity: 'Maximum capacity',
     parkingCount: 'Facilities',
     parkingCoverage: '{count} municipalities covered',
+    parkingDataWarning:
+      'Bicycle-parking information reflects the source at its publication date. Closures, temporary suspensions, relocations, opening hours and conditions of use may have changed. Check current facility or municipal information and signs on site before relying on it.',
+    parkingOpenMaps: 'Open in a maps app',
     parkingSource: 'View official data',
     parkingSpaces: 'spaces',
+    parkingStatusCheck: 'Closures or relocations may not yet be reflected. Check current information on site.',
     privacy: 'Privacy',
     reportAction: 'Report map information',
     reportBody: 'Send a correction with the current map position attached.',
@@ -225,8 +236,12 @@ export const messages: Record<Language, Messages> = {
     parkingCapacity: '最大停车数量',
     parkingCount: '设施数量',
     parkingCoverage: '已收录 {count} 个区市町',
+    parkingDataWarning:
+      '自行车停车场信息以数据发布时的内容为准。关闭、暂停营业、搬迁、开放时间及使用条件的变化可能尚未更新。使用前请确认设施或自治体的最新信息以及现场告示。',
+    parkingOpenMaps: '在地图应用中打开',
     parkingSource: '查看官方数据',
     parkingSpaces: '辆',
+    parkingStatusCheck: '关闭或搬迁等变化可能尚未更新，请确认现场最新信息。',
     privacy: '隐私政策',
     reportAction: '报告地图信息',
     reportBody: '可附上当前地图位置发送修正信息。',
