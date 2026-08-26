@@ -10,7 +10,11 @@ interface ClassText {
 interface Messages {
   about: string;
   ad: string;
+  areaDocumentTitle: string;
   areaHeading: string;
+  areaMetaDescription: string;
+  areaPageTagline: string;
+  areaPageTitle: string;
   comfortable: string;
   contact: string;
   copied: string;
@@ -22,6 +26,7 @@ interface Messages {
   dataPill: string;
   detailHeading: string;
   detailPrompt: string;
+  documentTitle: string;
   eyebrow: string;
   language: string;
   layersHeading: string;
@@ -31,6 +36,7 @@ interface Messages {
   locateFailed: string;
   mapAria: string;
   methodology: string;
+  metaDescription: string;
   officialParking: string;
   officialParkingHelp: string;
   parkingAddress: string;
@@ -75,7 +81,12 @@ export const messages: Record<Language, Messages> = {
   ja: {
     about: 'このマップについて',
     ad: '広告',
+    areaDocumentTitle: '{area}の自転車マップ | 走りやすい道・駐輪場',
     areaHeading: 'エリアから見る',
+    areaMetaDescription:
+      '東京都の{area}周辺で、車と分離された道、緑道・河川敷、自転車レーン、駐輪場を確認できる自転車マップです。',
+    areaPageTagline: '走りやすい道・自転車レーン・駐輪場を地図で確認できます。',
+    areaPageTitle: '{area}の自転車マップ',
     comfortable: '走りやすい道',
     contact: '情報の修正・お問い合わせ',
     copied: 'コピー済み',
@@ -89,6 +100,7 @@ export const messages: Record<Language, Messages> = {
     dataPill: 'OSM暫定',
     detailHeading: '区間情報',
     detailPrompt: '地図上の色付き区間をタップしてください。',
+    documentTitle: '東京の自転車マップ | 走りやすい道・自転車レーン・駐輪場',
     eyebrow: '東京都内の自転車通行環境',
     language: '表示言語',
     layersHeading: '地図レイヤー',
@@ -98,6 +110,8 @@ export const messages: Record<Language, Messages> = {
     locateFailed: '現在地を取得できませんでした。',
     mapAria: '東京の自転車通行環境地図',
     methodology: 'データと判定方法',
+    metaDescription:
+      '東京都内の走りやすい道、自転車レーン、緑道、河川敷、駐輪場を地図で確認。車との分離や通行環境を色分けした無料の東京自転車マップです。',
     officialParking: '駐輪場（東京都公開データ）',
     officialParkingHelp: '東京都の公式データを読み込み中',
     parkingAddress: '所在地',
@@ -141,7 +155,12 @@ export const messages: Record<Language, Messages> = {
   en: {
     about: 'About this map',
     ad: 'Advertisement',
+    areaDocumentTitle: '{area} Bicycle Map | Comfortable roads and parking',
     areaHeading: 'Explore by area',
+    areaMetaDescription:
+      'Explore physically separated roads, greenways, riverbanks, bicycle lanes and bicycle parking around {area}, Tokyo.',
+    areaPageTagline: 'Explore comfortable roads, bicycle lanes and bicycle parking.',
+    areaPageTitle: '{area} Bicycle Map',
     comfortable: 'Comfortable roads',
     contact: 'Corrections and contact',
     copied: 'Copied',
@@ -155,6 +174,7 @@ export const messages: Record<Language, Messages> = {
     dataPill: 'OSM estimate',
     detailHeading: 'Segment details',
     detailPrompt: 'Select a colored segment on the map.',
+    documentTitle: 'Tokyo Bicycle Map | Comfortable roads, bicycle lanes and parking',
     eyebrow: 'Cycling conditions across Tokyo',
     language: 'Language',
     layersHeading: 'Map layers',
@@ -164,6 +184,8 @@ export const messages: Record<Language, Messages> = {
     locateFailed: 'Your current location could not be found.',
     mapAria: 'Map of cycling conditions in Tokyo',
     methodology: 'Data and methodology',
+    metaDescription:
+      'Explore comfortable roads, physically separated cycling space, greenways, riverbanks, bicycle lanes and bicycle parking across Tokyo.',
     officialParking: 'Bicycle parking (Tokyo data)',
     officialParkingHelp: 'Loading official Tokyo data',
     parkingAddress: 'Address',
@@ -207,7 +229,12 @@ export const messages: Record<Language, Messages> = {
   zh: {
     about: '关于本地图',
     ad: '广告',
+    areaDocumentTitle: '{area}自行车地图 | 舒适道路与停车场',
     areaHeading: '按地区查看',
+    areaMetaDescription:
+      '查看东京{area}周边与机动车分隔的道路、绿道、河岸、自行车专用车道和自行车停车场。',
+    areaPageTagline: '查看舒适道路、自行车专用车道和自行车停车场。',
+    areaPageTitle: '{area}自行车地图',
     comfortable: '舒适道路',
     contact: '信息修正与联系',
     copied: '已复制',
@@ -221,6 +248,7 @@ export const messages: Record<Language, Messages> = {
     dataPill: 'OSM 推测',
     detailHeading: '路段信息',
     detailPrompt: '请选择地图上的彩色路段。',
+    documentTitle: '东京自行车地图 | 舒适道路、自行车专用车道与停车场',
     eyebrow: '东京都内自行车通行环境',
     language: '显示语言',
     layersHeading: '地图图层',
@@ -230,6 +258,8 @@ export const messages: Record<Language, Messages> = {
     locateFailed: '无法获取当前位置。',
     mapAria: '东京都自行车通行环境地图',
     methodology: '数据与判定方法',
+    metaDescription:
+      '查看东京都内的舒适道路、与机动车分隔的骑行空间、绿道、河岸、自行车专用车道和自行车停车场。',
     officialParking: '自行车停车场（东京都公开数据）',
     officialParkingHelp: '正在加载东京都官方数据',
     parkingAddress: '地址',
@@ -410,10 +440,18 @@ export function languageUrl(language: Language): string {
 export function applyStaticTranslations(language: Language): void {
   const copy = messages[language];
   document.documentElement.lang = language === 'zh' ? 'zh-CN' : language;
-  document.title = copy.title;
+  document.title = copy.documentTitle;
   document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute(
     'content',
-    copy.tagline
+    copy.metaDescription
+  );
+  document.querySelector<HTMLMetaElement>('meta[property="og:title"]')?.setAttribute(
+    'content',
+    copy.documentTitle
+  );
+  document.querySelector<HTMLMetaElement>('meta[property="og:description"]')?.setAttribute(
+    'content',
+    copy.metaDescription
   );
 
   document.querySelectorAll<HTMLElement>('[data-i18n]').forEach((element) => {

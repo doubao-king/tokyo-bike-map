@@ -10,6 +10,7 @@ import {
 } from '../i18n';
 import type { ComfortClass, CyclingSegmentFeature, MapOverlay } from '../types';
 import type { CyclingMap } from '../map/createMap';
+import { areaPath } from '../seo';
 
 const comfortableClasses: ComfortClass[] = ['A', 'B'];
 
@@ -44,12 +45,15 @@ function populateAreaButtons(
       currentGroup = area.group;
     }
 
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.dataset.area = area.id;
-    button.textContent = areaText[language][area.id] ?? area.label;
-    button.addEventListener('click', () => cyclingMap.flyTo(area.center, area.zoom));
-    container.append(button);
+    const link = document.createElement('a');
+    link.href = areaPath(area.id);
+    link.dataset.area = area.id;
+    link.textContent = areaText[language][area.id] ?? area.label;
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      cyclingMap.flyTo(area.center, area.zoom);
+    });
+    container.append(link);
   });
 }
 

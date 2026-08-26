@@ -1,5 +1,7 @@
 /// <reference types="@cloudflare/workers-types" />
 
+import { areaSeo, areaTargetFromPath, canonicalOrigin, homeSeo } from '../src/seo';
+
 interface Env {
   ASSETS: Fetcher;
   STATS_DB: D1Database;
@@ -62,7 +64,13 @@ function createNonce(): string {
   return btoa(String.fromCharCode(...bytes));
 }
 
-function prepareMapHtml(response: Response): Response {
+interface MapSeo {
+  canonicalUrl: string;
+  description: string;
+  title: string;
+}
+
+function prepareMapHtml(response: Response, seo: MapSeo): Response {
   const nonce = createNonce();
   const headers = new Headers(response.headers);
   headers.set(
@@ -90,6 +98,36 @@ function prepareMapHtml(response: Response): Response {
   });
 
   return new HTMLRewriter()
+    .on('title', {
+      element(element) {
+        element.setInnerContent(seo.title);
+      }
+    })
+    .on('meta[name="description"]', {
+      element(element) {
+        element.setAttribute('content', seo.description);
+      }
+    })
+    .on('meta[property="og:title"]', {
+      element(element) {
+        element.setAttribute('content', seo.title);
+      }
+    })
+    .on('meta[property="og:description"]', {
+      element(element) {
+        element.setAttribute('content', seo.description);
+      }
+    })
+    .on('meta[property="og:url"]', {
+      element(element) {
+        element.setAttribute('content', seo.canonicalUrl);
+      }
+    })
+    .on('link[rel="canonical"]', {
+      element(element) {
+        element.setAttribute('href', seo.canonicalUrl);
+      }
+    })
     .on('script', {
       element(element) {
         element.setAttribute('nonce', nonce);
@@ -101,6 +139,11 @@ function prepareMapHtml(response: Response): Response {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.protocol === 'https:' && url.hostname === 'manymao.com') {
+      const destination = new URL(`${url.pathname}${url.search}`, canonicalOrigin);
+      return Response.redirect(destination.href, 301);
+    }
 
     if (url.pathname === '/api/views') {
       try {
@@ -122,13 +165,17 @@ export default {
       }
     }
 
-    const assetResponse = await env.ASSETS.fetch(request);
+    const area = areaTargetFromPath(url.pathname);
+    const assetRequest = area
+      ? new Request(new URL('/', request.url), request)
+      : request;
+    const assetResponse = await env.ASSETS.fetch(assetRequest);
     if (
       request.method === 'GET' &&
-      (url.pathname === '/' || url.pathname === '/index.html') &&
+      (url.pathname === '/' || url.pathname === '/index.html' || area) &&
       assetResponse.headers.get('Content-Type')?.includes('text/html')
     ) {
-      return prepareMapHtml(assetResponse);
+      return prepareMapHtml(assetResponse, area ? areaSeo(area) : homeSeo);
     }
     return assetResponse;
   }

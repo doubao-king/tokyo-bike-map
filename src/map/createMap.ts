@@ -11,6 +11,7 @@ import type {
 } from '../types';
 import { createParkingMapLinks } from './parkingLinks';
 import { getTileConfig } from './tileConfig';
+import { areaTargetFromPath } from '../seo';
 
 export interface CyclingMap {
   flyTo(center: [number, number], zoom: number): void;
@@ -41,6 +42,7 @@ export function createCyclingMap(
   const requestedLatitude = Number(urlParams.get('lat'));
   const requestedLongitude = Number(urlParams.get('lng'));
   const requestedZoom = Number(urlParams.get('z'));
+  const requestedArea = areaTargetFromPath(window.location.pathname);
   const hasRequestedView =
     Number.isFinite(requestedLatitude) &&
     Number.isFinite(requestedLongitude) &&
@@ -53,8 +55,14 @@ export function createCyclingMap(
     requestedZoom <= 19;
   const initialCenter = hasRequestedView
     ? ([requestedLatitude, requestedLongitude] as [number, number])
+    : requestedArea
+    ? requestedArea.center
     : tokyoInitialView.center;
-  const initialZoom = hasRequestedView ? requestedZoom : tokyoInitialView.zoom;
+  const initialZoom = hasRequestedView
+    ? requestedZoom
+    : requestedArea
+    ? requestedArea.zoom
+    : tokyoInitialView.zoom;
   const map = L.map(mapElementId, { zoomControl: true, preferCanvas: true }).setView(
     initialCenter,
     initialZoom

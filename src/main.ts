@@ -5,11 +5,14 @@ import { loadParking } from './data/loadParking';
 import { loadSegments } from './data/loadSegments';
 import {
   applyStaticTranslations,
+  areaText,
   getLanguage,
   localeByLanguage,
+  messages,
   rememberLanguage
 } from './i18n';
 import { createCyclingMap } from './map/createMap';
+import { areaTargetFromPath } from './seo';
 import type { MapOverlay } from './types';
 import { initializeAds } from './ui/ads';
 import {
@@ -25,6 +28,30 @@ import { initializeViewCounter } from './ui/viewCounter';
 const language = getLanguage();
 rememberLanguage(language);
 applyStaticTranslations(language);
+
+const initialArea = areaTargetFromPath(window.location.pathname);
+if (initialArea) {
+  const copy = messages[language];
+  const areaLabel = areaText[language][initialArea.id] ?? initialArea.label;
+  const replaceArea = (template: string): string => template.replace('{area}', areaLabel);
+  const title = replaceArea(copy.areaPageTitle);
+  const description = replaceArea(copy.areaMetaDescription);
+  document.title = replaceArea(copy.areaDocumentTitle);
+  document.querySelector<HTMLHeadingElement>('h1[data-i18n="title"]')!.textContent = title;
+  document.querySelector<HTMLElement>('[data-i18n="tagline"]')!.textContent = copy.areaPageTagline;
+  document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute(
+    'content',
+    description
+  );
+  document.querySelector<HTMLMetaElement>('meta[property="og:title"]')?.setAttribute(
+    'content',
+    document.title
+  );
+  document.querySelector<HTMLMetaElement>('meta[property="og:description"]')?.setAttribute(
+    'content',
+    description
+  );
+}
 
 const detailPanel = document.getElementById('detailPanel');
 const visibleCount = document.getElementById('visibleCount');

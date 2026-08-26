@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tokyo-bike-map.manymao.com/sitemap.xml
