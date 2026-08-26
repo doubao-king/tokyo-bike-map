@@ -16,19 +16,17 @@
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-tools">
-          <div class="eyebrow" data-i18n="eyebrow">東京都内の自転車通行環境</div>
-          <label class="language-control">
-            <span class="visually-hidden" data-i18n="language">表示言語</span>
-            <select id="languageSelect" aria-label="表示言語" data-i18n-aria="language">
-              <option value="ja">日本語</option>
-              <option value="en">English</option>
-              <option value="zh">中文</option>
-            </select>
-          </label>
-        </div>
+        <div class="eyebrow" data-i18n="eyebrow">東京都内の自転車通行環境</div>
         <h1 data-i18n="title">東京じてんしゃマップ</h1>
         <p class="tagline" data-i18n="tagline">車が怖い人のための自転車マップ。</p>
+        <div class="language-block">
+          <span class="language-label" data-i18n="language">表示言語</span>
+          <div class="language-switcher" role="group" aria-label="表示言語" data-i18n-aria="language">
+            <button type="button" data-language="ja" aria-pressed="true">日本語</button>
+            <button type="button" data-language="en" aria-pressed="false">English</button>
+            <button type="button" data-language="zh" aria-pressed="false">中文</button>
+          </div>
+        </div>
       </div>
 
       <section class="panel">
@@ -44,8 +42,14 @@
 
       <section class="panel">
         <h2 data-i18n="layersHeading">地図レイヤー</h2>
-        <label class="filter-row layer-row"><input type="checkbox" data-map-layer="slope"><span class="layer-swatch slope-swatch" aria-hidden="true"></span><span><b data-i18n="slope">坂・地形</b><small data-i18n="slopeHelp">濃いほど急な地形</small></span></label>
         <label class="filter-row layer-row"><input type="checkbox" data-map-layer="parking"><span class="layer-swatch parking-swatch" aria-hidden="true">P</span><span><b data-i18n="officialParking">駐輪場（公式データ）</b><small data-i18n="officialParkingHelp">自治体が公開する登録施設</small></span><span class="filter-count" id="parkingCount">—</span></label>
+      </section>
+
+      <section class="panel report-panel">
+        <h2 data-i18n="reportHeading">地図の情報が違いますか？</h2>
+        <p data-i18n="reportBody">現在の表示位置を付けて、修正情報を送れます。</p>
+        <a id="reportLink" class="report-button" href="https://github.com/doubao-king/tokyo-bike-map/issues/new" target="_blank" rel="noreferrer" data-i18n="reportAction">地図情報を報告</a>
+        <small data-i18n="reportNote">現在はGitHub Issueを使用します。投稿にはGitHubアカウントが必要です。</small>
       </section>
 
       <section class="panel ad-panel" id="adPanel" aria-label="広告" hidden>

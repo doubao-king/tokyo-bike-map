@@ -85,6 +85,17 @@ export function renderParkingCount(count: number, language: Language): void {
   if (target) target.textContent = new Intl.NumberFormat(localeByLanguage[language]).format(count);
 }
 
+export function createReportIssueUrl(mapUrl: string, language: Language): string {
+  const copy = messages[language];
+  const issueUrl = new URL('https://github.com/doubao-king/tokyo-bike-map/issues/new');
+  issueUrl.searchParams.set('title', copy.reportIssueTitle);
+  issueUrl.searchParams.set(
+    'body',
+    `${copy.reportIssueIntro}\n\n${copy.reportMapLink}: ${mapUrl}`
+  );
+  return issueUrl.href;
+}
+
 export function bindControls(cyclingMap: CyclingMap, language: Language): void {
   const copy = messages[language];
   document.querySelectorAll<HTMLInputElement>('[data-class]').forEach((input) => {
@@ -120,15 +131,24 @@ export function bindControls(cyclingMap: CyclingMap, language: Language): void {
     });
   });
 
-  const languageSelect = document.getElementById('languageSelect') as HTMLSelectElement | null;
-  if (languageSelect) {
-    languageSelect.value = language;
-    languageSelect.addEventListener('change', () => {
-      const nextLanguage = languageSelect.value as Language;
+  document.querySelectorAll<HTMLButtonElement>('[data-language]').forEach((button) => {
+    const buttonLanguage = button.dataset.language as Language;
+    button.setAttribute('aria-pressed', String(buttonLanguage === language));
+    button.addEventListener('click', () => {
+      const nextLanguage = button.dataset.language as Language;
+      if (nextLanguage === language) return;
       rememberLanguage(nextLanguage);
       window.location.assign(languageUrl(nextLanguage));
     });
-  }
+  });
+
+  const reportLink = document.getElementById('reportLink') as HTMLAnchorElement | null;
+  const updateReportLink = (): void => {
+    if (reportLink) reportLink.href = createReportIssueUrl(cyclingMap.getShareUrl(), language);
+  };
+  reportLink?.addEventListener('pointerenter', updateReportLink);
+  reportLink?.addEventListener('focus', updateReportLink);
+  reportLink?.addEventListener('click', updateReportLink);
 
   document.getElementById('resetBtn')?.addEventListener('click', () => {
     cyclingMap.resetView();

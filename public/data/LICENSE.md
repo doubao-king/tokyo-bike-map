@@ -27,15 +27,6 @@ link to its official dataset page and names the publishing municipality.
 - Adaptations: source tables are decoded, normalized, joined where necessary,
   filtered to records with valid coordinates, and converted to GeoJSON.
 
-## Terrain-slope tiles
-
-The optional terrain overlay uses the Geospatial Information Authority of Japan
-(GSI) slope-map tiles. The tiles are requested directly from GSI and are not
-included in this repository.
-
-- Publisher: Geospatial Information Authority of Japan
-- Tile information and terms: https://maps.gsi.go.jp/development/ichiran.html
-
 ## Archived Tokyo Metropolitan Government data
 
 The project archive at `data/processed/official-reference.geojson` is a conversion

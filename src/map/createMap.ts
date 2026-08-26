@@ -72,7 +72,6 @@ export function createCyclingMap(
 
   map.createPane('comfortCasingPane');
   map.createPane('comfortLinePane');
-  map.createPane('slopePane');
   map.createPane('parkingPane');
   map.createPane('locationPane');
   const comfortCasingPane = map.getPane('comfortCasingPane');
@@ -84,14 +83,8 @@ export function createCyclingMap(
   if (comfortLinePane) {
     comfortLinePane.style.zIndex = '410';
   }
-  const slopePane = map.getPane('slopePane');
   const parkingPane = map.getPane('parkingPane');
   const locationPane = map.getPane('locationPane');
-  if (slopePane) {
-    slopePane.style.zIndex = '240';
-    slopePane.style.mixBlendMode = 'multiply';
-    slopePane.style.pointerEvents = 'none';
-  }
   if (parkingPane) parkingPane.style.zIndex = '420';
   if (locationPane) locationPane.style.zIndex = '430';
 
@@ -100,20 +93,6 @@ export function createCyclingMap(
     maxZoom: tileConfig.maxZoom,
     attribution: tileConfig.attribution
   }).addTo(map);
-  const slopeLayer = L.tileLayer(
-    'https://cyberjapandata.gsi.go.jp/xyz/slopemap/{z}/{x}/{y}.png',
-    {
-      attribution:
-        '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank" rel="noreferrer">GSI Maps</a>',
-      maxNativeZoom: 15,
-      maxZoom: tileConfig.maxZoom,
-      minZoom: 3,
-      opacity: 0.58,
-      pane: 'slopePane'
-    }
-  );
-  if (activeOverlays.has('slope')) slopeLayer.addTo(map);
-
   function escapeHtml(value: string): string {
     const element = document.createElement('span');
     element.textContent = value;
@@ -312,7 +291,7 @@ export function createCyclingMap(
   }
 
   function setOverlayVisibility(overlay: MapOverlay, visible: boolean): void {
-    const layer = overlay === 'slope' ? slopeLayer : parkingLayer;
+    const layer = parkingLayer;
     if (visible) {
       activeOverlays.add(overlay);
       if (!map.hasLayer(layer)) layer.addTo(map);

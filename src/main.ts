@@ -29,7 +29,7 @@ if (!detailPanel || !visibleCount) {
 }
 
 const searchParams = new URLSearchParams(window.location.search);
-const supportedOverlays: MapOverlay[] = ['parking', 'slope'];
+const supportedOverlays: MapOverlay[] = ['parking'];
 const initialOverlays = new Set(
   (searchParams.get('layers') ?? '')
     .split(',')

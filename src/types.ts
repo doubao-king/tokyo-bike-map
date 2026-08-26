@@ -2,7 +2,7 @@ import type { Feature, FeatureCollection, LineString, MultiLineString, Point } f
 
 export type ComfortClass = 'A' | 'B' | 'C' | 'D';
 
-export type MapOverlay = 'parking' | 'slope';
+export type MapOverlay = 'parking';
 
 export type SegmentStatus = 'built' | 'planned' | 'under_construction' | 'unknown';
 

@@ -44,10 +44,8 @@ export function renderSourceRegistry(
   const referenceSources = sources.filter(
     (source) =>
       source.map_role !== 'comfort_geometry_and_tag_inference' &&
-      source.map_role !== 'official_bicycle_parking' &&
-      source.map_role !== 'terrain_overlay'
+      source.map_role !== 'official_bicycle_parking'
   );
-  const terrainSources = sources.filter((source) => source.map_role === 'terrain_overlay');
 
   const renderGroup = (title: string, entries: RegisteredSource[]): void => {
     const heading = document.createElement('h3');
@@ -76,7 +74,6 @@ export function renderSourceRegistry(
   };
 
   renderGroup(copy.sourceCurrent, renderedSources);
-  if (terrainSources.length > 0) renderGroup(copy.slope, terrainSources);
   if (parkingSources.length > 0) renderGroup(copy.sourceParking, parkingSources);
   renderGroup(copy.sourceReferences, referenceSources);
 

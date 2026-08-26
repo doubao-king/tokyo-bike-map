@@ -39,13 +39,18 @@ interface Messages {
   parkingSource: string;
   parkingSpaces: string;
   privacy: string;
+  reportAction: string;
+  reportBody: string;
+  reportHeading: string;
+  reportIssueIntro: string;
+  reportIssueTitle: string;
+  reportMapLink: string;
+  reportNote: string;
   reset: string;
   segmentSource: string;
   segmentsVisible: string;
   share: string;
   siteInfo: string;
-  slope: string;
-  slopeHelp: string;
   sourceChecked: string;
   sourceCurrent: string;
   sourceLicense: string;
@@ -97,13 +102,18 @@ export const messages: Record<Language, Messages> = {
     parkingSource: '公式データを見る',
     parkingSpaces: '台',
     privacy: 'プライバシー',
+    reportAction: '地図情報を報告',
+    reportBody: '現在の表示位置を付けて、修正情報を送れます。',
+    reportHeading: '地図の情報が違いますか？',
+    reportIssueIntro: 'この場所について、地図と現地の違いを記入してください。\n\n現地で確認した内容:\n\n確認日:\n\n参考資料・写真のURL:\n\n※氏名、住所、顔、車両番号などの個人情報は投稿しないでください。',
+    reportIssueTitle: '地図情報の修正',
+    reportMapLink: '地図',
+    reportNote: '現在はGitHub Issueを使用します。投稿にはGitHubアカウントが必要です。',
     reset: '東京本土',
     segmentSource: '出典',
     segmentsVisible: '区間を表示中',
     share: '共有',
     siteInfo: 'サイト情報',
-    slope: '坂・地形',
-    slopeHelp: '濃いほど急な地形',
     sourceChecked: '出典確認日',
     sourceCurrent: '現在の安心度表示に使用',
     sourceLicense: 'データライセンスを見る',
@@ -153,13 +163,18 @@ export const messages: Record<Language, Messages> = {
     parkingSource: 'View official data',
     parkingSpaces: 'spaces',
     privacy: 'Privacy',
+    reportAction: 'Report map information',
+    reportBody: 'Send a correction with the current map position attached.',
+    reportHeading: 'Does the map look wrong?',
+    reportIssueIntro: 'Please describe how the map differs from conditions at this location.\n\nWhat you observed:\n\nDate observed:\n\nOfficial source or photo URL:\n\nPlease do not post personal information such as names, addresses, faces or vehicle registration numbers.',
+    reportIssueTitle: 'Map information correction',
+    reportMapLink: 'Map',
+    reportNote: 'This currently uses GitHub Issues. A GitHub account is required to post.',
     reset: 'Tokyo mainland',
     segmentSource: 'Source',
     segmentsVisible: 'segments shown',
     share: 'Share',
     siteInfo: 'Site information',
-    slope: 'Slopes and terrain',
-    slopeHelp: 'Darker terrain is steeper',
     sourceChecked: 'Sources checked',
     sourceCurrent: 'Used for the current comfort display',
     sourceLicense: 'View data licenses',
@@ -209,13 +224,18 @@ export const messages: Record<Language, Messages> = {
     parkingSource: '查看官方数据',
     parkingSpaces: '辆',
     privacy: '隐私政策',
+    reportAction: '报告地图信息',
+    reportBody: '可附上当前地图位置发送修正信息。',
+    reportHeading: '地图信息有误吗？',
+    reportIssueIntro: '请说明此位置的地图显示与现场状况有何不同。\n\n现场确认内容：\n\n确认日期：\n\n官方资料或照片链接：\n\n请勿发布姓名、地址、人脸或车辆号码等个人信息。',
+    reportIssueTitle: '地图信息修正',
+    reportMapLink: '地图',
+    reportNote: '目前使用 GitHub Issues，提交时需要 GitHub 账号。',
     reset: '东京本土',
     segmentSource: '来源',
     segmentsVisible: '个路段已显示',
     share: '分享',
     siteInfo: '网站信息',
-    slope: '坡度与地形',
-    slopeHelp: '颜色越深，地形越陡',
     sourceChecked: '来源确认日期',
     sourceCurrent: '用于当前舒适度显示',
     sourceLicense: '查看数据许可',
