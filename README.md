@@ -14,7 +14,7 @@
 - 日本語・英語・中国語の表示切り替え
 - ブラウザの許可後に現在地を表示
 - 自治体の公式公開データによる駐輪場レイヤー
-- 現在の地図位置を入力済みにしたGitHub Issueの修正報告
+- 現在の地図位置を添付する、アカウント不要の非公開修正フォーム
 - typed GeoJSONデータを差し替えるだけで実データ化できる構成
 - 区間ごとの出典・確認日・整備状況の表示
 - モバイル対応
@@ -165,12 +165,18 @@ npm run deploy:cloudflare
 
 ### 閲覧カウンター
 
-`/api/views` だけをCloudflare Workerで処理し、D1の `page_views` テーブルへ累計回数を保存します。ブラウザ側はセッションストレージを使い、同じタブでの再読み込みを重複計上しません。個人を識別する値はD1へ保存しません。
+`/api/views` をCloudflare Workerで処理し、D1の `page_views` テーブルへ累計回数を保存します。ブラウザ側はセッションストレージを使い、同じタブでの再読み込みを重複計上しません。個人を識別する値はD1へ保存しません。
 
 ```bash
 npm run db:migrate:local
 npm run dev:cloudflare
 ```
+
+### 修正報告
+
+`/api/feedback` は、報告区分、本文、任意の確認日、表示言語、地図URLと中心座標だけをD1の `feedback_reports` テーブルへ保存します。氏名、連絡先、アカウント、IPアドレス、ブラウザ情報は報告テーブルに保存しません。送信は同一サイトからのJSONに限定し、入力検証、ハニーポット、Cloudflare Workers Rate Limitingで保護します。報告を公開するAPIはありません。
+
+報告はCloudflare DashboardのD1画面で確認できます。状態は `pending`、`reviewing`、`resolved`、`rejected` のいずれかに更新します。
 
 ### 広告の有効化
 
@@ -178,7 +184,7 @@ npm run dev:cloudflare
 
 ## 静的構成
 
-地図データや検索用のバックエンドはありません。OSMと行政データの取得・正規化は開発時に実行し、Vite buildでは生成済みGeoJSONをそのまま配信します。ブラウザ側はLeafletで静的ファイルを描画し、閲覧カウンターだけがCloudflare WorkerとD1を使用します。
+地図データや検索用のバックエンドはありません。OSMと行政データの取得・正規化は開発時に実行し、Vite buildでは生成済みGeoJSONをそのまま配信します。ブラウザ側はLeafletで静的ファイルを描画し、閲覧カウンターと非公開の修正報告だけがCloudflare WorkerとD1を使用します。
 
 ## ロードマップ
 

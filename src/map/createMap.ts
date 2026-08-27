@@ -214,8 +214,8 @@ export function createCyclingMap(
     applySelectedStyle();
   }
 
-  function syncUrl(): void {
-    if (!dataReady) {
+  function syncUrl(force = false): void {
+    if (!dataReady && !force) {
       return;
     }
 
@@ -361,12 +361,12 @@ export function createCyclingMap(
     });
     applySelectedStyle();
   });
-  map.on('moveend', syncUrl);
+  map.on('moveend', () => syncUrl());
 
   return {
     flyTo: (center, zoom) => map.flyTo(center, zoom, { duration: 0.7 }),
     getShareUrl: () => {
-      syncUrl();
+      syncUrl(true);
       return window.location.href;
     },
     locateUser,

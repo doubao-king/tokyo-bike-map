@@ -1,9 +1,15 @@
 /// <reference types="@cloudflare/workers-types" />
 
 import { areaSeo, areaTargetFromPath, canonicalOrigin, homeSeo } from '../src/seo';
+import {
+  isFeedbackHoneypotFilled,
+  validateFeedbackSubmission,
+  type ValidatedFeedback
+} from '../src/feedback';
 
 interface Env {
   ASSETS: Fetcher;
+  FEEDBACK_RATE_LIMITER: RateLimit;
   STATS_DB: D1Database;
 }
 
@@ -12,6 +18,7 @@ interface ViewCountRow {
 }
 
 const counterKey = 'map';
+const maximumFeedbackBodyBytes = 8_192;
 
 function json(count: number, status = 200): Response {
   return Response.json(
@@ -25,6 +32,17 @@ function json(count: number, status = 200): Response {
       }
     }
   );
+}
+
+function jsonResponse(body: object, status = 200): Response {
+  return Response.json(body, {
+    status,
+    headers: {
+      'Cache-Control': 'no-store',
+      'Content-Type': 'application/json; charset=utf-8',
+      'X-Content-Type-Options': 'nosniff'
+    }
+  });
 }
 
 function isSameOriginPost(request: Request): boolean {
@@ -57,6 +75,76 @@ async function incrementViewCount(database: D1Database): Promise<number> {
 
   if (!row) throw new Error('View counter update returned no result.');
   return row.view_count;
+}
+
+async function storeFeedback(database: D1Database, feedback: ValidatedFeedback): Promise<string> {
+  const id = crypto.randomUUID();
+  await database
+    .prepare(
+      `INSERT INTO feedback_reports (
+        id, category, details, observed_on, map_url, latitude, longitude, zoom, language
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    )
+    .bind(
+      id,
+      feedback.category,
+      feedback.details,
+      feedback.observedOn,
+      feedback.mapUrl,
+      feedback.latitude,
+      feedback.longitude,
+      feedback.zoom,
+      feedback.language
+    )
+    .run();
+  return id;
+}
+
+async function handleFeedback(request: Request, env: Env): Promise<Response> {
+  if (request.method !== 'POST') {
+    return new Response('Method Not Allowed', {
+      status: 405,
+      headers: { Allow: 'POST', 'Cache-Control': 'no-store' }
+    });
+  }
+  if (!isSameOriginPost(request)) return jsonResponse({ error: 'forbidden' }, 403);
+  if (!request.headers.get('Content-Type')?.toLowerCase().startsWith('application/json')) {
+    return jsonResponse({ error: 'invalid_content_type' }, 415);
+  }
+
+  const declaredLength = Number(request.headers.get('Content-Length'));
+  if (Number.isFinite(declaredLength) && declaredLength > maximumFeedbackBodyBytes) {
+    return jsonResponse({ error: 'body_too_large' }, 413);
+  }
+
+  const bodyText = await request.text();
+  if (new TextEncoder().encode(bodyText).byteLength > maximumFeedbackBodyBytes) {
+    return jsonResponse({ error: 'body_too_large' }, 413);
+  }
+
+  let body: unknown;
+  try {
+    body = JSON.parse(bodyText);
+  } catch {
+    return jsonResponse({ error: 'invalid_json' }, 400);
+  }
+
+  const rateLimitKey = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+  const rateLimit = await env.FEEDBACK_RATE_LIMITER.limit({ key: rateLimitKey });
+  if (!rateLimit.success) return jsonResponse({ error: 'rate_limited' }, 429);
+
+  // Filled only by automated form scanners. Return an ordinary success without storing it.
+  if (isFeedbackHoneypotFilled(body)) return jsonResponse({ ok: true });
+
+  const requestOrigin = new URL(request.url).origin;
+  const validation = validateFeedbackSubmission(body, requestOrigin);
+  if (!validation.ok) {
+    console.warn('Feedback validation rejected', validation.error);
+    return jsonResponse({ error: 'invalid_feedback' }, 400);
+  }
+
+  const id = await storeFeedback(env.STATS_DB, validation.value);
+  return jsonResponse({ id, ok: true }, 201);
 }
 
 function createNonce(): string {
@@ -162,6 +250,15 @@ export default {
           status: 503,
           headers: { 'Cache-Control': 'no-store', 'Content-Type': 'application/json; charset=utf-8' }
         });
+      }
+    }
+
+    if (url.pathname === '/api/feedback') {
+      try {
+        return await handleFeedback(request, env);
+      } catch (error) {
+        console.error('Feedback submission failed', error);
+        return jsonResponse({ error: 'feedback_unavailable' }, 503);
       }
     }
 

@@ -57,8 +57,8 @@
       <section class="panel report-panel">
         <h2 data-i18n="reportHeading">地図の情報が違いますか？</h2>
         <p data-i18n="reportBody">現在の表示位置を付けて、修正情報を送れます。</p>
-        <a id="reportLink" class="report-button" href="https://github.com/doubao-king/tokyo-bike-map/issues/new" target="_blank" rel="noreferrer" data-i18n="reportAction">地図情報を報告</a>
-        <small data-i18n="reportNote">現在はGitHub Issueを使用します。投稿にはGitHubアカウントが必要です。</small>
+        <button id="reportButton" class="report-button" type="button" data-i18n="reportAction">地図情報を報告</button>
+        <small data-i18n="reportNote">アカウント不要で送信できます。内容は確認のため非公開で保存します。</small>
       </section>
 
       <section class="panel ad-panel" id="adPanel" aria-label="広告" hidden>
@@ -118,6 +118,66 @@
       </div>
     </main>
   </div>
+
+  <dialog id="feedbackDialog" class="feedback-dialog" aria-labelledby="feedbackDialogTitle">
+    <div class="feedback-dialog-inner">
+      <button id="feedbackClose" class="feedback-close" type="button" aria-label="閉じる" title="閉じる" data-i18n-aria="feedbackClose" data-i18n-title="feedbackClose">&times;</button>
+      <div class="feedback-dialog-heading">
+        <h2 id="feedbackDialogTitle" data-i18n="feedbackDialogTitle">地図情報を報告</h2>
+        <p data-i18n="feedbackPrivacyNote">アカウントや連絡先は不要です。報告は確認のため非公開で保存します。</p>
+      </div>
+
+      <form id="feedbackForm" class="feedback-form" novalidate>
+        <label class="feedback-field" for="feedbackCategory">
+          <span data-i18n="feedbackCategory">報告の種類</span>
+          <select id="feedbackCategory" name="category" required>
+            <option value="" data-i18n="feedbackCategoryPlaceholder">選んでください</option>
+            <option value="road_change" data-i18n="feedbackCategoryRoad">道路・自転車通行空間が変わった</option>
+            <option value="parking_change" data-i18n="feedbackCategoryParking">駐輪場が閉鎖・移転した</option>
+            <option value="missing_information" data-i18n="feedbackCategoryMissing">地図に情報がない</option>
+            <option value="difficult_location" data-i18n="feedbackCategoryDifficult">走りにくい・危険に感じる場所</option>
+            <option value="other" data-i18n="feedbackCategoryOther">その他</option>
+          </select>
+        </label>
+
+        <label class="feedback-field" for="feedbackDate">
+          <span><span data-i18n="feedbackDate">確認した日</span> <small data-i18n="feedbackOptional">任意</small></span>
+          <input id="feedbackDate" name="observedOn" type="date" />
+        </label>
+
+        <label class="feedback-field" for="feedbackDetails">
+          <span data-i18n="feedbackDetails">現地ではどうなっていますか？</span>
+          <textarea id="feedbackDetails" name="details" rows="6" minlength="10" maxlength="1500" required aria-describedby="feedbackDetailsHelp feedbackDetailsCount"></textarea>
+          <span class="feedback-field-meta"><small id="feedbackDetailsHelp" data-i18n="feedbackDetailsHelp">地図の表示と違う点を、分かる範囲で具体的に書いてください。</small><output id="feedbackDetailsCount" for="feedbackDetails">0 / 1500</output></span>
+        </label>
+
+        <div class="feedback-location"><span aria-hidden="true">⌖</span><span data-i18n="feedbackLocationAttached">現在の地図位置を自動で添付します</span></div>
+
+        <label class="feedback-confirm" for="feedbackConfirmation">
+          <input id="feedbackConfirmation" name="personalInfoConfirmed" type="checkbox" required />
+          <span data-i18n="feedbackPersonalInfoConfirm">氏名、住所、顔、車両番号などの個人情報を含めていません。</span>
+        </label>
+
+        <div class="feedback-honeypot" aria-hidden="true">
+          <label for="feedbackWebsite">Website</label>
+          <input id="feedbackWebsite" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <p id="feedbackStatus" class="feedback-status" role="status" aria-live="polite"></p>
+        <div class="feedback-actions">
+          <button id="feedbackCancel" class="feedback-secondary" type="button" data-i18n="feedbackCancel">キャンセル</button>
+          <button id="feedbackSubmit" class="feedback-primary" type="submit" data-i18n="feedbackSubmit">送信する</button>
+        </div>
+      </form>
+
+      <div id="feedbackSuccess" class="feedback-success" hidden>
+        <div class="feedback-success-mark" aria-hidden="true">✓</div>
+        <h3 data-i18n="feedbackSuccessTitle">報告を受け付けました</h3>
+        <p data-i18n="feedbackSuccessBody">ありがとうございます。公開資料や地図データと照合して確認します。</p>
+        <button id="feedbackDone" class="feedback-primary" type="button" data-i18n="feedbackDone">閉じる</button>
+      </div>
+    </div>
+  </dialog>
 
   <script type="module" src="/src/main.ts"></script>
 </body>

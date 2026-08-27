@@ -28,6 +28,31 @@ interface Messages {
   detailPrompt: string;
   documentTitle: string;
   eyebrow: string;
+  feedbackCancel: string;
+  feedbackCategory: string;
+  feedbackCategoryDifficult: string;
+  feedbackCategoryMissing: string;
+  feedbackCategoryOther: string;
+  feedbackCategoryParking: string;
+  feedbackCategoryPlaceholder: string;
+  feedbackCategoryRoad: string;
+  feedbackClose: string;
+  feedbackDate: string;
+  feedbackDetails: string;
+  feedbackDetailsHelp: string;
+  feedbackDetailsTooShort: string;
+  feedbackDialogTitle: string;
+  feedbackDone: string;
+  feedbackError: string;
+  feedbackLocationAttached: string;
+  feedbackOptional: string;
+  feedbackPersonalInfoConfirm: string;
+  feedbackPrivacyNote: string;
+  feedbackRateLimited: string;
+  feedbackSending: string;
+  feedbackSubmit: string;
+  feedbackSuccessBody: string;
+  feedbackSuccessTitle: string;
   language: string;
   layersHeading: string;
   loadingFailed: string;
@@ -52,9 +77,6 @@ interface Messages {
   reportAction: string;
   reportBody: string;
   reportHeading: string;
-  reportIssueIntro: string;
-  reportIssueTitle: string;
-  reportMapLink: string;
   reportNote: string;
   reset: string;
   segmentSource: string;
@@ -102,6 +124,31 @@ export const messages: Record<Language, Messages> = {
     detailPrompt: '地図上の色付き区間をタップしてください。',
     documentTitle: '東京の自転車マップ | 走りやすい道・自転車レーン・駐輪場',
     eyebrow: '東京都内の自転車通行環境',
+    feedbackCancel: 'キャンセル',
+    feedbackCategory: '報告の種類',
+    feedbackCategoryDifficult: '走りにくい・危険に感じる場所',
+    feedbackCategoryMissing: '地図に情報がない',
+    feedbackCategoryOther: 'その他',
+    feedbackCategoryParking: '駐輪場が閉鎖・移転した',
+    feedbackCategoryPlaceholder: '選んでください',
+    feedbackCategoryRoad: '道路・自転車通行空間が変わった',
+    feedbackClose: '閉じる',
+    feedbackDate: '確認した日',
+    feedbackDetails: '現地ではどうなっていますか？',
+    feedbackDetailsHelp: '地図の表示と違う点を、分かる範囲で具体的に書いてください。',
+    feedbackDetailsTooShort: '10文字以上で入力してください。',
+    feedbackDialogTitle: '地図情報を報告',
+    feedbackDone: '閉じる',
+    feedbackError: '送信できませんでした。少し時間をおいて、もう一度お試しください。',
+    feedbackLocationAttached: '現在の地図位置を自動で添付します',
+    feedbackOptional: '任意',
+    feedbackPersonalInfoConfirm: '氏名、住所、顔、車両番号などの個人情報を含めていません。',
+    feedbackPrivacyNote: 'アカウントや連絡先は不要です。報告は確認のため非公開で保存します。',
+    feedbackRateLimited: '短時間の送信回数が多すぎます。1分ほど待ってからお試しください。',
+    feedbackSending: '送信中…',
+    feedbackSubmit: '送信する',
+    feedbackSuccessBody: 'ありがとうございます。公開資料や地図データと照合して確認します。',
+    feedbackSuccessTitle: '報告を受け付けました',
     language: '表示言語',
     layersHeading: '地図レイヤー',
     loadingFailed: 'データの読み込みに失敗しました。',
@@ -128,10 +175,7 @@ export const messages: Record<Language, Messages> = {
     reportAction: '地図情報を報告',
     reportBody: '現在の表示位置を付けて、修正情報を送れます。',
     reportHeading: '地図の情報が違いますか？',
-    reportIssueIntro: 'この場所について、地図と現地の違いを記入してください。\n\n現地で確認した内容:\n\n確認日:\n\n参考資料・写真のURL:\n\n※氏名、住所、顔、車両番号などの個人情報は投稿しないでください。',
-    reportIssueTitle: '地図情報の修正',
-    reportMapLink: '地図',
-    reportNote: '現在はGitHub Issueを使用します。投稿にはGitHubアカウントが必要です。',
+    reportNote: 'アカウント不要で送信できます。内容は確認のため非公開で保存します。',
     reset: '東京本土',
     segmentSource: '出典',
     segmentsVisible: '区間を表示中',
@@ -176,6 +220,31 @@ export const messages: Record<Language, Messages> = {
     detailPrompt: 'Select a colored segment on the map.',
     documentTitle: 'Tokyo Bicycle Map | Comfortable roads, bicycle lanes and parking',
     eyebrow: 'Cycling conditions across Tokyo',
+    feedbackCancel: 'Cancel',
+    feedbackCategory: 'Report type',
+    feedbackCategoryDifficult: 'A difficult or dangerous location',
+    feedbackCategoryMissing: 'Information is missing from the map',
+    feedbackCategoryOther: 'Something else',
+    feedbackCategoryParking: 'Bicycle parking has closed or moved',
+    feedbackCategoryPlaceholder: 'Choose one',
+    feedbackCategoryRoad: 'A road or cycling space has changed',
+    feedbackClose: 'Close',
+    feedbackDate: 'Date observed',
+    feedbackDetails: 'What is present on site?',
+    feedbackDetailsHelp: 'Describe how conditions differ from the map, as specifically as you can.',
+    feedbackDetailsTooShort: 'Please enter at least 10 characters.',
+    feedbackDialogTitle: 'Report map information',
+    feedbackDone: 'Close',
+    feedbackError: 'Your report could not be sent. Please wait a moment and try again.',
+    feedbackLocationAttached: 'Your current map position will be attached automatically',
+    feedbackOptional: 'Optional',
+    feedbackPersonalInfoConfirm: 'I have not included names, addresses, faces, vehicle numbers, or other personal information.',
+    feedbackPrivacyNote: 'No account or contact details are needed. Reports are stored privately for review.',
+    feedbackRateLimited: 'Too many reports were sent in a short time. Please wait about a minute and try again.',
+    feedbackSending: 'Sending…',
+    feedbackSubmit: 'Send report',
+    feedbackSuccessBody: 'Thank you. We will check it against public sources and map data.',
+    feedbackSuccessTitle: 'Report received',
     language: 'Language',
     layersHeading: 'Map layers',
     loadingFailed: 'The map data could not be loaded.',
@@ -202,10 +271,7 @@ export const messages: Record<Language, Messages> = {
     reportAction: 'Report map information',
     reportBody: 'Send a correction with the current map position attached.',
     reportHeading: 'Does the map look wrong?',
-    reportIssueIntro: 'Please describe how the map differs from conditions at this location.\n\nWhat you observed:\n\nDate observed:\n\nOfficial source or photo URL:\n\nPlease do not post personal information such as names, addresses, faces or vehicle registration numbers.',
-    reportIssueTitle: 'Map information correction',
-    reportMapLink: 'Map',
-    reportNote: 'This currently uses GitHub Issues. A GitHub account is required to post.',
+    reportNote: 'No account is needed. Reports are stored privately for review.',
     reset: 'Tokyo mainland',
     segmentSource: 'Source',
     segmentsVisible: 'segments shown',
@@ -250,6 +316,31 @@ export const messages: Record<Language, Messages> = {
     detailPrompt: '请选择地图上的彩色路段。',
     documentTitle: '东京自行车地图 | 舒适道路、自行车专用车道与停车场',
     eyebrow: '东京都内自行车通行环境',
+    feedbackCancel: '取消',
+    feedbackCategory: '报告类型',
+    feedbackCategoryDifficult: '骑行困难或感觉危险的地点',
+    feedbackCategoryMissing: '地图缺少信息',
+    feedbackCategoryOther: '其他',
+    feedbackCategoryParking: '自行车停车场已关闭或搬迁',
+    feedbackCategoryPlaceholder: '请选择',
+    feedbackCategoryRoad: '道路或自行车通行空间已发生变化',
+    feedbackClose: '关闭',
+    feedbackDate: '确认日期',
+    feedbackDetails: '现场实际情况如何？',
+    feedbackDetailsHelp: '请尽量具体说明现场情况与地图显示有何不同。',
+    feedbackDetailsTooShort: '请至少输入10个字符。',
+    feedbackDialogTitle: '报告地图信息',
+    feedbackDone: '关闭',
+    feedbackError: '报告发送失败，请稍后再试。',
+    feedbackLocationAttached: '将自动附上当前地图位置',
+    feedbackOptional: '选填',
+    feedbackPersonalInfoConfirm: '我没有填写姓名、地址、人脸、车辆号码或其他个人信息。',
+    feedbackPrivacyNote: '无需账号或联系方式。报告将以非公开方式保存，供核查使用。',
+    feedbackRateLimited: '短时间内发送次数过多，请等待约一分钟后重试。',
+    feedbackSending: '正在发送…',
+    feedbackSubmit: '发送报告',
+    feedbackSuccessBody: '谢谢。我们会与公开资料和地图数据进行核对。',
+    feedbackSuccessTitle: '已收到报告',
     language: '显示语言',
     layersHeading: '地图图层',
     loadingFailed: '地图数据加载失败。',
@@ -276,10 +367,7 @@ export const messages: Record<Language, Messages> = {
     reportAction: '报告地图信息',
     reportBody: '可附上当前地图位置发送修正信息。',
     reportHeading: '地图信息有误吗？',
-    reportIssueIntro: '请说明此位置的地图显示与现场状况有何不同。\n\n现场确认内容：\n\n确认日期：\n\n官方资料或照片链接：\n\n请勿发布姓名、地址、人脸或车辆号码等个人信息。',
-    reportIssueTitle: '地图信息修正',
-    reportMapLink: '地图',
-    reportNote: '目前使用 GitHub Issues，提交时需要 GitHub 账号。',
+    reportNote: '无需账号。报告将以非公开方式保存，供核查使用。',
     reset: '东京本土',
     segmentSource: '来源',
     segmentsVisible: '个路段已显示',
