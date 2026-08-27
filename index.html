@@ -54,11 +54,11 @@
         <label class="filter-row layer-row"><input type="checkbox" data-map-layer="parking"><span class="layer-swatch parking-swatch" aria-hidden="true">P</span><span><b data-i18n="officialParking">駐輪場（東京都公開データ）</b><small id="parkingCoverage" data-i18n="officialParkingHelp">東京都の公式データを読み込み中</small></span><span class="filter-count" id="parkingCount">—</span></label>
       </section>
 
-      <section class="panel report-panel">
-        <h2 data-i18n="reportHeading">地図の情報が違いますか？</h2>
-        <p data-i18n="reportBody">色付きの道や駐輪場を選ぶと、その対象に直接報告できます。</p>
+      <section class="panel detail-panel" id="detailPanel">
+        <h2 data-i18n="detailHeading">区間情報</h2>
+        <p class="muted" data-i18n="detailPrompt">地図上の色付き区間をタップしてください。</p>
         <button id="reportButton" class="report-button" type="button" data-i18n="reportAction">地図にない情報を報告</button>
-        <small data-i18n="reportNote">アカウント不要で送信できます。内容は確認のため非公開で保存します。</small>
+        <small class="detail-report-note" data-i18n="reportNote">アカウント不要で送信できます。内容は確認のため非公開で保存します。</small>
       </section>
 
       <section class="panel ad-panel" id="adPanel" aria-label="広告" hidden>
@@ -69,11 +69,6 @@
       <section class="panel area-panel">
         <h2 data-i18n="areaHeading">エリアから見る</h2>
         <div class="area-grid" id="areaButtons"></div>
-      </section>
-
-      <section class="panel detail-panel" id="detailPanel">
-        <h2 data-i18n="detailHeading">区間情報</h2>
-        <p class="muted" data-i18n="detailPrompt">地図上の色付き区間をタップしてください。</p>
       </section>
 
       <section class="panel note">

@@ -79,8 +79,6 @@ interface Messages {
   parkingReportAction: string;
   privacy: string;
   reportAction: string;
-  reportBody: string;
-  reportHeading: string;
   reportNote: string;
   reset: string;
   segmentSource: string;
@@ -182,8 +180,6 @@ export const messages: Record<Language, Messages> = {
     parkingReportAction: 'この駐輪場の情報を報告',
     privacy: 'プライバシー',
     reportAction: '地図にない情報を報告',
-    reportBody: '色付きの道や駐輪場を選ぶと、その対象に直接報告できます。',
-    reportHeading: '地図の情報が違いますか？',
     reportNote: 'アカウント不要で送信できます。内容は確認のため非公開で保存します。',
     reset: '東京本土',
     segmentSource: '出典',
@@ -283,8 +279,6 @@ export const messages: Record<Language, Messages> = {
     parkingReportAction: 'Report this bicycle parking facility',
     privacy: 'Privacy',
     reportAction: 'Report missing map information',
-    reportBody: 'Select a colored road or bicycle-parking marker to report that exact item.',
-    reportHeading: 'Does the map look wrong?',
     reportNote: 'No account is needed. Reports are stored privately for review.',
     reset: 'Tokyo mainland',
     segmentSource: 'Source',
@@ -384,8 +378,6 @@ export const messages: Record<Language, Messages> = {
     parkingReportAction: '报告此自行车停车场',
     privacy: '隐私政策',
     reportAction: '报告地图缺少的信息',
-    reportBody: '选择彩色道路或自行车停车场标记，即可直接报告该对象。',
-    reportHeading: '地图信息有误吗？',
     reportNote: '无需账号。报告将以非公开方式保存，供核查使用。',
     reset: '东京本土',
     segmentSource: '来源',
