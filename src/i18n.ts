@@ -53,6 +53,9 @@ interface Messages {
   feedbackSubmit: string;
   feedbackSuccessBody: string;
   feedbackSuccessTitle: string;
+  feedbackSubjectLocation: string;
+  feedbackSubjectParking: string;
+  feedbackSubjectSegment: string;
   language: string;
   layersHeading: string;
   loadingFailed: string;
@@ -73,6 +76,7 @@ interface Messages {
   parkingSource: string;
   parkingSpaces: string;
   parkingStatusCheck: string;
+  parkingReportAction: string;
   privacy: string;
   reportAction: string;
   reportBody: string;
@@ -80,6 +84,7 @@ interface Messages {
   reportNote: string;
   reset: string;
   segmentSource: string;
+  segmentReportAction: string;
   segmentsVisible: string;
   share: string;
   siteInfo: string;
@@ -149,6 +154,9 @@ export const messages: Record<Language, Messages> = {
     feedbackSubmit: '送信する',
     feedbackSuccessBody: 'ありがとうございます。公開資料や地図データと照合して確認します。',
     feedbackSuccessTitle: '報告を受け付けました',
+    feedbackSubjectLocation: '対象地点: 地図中心 {lat}, {lng}',
+    feedbackSubjectParking: '対象駐輪場: {name}',
+    feedbackSubjectSegment: '対象区間: {name}',
     language: '表示言語',
     layersHeading: '地図レイヤー',
     loadingFailed: 'データの読み込みに失敗しました。',
@@ -171,13 +179,15 @@ export const messages: Record<Language, Messages> = {
     parkingSource: '公式データを見る',
     parkingSpaces: '台',
     parkingStatusCheck: '閉鎖・移転などが未反映の場合があります。現地情報をご確認ください。',
+    parkingReportAction: 'この駐輪場の情報を報告',
     privacy: 'プライバシー',
-    reportAction: '地図情報を報告',
-    reportBody: '現在の表示位置を付けて、修正情報を送れます。',
+    reportAction: '地図にない情報を報告',
+    reportBody: '色付きの道や駐輪場を選ぶと、その対象に直接報告できます。',
     reportHeading: '地図の情報が違いますか？',
     reportNote: 'アカウント不要で送信できます。内容は確認のため非公開で保存します。',
     reset: '東京本土',
     segmentSource: '出典',
+    segmentReportAction: 'この区間の情報を報告',
     segmentsVisible: '区間を表示中',
     share: '共有',
     siteInfo: 'サイト情報',
@@ -245,6 +255,9 @@ export const messages: Record<Language, Messages> = {
     feedbackSubmit: 'Send report',
     feedbackSuccessBody: 'Thank you. We will check it against public sources and map data.',
     feedbackSuccessTitle: 'Report received',
+    feedbackSubjectLocation: 'Location: map center at {lat}, {lng}',
+    feedbackSubjectParking: 'Bicycle parking: {name}',
+    feedbackSubjectSegment: 'Road segment: {name}',
     language: 'Language',
     layersHeading: 'Map layers',
     loadingFailed: 'The map data could not be loaded.',
@@ -267,13 +280,15 @@ export const messages: Record<Language, Messages> = {
     parkingSource: 'View official data',
     parkingSpaces: 'spaces',
     parkingStatusCheck: 'Closures or relocations may not yet be reflected. Check current information on site.',
+    parkingReportAction: 'Report this bicycle parking facility',
     privacy: 'Privacy',
-    reportAction: 'Report map information',
-    reportBody: 'Send a correction with the current map position attached.',
+    reportAction: 'Report missing map information',
+    reportBody: 'Select a colored road or bicycle-parking marker to report that exact item.',
     reportHeading: 'Does the map look wrong?',
     reportNote: 'No account is needed. Reports are stored privately for review.',
     reset: 'Tokyo mainland',
     segmentSource: 'Source',
+    segmentReportAction: 'Report this road segment',
     segmentsVisible: 'segments shown',
     share: 'Share',
     siteInfo: 'Site information',
@@ -341,6 +356,9 @@ export const messages: Record<Language, Messages> = {
     feedbackSubmit: '发送报告',
     feedbackSuccessBody: '谢谢。我们会与公开资料和地图数据进行核对。',
     feedbackSuccessTitle: '已收到报告',
+    feedbackSubjectLocation: '目标地点：地图中心 {lat}, {lng}',
+    feedbackSubjectParking: '目标停车场：{name}',
+    feedbackSubjectSegment: '目标路段：{name}',
     language: '显示语言',
     layersHeading: '地图图层',
     loadingFailed: '地图数据加载失败。',
@@ -363,13 +381,15 @@ export const messages: Record<Language, Messages> = {
     parkingSource: '查看官方数据',
     parkingSpaces: '辆',
     parkingStatusCheck: '关闭或搬迁等变化可能尚未更新，请确认现场最新信息。',
+    parkingReportAction: '报告此自行车停车场',
     privacy: '隐私政策',
-    reportAction: '报告地图信息',
-    reportBody: '可附上当前地图位置发送修正信息。',
+    reportAction: '报告地图缺少的信息',
+    reportBody: '选择彩色道路或自行车停车场标记，即可直接报告该对象。',
     reportHeading: '地图信息有误吗？',
     reportNote: '无需账号。报告将以非公开方式保存，供核查使用。',
     reset: '东京本土',
     segmentSource: '来源',
+    segmentReportAction: '报告此路段',
     segmentsVisible: '个路段已显示',
     share: '分享',
     siteInfo: '网站信息',

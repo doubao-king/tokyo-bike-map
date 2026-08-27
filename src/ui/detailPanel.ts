@@ -128,7 +128,8 @@ export function renderSegmentDetail(feature: CyclingSegmentFeature, language: La
     <p class="segment-summary">${escapeHtml(summary)}</p>
     ${facts.length > 0 ? `<ul class="riding-facts">${facts.map((fact) => `<li>${escapeHtml(fact)}</li>`).join('')}</ul>` : ''}
     <p class="segment-source"><span>${escapeHtml(copy.segmentSource)}: ${sourceLink}</span>${retrievedDate ? `<span>${escapeHtml(copy.sourceChecked)} ${escapeHtml(retrievedDate)}</span>` : ''}</p>
-    <p class="data-caveat">${escapeHtml(copy.dataCaveat)}</p>`;
+    <p class="data-caveat">${escapeHtml(copy.dataCaveat)}</p>
+    <button class="data-report-button segment-report-button" type="button">${escapeHtml(copy.segmentReportAction)}</button>`;
 }
 
 export function setLoadingFailure(panel: HTMLElement, language: Language): void {

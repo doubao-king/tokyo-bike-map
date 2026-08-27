@@ -56,8 +56,8 @@
 
       <section class="panel report-panel">
         <h2 data-i18n="reportHeading">地図の情報が違いますか？</h2>
-        <p data-i18n="reportBody">現在の表示位置を付けて、修正情報を送れます。</p>
-        <button id="reportButton" class="report-button" type="button" data-i18n="reportAction">地図情報を報告</button>
+        <p data-i18n="reportBody">色付きの道や駐輪場を選ぶと、その対象に直接報告できます。</p>
+        <button id="reportButton" class="report-button" type="button" data-i18n="reportAction">地図にない情報を報告</button>
         <small data-i18n="reportNote">アカウント不要で送信できます。内容は確認のため非公開で保存します。</small>
       </section>
 
@@ -151,7 +151,7 @@
           <span class="feedback-field-meta"><small id="feedbackDetailsHelp" data-i18n="feedbackDetailsHelp">地図の表示と違う点を、分かる範囲で具体的に書いてください。</small><output id="feedbackDetailsCount" for="feedbackDetails">0 / 1500</output></span>
         </label>
 
-        <div class="feedback-location"><span aria-hidden="true">⌖</span><span data-i18n="feedbackLocationAttached">現在の地図位置を自動で添付します</span></div>
+        <div class="feedback-location"><span aria-hidden="true">⌖</span><span id="feedbackTarget" data-i18n="feedbackSubjectLocation">対象地点: 現在の地図中心位置</span></div>
 
         <label class="feedback-confirm" for="feedbackConfirmation">
           <input id="feedbackConfirmation" name="personalInfoConfirmed" type="checkbox" required />

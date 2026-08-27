@@ -174,7 +174,7 @@ npm run dev:cloudflare
 
 ### 修正報告
 
-`/api/feedback` は、報告区分、本文、任意の確認日、表示言語、地図URLと中心座標だけをD1の `feedback_reports` テーブルへ保存します。氏名、連絡先、アカウント、IPアドレス、ブラウザ情報は報告テーブルに保存しません。送信は同一サイトからのJSONに限定し、入力検証、ハニーポット、Cloudflare Workers Rate Limitingで保護します。報告を公開するAPIはありません。
+`/api/feedback` は、報告区分、本文、任意の確認日、表示言語、地図URLと座標をD1の `feedback_reports` テーブルへ保存します。道や駐輪場から開始した報告には対象種別、データID、表示名称も付きます。氏名、連絡先、アカウント、IPアドレス、ブラウザ情報は報告テーブルに保存しません。送信は同一サイトからのJSONに限定し、入力検証、ハニーポット、Cloudflare Workers Rate Limitingで保護します。報告を公開するAPIはありません。
 
 報告はCloudflare DashboardのD1画面で確認できます。状態は `pending`、`reviewing`、`resolved`、`rejected` のいずれかに更新します。
 

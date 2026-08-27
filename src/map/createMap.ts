@@ -1,6 +1,7 @@
 import L from 'leaflet';
 import { classMeta, classUrlValues, comfortClasses, tokyoInitialView } from '../config';
 import { countByClass } from '../data/segmentSchema';
+import { feedbackOpenEvent, type FeedbackOpenRequest } from '../feedback';
 import { localeByLanguage, messages, type Language } from '../i18n';
 import { renderSegmentDetail } from '../ui/detailPanel';
 import type {
@@ -96,6 +97,8 @@ export function createCyclingMap(
   const locationPane = map.getPane('locationPane');
   if (parkingPane) parkingPane.style.zIndex = '420';
   if (locationPane) locationPane.style.zIndex = '430';
+  const parkingRenderer = L.svg({ pane: 'parkingPane' });
+  const locationRenderer = L.svg({ pane: 'locationPane' });
 
   const tileConfig = getTileConfig();
   L.tileLayer(tileConfig.url, {
@@ -106,6 +109,22 @@ export function createCyclingMap(
     const element = document.createElement('span');
     element.textContent = value;
     return element.innerHTML;
+  }
+
+  function requestFeedback(request: FeedbackOpenRequest): void {
+    document.dispatchEvent(
+      new CustomEvent<FeedbackOpenRequest>(feedbackOpenEvent, { detail: request })
+    );
+  }
+
+  function shareUrlAt(latitude: number, longitude: number): string {
+    syncUrl(true);
+    const url = new URL(window.location.href);
+    url.searchParams.set('lat', latitude.toFixed(5));
+    url.searchParams.set('lng', longitude.toFixed(5));
+    url.searchParams.set('z', String(map.getZoom()));
+    url.searchParams.delete('feedback');
+    return url.href;
   }
 
   function parkingPopup(feature: BicycleParkingFeature): string {
@@ -124,6 +143,7 @@ export function createCyclingMap(
           <a href="${escapeHtml(mapLinks.apple)}" target="_blank" rel="noreferrer">Apple Maps</a>
         </div>
         <a class="parking-popup-source" href="${escapeHtml(properties.source_url)}" target="_blank" rel="noreferrer">${escapeHtml(copy.parkingSource)}</a>
+        <button class="data-report-button parking-report-button" type="button">${escapeHtml(copy.parkingReportAction)}</button>
       </div>`;
   }
 
@@ -134,8 +154,9 @@ export function createCyclingMap(
     parkingLayer = L.layerGroup(
       parkingFeatures.map((feature) => {
         const [longitude, latitude] = feature.geometry.coordinates;
-        return L.circleMarker([latitude, longitude], {
+        const marker = L.circleMarker([latitude, longitude], {
           pane: 'parkingPane',
+          renderer: parkingRenderer,
           radius: 5,
           color: '#ffffff',
           weight: 1.8,
@@ -148,6 +169,26 @@ export function createCyclingMap(
             autoPanPaddingBottomRight: L.point(12, 84),
             maxWidth: 280
           });
+
+        marker.on('popupopen', () => {
+          const button = marker
+            .getPopup()
+            ?.getElement()
+            ?.querySelector<HTMLButtonElement>('.parking-report-button');
+          if (!button) return;
+
+          button.onclick = () => {
+            requestFeedback({
+              mapUrl: shareUrlAt(latitude, longitude),
+              subjectId: feature.properties.id,
+              subjectName: feature.properties.name,
+              subjectType: 'parking',
+              suggestedCategory: 'parking_change'
+            });
+          };
+        });
+
+        return marker;
       })
     );
 
@@ -260,12 +301,29 @@ export function createCyclingMap(
         style: (feature) => styleFeature(feature as CyclingSegmentFeature),
         onEachFeature: (feature, layer) => {
           const segment = feature as CyclingSegmentFeature;
-          layer.on('click', () => {
+          layer.on('click', (event: L.LeafletMouseEvent) => {
             detailPanel.innerHTML = `<h2>${escapeHtml(copy.detailHeading)}</h2>${renderSegmentDetail(segment, language)}`;
+
+            detailPanel
+              .querySelector<HTMLButtonElement>('.segment-report-button')
+              ?.addEventListener('click', () => {
+                requestFeedback({
+                  mapUrl: shareUrlAt(event.latlng.lat, event.latlng.lng),
+                  subjectId: segment.properties.id,
+                  subjectName: segment.properties.name,
+                  subjectType: 'segment',
+                  suggestedCategory: 'road_change'
+                });
+              });
 
             if (layer instanceof L.Path) {
               selectSegment(layer, segment);
             }
+
+            detailPanel.scrollIntoView({
+              behavior: 'smooth',
+              block: window.matchMedia('(max-width: 780px)').matches ? 'start' : 'nearest'
+            });
           });
           const tooltip = document.createElement('span');
           tooltip.textContent = segment.properties.name;
@@ -328,6 +386,7 @@ export function createCyclingMap(
           locationAccuracyLayer?.removeFrom(map);
           locationAccuracyLayer = L.circle(center, {
             pane: 'locationPane',
+            renderer: locationRenderer,
             radius: position.coords.accuracy,
             color: '#2463a6',
             weight: 1,
@@ -337,6 +396,7 @@ export function createCyclingMap(
           }).addTo(map);
           locationMarker = L.circleMarker(center, {
             pane: 'locationPane',
+            renderer: locationRenderer,
             radius: 7,
             color: '#ffffff',
             weight: 3,

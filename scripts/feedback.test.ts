@@ -16,6 +16,9 @@ const validSubmission: FeedbackSubmission = {
   mapUrl: `${origin}/?lat=35.70000&lng=139.70000&z=15&roads=separated`,
   observedOn: '2026-08-26',
   personalInfoConfirmed: true,
+  subjectId: 'official-parking-tokyo-48007',
+  subjectName: 'Test bicycle parking facility',
+  subjectType: 'parking',
   website: ''
 };
 
@@ -27,6 +30,8 @@ if (valid.ok) {
   assert.equal(valid.value.longitude, 139.7);
   assert.equal(valid.value.zoom, 15);
   assert.equal(valid.value.observedOn, '2026-08-26');
+  assert.equal(valid.value.subjectId, 'official-parking-tokyo-48007');
+  assert.equal(valid.value.subjectType, 'parking');
 }
 
 assert.equal(
@@ -45,6 +50,30 @@ assert.equal(
   validateFeedbackSubmission({ ...validSubmission, personalInfoConfirmed: false }, origin, now).ok,
   false
 );
+assert.equal(
+  validateFeedbackSubmission(
+    { ...validSubmission, subjectId: undefined, subjectName: undefined },
+    origin,
+    now
+  ).ok,
+  false
+);
+assert.equal(
+  validateFeedbackSubmission(
+    {
+      ...validSubmission,
+      subjectId: undefined,
+      subjectName: undefined,
+      subjectType: 'map_location'
+    },
+    origin,
+    now
+  ).ok,
+  true
+);
+const { subjectId: _legacyId, subjectName: _legacyName, subjectType: _legacyType, ...legacyBody } =
+  validSubmission;
+assert.equal(validateFeedbackSubmission(legacyBody, origin, now).ok, true);
 assert.equal(
   validateFeedbackSubmission(
     { ...validSubmission, mapUrl: 'https://example.com/?lat=35.7&lng=139.7&z=15' },
@@ -75,5 +104,10 @@ const migration = readFileSync('migrations/0002_create_feedback_reports.sql', 'u
 assert.match(migration, /CREATE TABLE IF NOT EXISTS feedback_reports/);
 assert.match(migration, /status TEXT NOT NULL DEFAULT 'pending'/);
 assert.doesNotMatch(migration, /email|user_agent|ip_address/i);
+
+const subjectMigration = readFileSync('migrations/0003_add_feedback_subject.sql', 'utf8');
+assert.match(subjectMigration, /subject_type/);
+assert.match(subjectMigration, /subject_id/);
+assert.match(subjectMigration, /subject_name/);
 
 console.log('Account-free feedback validation passed.');

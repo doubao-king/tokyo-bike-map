@@ -1,6 +1,11 @@
 import type { Language } from '../i18n';
 import { messages } from '../i18n';
-import type { FeedbackCategory, FeedbackSubmission } from '../feedback';
+import {
+  feedbackOpenEvent,
+  type FeedbackCategory,
+  type FeedbackOpenRequest,
+  type FeedbackSubmission
+} from '../feedback';
 import type { CyclingMap } from '../map/createMap';
 
 function localDateString(date = new Date()): string {
@@ -31,6 +36,7 @@ export function initializeFeedbackDialog(cyclingMap: CyclingMap, language: Langu
   const submitButton = document.getElementById('feedbackSubmit') as HTMLButtonElement | null;
   const status = document.getElementById('feedbackStatus');
   const detailsCount = document.getElementById('feedbackDetailsCount');
+  const target = document.getElementById('feedbackTarget');
   const success = document.getElementById('feedbackSuccess');
 
   if (
@@ -45,12 +51,14 @@ export function initializeFeedbackDialog(cyclingMap: CyclingMap, language: Langu
     !submitButton ||
     !status ||
     !detailsCount ||
+    !target ||
     !success
   ) {
     return;
   }
 
   observedOn.max = localDateString();
+  let currentRequest: FeedbackOpenRequest | undefined;
 
   const updateCount = (): void => {
     detailsCount.textContent = `${details.value.length} / 1500`;
@@ -61,20 +69,46 @@ export function initializeFeedbackDialog(cyclingMap: CyclingMap, language: Langu
     );
   };
 
+  const defaultRequest = (): FeedbackOpenRequest => ({
+    mapUrl: createFeedbackMapUrl(cyclingMap.getShareUrl()),
+    subjectType: 'map_location',
+    suggestedCategory: 'missing_information'
+  });
+
+  const targetText = (request: FeedbackOpenRequest): string => {
+    if (request.subjectType === 'segment') {
+      return copy.feedbackSubjectSegment.replace('{name}', request.subjectName ?? '');
+    }
+    if (request.subjectType === 'parking') {
+      return copy.feedbackSubjectParking.replace('{name}', request.subjectName ?? '');
+    }
+
+    const url = new URL(request.mapUrl);
+    return copy.feedbackSubjectLocation
+      .replace('{lat}', url.searchParams.get('lat') ?? '')
+      .replace('{lng}', url.searchParams.get('lng') ?? '');
+  };
+
   const closeDialog = (): void => dialog.close();
-  const openDialog = (): void => {
+  const openDialog = (request: FeedbackOpenRequest): void => {
+    currentRequest = { ...request, mapUrl: createFeedbackMapUrl(request.mapUrl) };
     form.reset();
     form.hidden = false;
     success.hidden = true;
     status.textContent = '';
     submitButton.disabled = false;
     submitButton.textContent = copy.feedbackSubmit;
+    category.value = currentRequest.suggestedCategory ?? '';
+    target.textContent = targetText(currentRequest);
     updateCount();
     dialog.showModal();
     category.focus();
   };
 
-  openButton.addEventListener('click', openDialog);
+  openButton.addEventListener('click', () => openDialog(defaultRequest()));
+  document.addEventListener(feedbackOpenEvent, (event) => {
+    openDialog((event as CustomEvent<FeedbackOpenRequest>).detail);
+  });
   closeButton?.addEventListener('click', closeDialog);
   cancelButton?.addEventListener('click', closeDialog);
   doneButton?.addEventListener('click', closeDialog);
@@ -87,14 +121,18 @@ export function initializeFeedbackDialog(cyclingMap: CyclingMap, language: Langu
     event.preventDefault();
     updateCount();
     if (!form.reportValidity()) return;
+    const request = currentRequest ?? defaultRequest();
 
     const payload: FeedbackSubmission = {
       category: category.value as FeedbackCategory,
       details: details.value.trim(),
       language,
-      mapUrl: createFeedbackMapUrl(cyclingMap.getShareUrl()),
+      mapUrl: request.mapUrl,
       observedOn: observedOn.value || undefined,
       personalInfoConfirmed: confirmation.checked,
+      subjectId: request.subjectId,
+      subjectName: request.subjectName,
+      subjectType: request.subjectType,
       website: website.value
     };
 
@@ -127,6 +165,6 @@ export function initializeFeedbackDialog(cyclingMap: CyclingMap, language: Langu
   });
 
   if (new URLSearchParams(window.location.search).get('feedback') === '1') {
-    openDialog();
+    openDialog(defaultRequest());
   }
 }

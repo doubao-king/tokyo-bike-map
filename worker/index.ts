@@ -82,8 +82,9 @@ async function storeFeedback(database: D1Database, feedback: ValidatedFeedback):
   await database
     .prepare(
       `INSERT INTO feedback_reports (
-        id, category, details, observed_on, map_url, latitude, longitude, zoom, language
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        id, category, details, observed_on, map_url, latitude, longitude, zoom, language,
+        subject_type, subject_id, subject_name
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .bind(
       id,
@@ -94,7 +95,10 @@ async function storeFeedback(database: D1Database, feedback: ValidatedFeedback):
       feedback.latitude,
       feedback.longitude,
       feedback.zoom,
-      feedback.language
+      feedback.language,
+      feedback.subjectType,
+      feedback.subjectId,
+      feedback.subjectName
     )
     .run();
   return id;
