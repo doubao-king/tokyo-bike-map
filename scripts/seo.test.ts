@@ -12,6 +12,10 @@ const [indexHtml, robots, sitemap, wrangler] = await Promise.all([
 
 assert.match(indexHtml, /rel="canonical" href="https:\/\/tokyo-bike-map\.manymao\.com\/"/);
 assert.match(indexHtml, /application\/ld\+json/);
+assert.match(
+  indexHtml,
+  /meta name="google-site-verification" content="agio_yKHyQuWKC9Gf_zywUfFjZN1jj_W1KO3dJDOk04"/
+);
 assert.match(indexHtml, /東京の自転車マップ/);
 assert.match(robots, /Sitemap: https:\/\/tokyo-bike-map\.manymao\.com\/sitemap\.xml/);
 assert.match(sitemap, new RegExp(`<loc>${homeSeo.canonicalUrl}</loc>`));
