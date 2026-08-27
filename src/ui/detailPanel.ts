@@ -1,6 +1,7 @@
 import { classMeta } from '../config';
-import { classText, messages, type Language } from '../i18n';
-import type { CyclingSegmentFeature } from '../types';
+import { classText, localeByLanguage, messages, type Language } from '../i18n';
+import { createParkingMapLinks } from '../map/parkingLinks';
+import type { BicycleParkingFeature, CyclingSegmentFeature } from '../types';
 
 const facilitySummaries: Record<Language, Record<string, string>> = {
   ja: {
@@ -66,9 +67,14 @@ const factsByLanguage: Record<Language, Record<string, string>> = {
 };
 
 function escapeHtml(value: string): string {
-  const element = document.createElement('span');
-  element.textContent = value;
-  return element.innerHTML;
+  const replacements: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  };
+  return value.replace(/[&<>"']/g, (character) => replacements[character]);
 }
 
 function safeExternalUrl(value: string | undefined): string | undefined {
@@ -108,6 +114,26 @@ function ridingFacts(feature: CyclingSegmentFeature, language: Language): string
   return facts;
 }
 
+function renderHeading(language: Language, clearable: boolean): string {
+  const copy = messages[language];
+  return `<div class="detail-heading-row">
+    <h2>${escapeHtml(copy.detailHeading)}</h2>
+    ${
+      clearable
+        ? `<button class="detail-clear-button" type="button" data-detail-action="clear" aria-label="${escapeHtml(copy.clearSelection)}" title="${escapeHtml(copy.clearSelection)}">&times;</button>`
+        : ''
+    }
+  </div>`;
+}
+
+export function renderDefaultDetail(language: Language): string {
+  const copy = messages[language];
+  return `${renderHeading(language, false)}
+    <p class="muted">${escapeHtml(copy.detailPrompt)}</p>
+    <button class="report-button" type="button" data-detail-action="report">${escapeHtml(copy.reportAction)}</button>
+    <small class="detail-report-note">${escapeHtml(copy.reportNote)}</small>`;
+}
+
 export function renderSegmentDetail(feature: CyclingSegmentFeature, language: Language): string {
   const properties = feature.properties;
   const meta = classMeta[properties.comfort_class];
@@ -121,7 +147,7 @@ export function renderSegmentDetail(feature: CyclingSegmentFeature, language: La
   const summary =
     facilitySummaries[language][properties.facility_type] ?? properties.facility_type;
 
-  return `
+  return `${renderHeading(language, true)}
     <h3 class="detail-title">${escapeHtml(properties.name)}</h3>
     <div class="badge" style="background:${meta.color}">${escapeHtml(classText[language][properties.comfort_class].label)}</div>
     ${properties.warning ? `<p class="warning">${escapeHtml(properties.warning)}</p>` : ''}
@@ -129,10 +155,34 @@ export function renderSegmentDetail(feature: CyclingSegmentFeature, language: La
     ${facts.length > 0 ? `<ul class="riding-facts">${facts.map((fact) => `<li>${escapeHtml(fact)}</li>`).join('')}</ul>` : ''}
     <p class="segment-source"><span>${escapeHtml(copy.segmentSource)}: ${sourceLink}</span>${retrievedDate ? `<span>${escapeHtml(copy.sourceChecked)} ${escapeHtml(retrievedDate)}</span>` : ''}</p>
     <p class="data-caveat">${escapeHtml(copy.dataCaveat)}</p>
-    <button class="data-report-button segment-report-button" type="button">${escapeHtml(copy.segmentReportAction)}</button>`;
+    <button class="report-button detail-selection-report" type="button" data-detail-action="report">${escapeHtml(copy.segmentReportAction)}</button>`;
+}
+
+export function renderParkingDetail(feature: BicycleParkingFeature, language: Language): string {
+  const properties = feature.properties;
+  const copy = messages[language];
+  const formatter = new Intl.NumberFormat(localeByLanguage[language]);
+  const mapLinks = createParkingMapLinks(feature);
+  const sourceUrl = safeExternalUrl(properties.source_url);
+
+  return `${renderHeading(language, true)}
+    <h3 class="detail-title">${escapeHtml(properties.name)}</h3>
+    <div class="badge parking-detail-badge"><span aria-hidden="true">P</span>${escapeHtml(copy.parkingDetailLabel)}</div>
+    <p class="parking-detail-municipality">${escapeHtml(properties.municipality)}</p>
+    <div class="parking-detail-meta">
+      ${properties.address ? `<p><span>${escapeHtml(copy.parkingAddress)}</span><strong>${escapeHtml(properties.address)}</strong></p>` : ''}
+      ${properties.capacity !== undefined ? `<p><span>${escapeHtml(copy.parkingCapacity)}</span><strong>${formatter.format(properties.capacity)} ${escapeHtml(copy.parkingSpaces)}</strong></p>` : ''}
+    </div>
+    <p class="parking-detail-caveat">${escapeHtml(copy.parkingStatusCheck)}</p>
+    <div class="parking-detail-actions" aria-label="${escapeHtml(copy.parkingOpenMaps)}">
+      <a href="${escapeHtml(mapLinks.google)}" target="_blank" rel="noreferrer">Google Maps</a>
+      <a href="${escapeHtml(mapLinks.apple)}" target="_blank" rel="noreferrer">Apple Maps</a>
+    </div>
+    ${sourceUrl ? `<a class="parking-detail-source" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(copy.parkingSource)}</a>` : ''}
+    <button class="report-button detail-selection-report" type="button" data-detail-action="report">${escapeHtml(copy.parkingReportAction)}</button>`;
 }
 
 export function setLoadingFailure(panel: HTMLElement, language: Language): void {
   const copy = messages[language];
-  panel.innerHTML = `<h2>${escapeHtml(copy.detailHeading)}</h2><p>${escapeHtml(copy.loadingFailed)}</p>`;
+  panel.innerHTML = `${renderHeading(language, false)}<p>${escapeHtml(copy.loadingFailed)}</p>`;
 }

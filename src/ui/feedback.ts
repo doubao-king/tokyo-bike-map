@@ -23,7 +23,6 @@ export function createFeedbackMapUrl(value: string): string {
 export function initializeFeedbackDialog(cyclingMap: CyclingMap, language: Language): void {
   const copy = messages[language];
   const dialog = document.getElementById('feedbackDialog') as HTMLDialogElement | null;
-  const openButton = document.getElementById('reportButton') as HTMLButtonElement | null;
   const closeButton = document.getElementById('feedbackClose') as HTMLButtonElement | null;
   const cancelButton = document.getElementById('feedbackCancel') as HTMLButtonElement | null;
   const doneButton = document.getElementById('feedbackDone') as HTMLButtonElement | null;
@@ -41,7 +40,6 @@ export function initializeFeedbackDialog(cyclingMap: CyclingMap, language: Langu
 
   if (
     !dialog ||
-    !openButton ||
     !form ||
     !category ||
     !observedOn ||
@@ -105,7 +103,6 @@ export function initializeFeedbackDialog(cyclingMap: CyclingMap, language: Langu
     category.focus();
   };
 
-  openButton.addEventListener('click', () => openDialog(defaultRequest()));
   document.addEventListener(feedbackOpenEvent, (event) => {
     openDialog((event as CustomEvent<FeedbackOpenRequest>).detail);
   });

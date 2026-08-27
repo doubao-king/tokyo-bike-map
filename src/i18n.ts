@@ -19,6 +19,7 @@ interface Messages {
   contact: string;
   copied: string;
   copyFailed: string;
+  clearSelection: string;
   dataCaveat: string;
   dataNoteBody: string;
   dataNoteHeading: string;
@@ -72,6 +73,7 @@ interface Messages {
   parkingCount: string;
   parkingCoverage: string;
   parkingDataWarning: string;
+  parkingDetailLabel: string;
   parkingOpenMaps: string;
   parkingSource: string;
   parkingSpaces: string;
@@ -116,6 +118,7 @@ export const messages: Record<Language, Messages> = {
     contact: '情報の修正・お問い合わせ',
     copied: 'コピー済み',
     copyFailed: 'コピー失敗',
+    clearSelection: '選択を解除',
     dataCaveat: 'OSMの登録内容から判定しています。現地の道路状況と異なる場合があります。',
     dataNoteBody:
       '現在の安心度表示にはOpenStreetMapを使用し、東京都・区市町村・国の公式公開資料を調査・参照しています。公開時点や工事などにより、実際の道路状況と異なる場合があります。',
@@ -123,8 +126,8 @@ export const messages: Record<Language, Messages> = {
     dataNoteSecondary:
       '安心度は主にOSMタグからの暫定分類です。公式公開情報を定期的に確認して更新します。地域により公開情報量に差があります。走行時は現地の標識・規制を優先してください。',
     dataPill: 'OSM暫定',
-    detailHeading: '区間情報',
-    detailPrompt: '地図上の色付き区間をタップしてください。',
+    detailHeading: '地図上の情報',
+    detailPrompt: '色付きの道または駐輪場を選んでください。',
     documentTitle: '東京の自転車マップ | 走りやすい道・自転車レーン・駐輪場',
     eyebrow: '東京都内の自転車通行環境',
     feedbackCancel: 'キャンセル',
@@ -173,6 +176,7 @@ export const messages: Record<Language, Messages> = {
     parkingCoverage: '{count}区市町を収録',
     parkingDataWarning:
       '駐輪場情報も公開時点の内容です。閉鎖・休止・移転、営業時間や利用条件の変更が反映されていない場合があります。利用前に施設・自治体の最新情報や現地表示を確認してください。',
+    parkingDetailLabel: '駐輪場',
     parkingOpenMaps: '地図アプリで開く',
     parkingSource: '公式データを見る',
     parkingSpaces: '台',
@@ -215,6 +219,7 @@ export const messages: Record<Language, Messages> = {
     contact: 'Corrections and contact',
     copied: 'Copied',
     copyFailed: 'Copy failed',
+    clearSelection: 'Clear selection',
     dataCaveat: 'This classification is inferred from OSM data and may differ from conditions on site.',
     dataNoteBody:
       'Comfort classifications currently use OpenStreetMap, supported by research into official publications from Tokyo, municipalities, and national agencies. Construction and publication dates may make real conditions different from the map.',
@@ -222,8 +227,8 @@ export const messages: Record<Language, Messages> = {
     dataNoteSecondary:
       'Most comfort classifications are preliminary inferences from OSM tags. We regularly review official sources, but coverage varies by area. Always follow signs and restrictions on site.',
     dataPill: 'OSM estimate',
-    detailHeading: 'Segment details',
-    detailPrompt: 'Select a colored segment on the map.',
+    detailHeading: 'Map information',
+    detailPrompt: 'Select a colored road or bicycle parking marker.',
     documentTitle: 'Tokyo Bicycle Map | Comfortable roads, bicycle lanes and parking',
     eyebrow: 'Cycling conditions across Tokyo',
     feedbackCancel: 'Cancel',
@@ -272,6 +277,7 @@ export const messages: Record<Language, Messages> = {
     parkingCoverage: '{count} municipalities covered',
     parkingDataWarning:
       'Bicycle-parking information reflects the source at its publication date. Closures, temporary suspensions, relocations, opening hours and conditions of use may have changed. Check current facility or municipal information and signs on site before relying on it.',
+    parkingDetailLabel: 'Bicycle parking',
     parkingOpenMaps: 'Open in a maps app',
     parkingSource: 'View official data',
     parkingSpaces: 'spaces',
@@ -314,6 +320,7 @@ export const messages: Record<Language, Messages> = {
     contact: '信息修正与联系',
     copied: '已复制',
     copyFailed: '复制失败',
+    clearSelection: '取消选择',
     dataCaveat: '此分类根据 OSM 数据推测，可能与现场道路状况不同。',
     dataNoteBody:
       '当前的舒适度显示使用 OpenStreetMap，并参考东京都、各区市町村及国家机关公开的官方资料。由于资料发布时间和施工等原因，实际道路状况可能与地图不同。',
@@ -321,8 +328,8 @@ export const messages: Record<Language, Messages> = {
     dataNoteSecondary:
       '舒适度主要依据 OSM 标签进行初步分类。我们会定期核对官方公开信息，但各地区的数据量不同。骑行时请以现场标志和交通规定为准。',
     dataPill: 'OSM 推测',
-    detailHeading: '路段信息',
-    detailPrompt: '请选择地图上的彩色路段。',
+    detailHeading: '地图信息',
+    detailPrompt: '请选择彩色道路或自行车停车场标记。',
     documentTitle: '东京自行车地图 | 舒适道路、自行车专用车道与停车场',
     eyebrow: '东京都内自行车通行环境',
     feedbackCancel: '取消',
@@ -371,6 +378,7 @@ export const messages: Record<Language, Messages> = {
     parkingCoverage: '已收录 {count} 个区市町',
     parkingDataWarning:
       '自行车停车场信息以数据发布时的内容为准。关闭、暂停营业、搬迁、开放时间及使用条件的变化可能尚未更新。使用前请确认设施或自治体的最新信息以及现场告示。',
+    parkingDetailLabel: '自行车停车场',
     parkingOpenMaps: '在地图应用中打开',
     parkingSource: '查看官方数据',
     parkingSpaces: '辆',
