@@ -39,7 +39,8 @@ function tokyoContext(properties: Record<string, unknown>): string {
 }
 
 export function parseDestinationSuggestions(value: unknown): DestinationSuggestion[] {
-  const seen = new Set<string>();
+  const seenIds = new Set<string>();
+  const seenLabels = new Set<string>();
   const suggestions: DestinationSuggestion[] = [];
 
   featuresFrom(value).forEach((feature) => {
@@ -47,15 +48,18 @@ export function parseDestinationSuggestions(value: unknown): DestinationSuggesti
     const id = stringProperty(feature.properties, 'gid');
     const name = stringProperty(feature.properties, 'name');
     const context = tokyoContext(feature.properties);
+    const label = `${name ?? ''}|${context}`.toLocaleLowerCase();
     if (
       !id ||
       !name ||
       parkingNamePattern.test(name) ||
       !tokyoNamePattern.test(context) ||
-      seen.has(id)
+      seenIds.has(id) ||
+      seenLabels.has(label)
     ) return;
 
-    seen.add(id);
+    seenIds.add(id);
+    seenLabels.add(label);
     suggestions.push({ context, id, name });
   });
 

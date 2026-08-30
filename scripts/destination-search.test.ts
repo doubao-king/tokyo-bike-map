@@ -28,6 +28,13 @@ const suggestions = parseDestinationSuggestions({
         gid: 'place:parking',
         name: '新宿駅東口自転車駐輪場'
       }
+    },
+    {
+      properties: {
+        coarse_location: '千代田区, 東京都, 日本',
+        gid: 'place:tokyo-station-duplicate',
+        name: '東京駅'
+      }
     }
   ]
 });
