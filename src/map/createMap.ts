@@ -5,6 +5,7 @@ import { feedbackOpenEvent, type FeedbackOpenRequest } from '../feedback';
 import { messages, type Language } from '../i18n';
 import {
   renderDefaultDetail,
+  renderDestinationDetail,
   renderParkingDetail,
   renderSegmentDetail
 } from '../ui/detailPanel';
@@ -12,18 +13,22 @@ import type {
   BicycleParkingFeature,
   ComfortClass,
   CyclingSegmentFeature,
+  MapDestination,
   MapOverlay
 } from '../types';
 import { getTileConfig } from './tileConfig';
 import { areaTargetFromPath } from '../seo';
+import { findNearbyParking } from './nearbyParking';
 
 export interface CyclingMap {
+  clearDestination(): void;
   flyTo(center: [number, number], zoom: number): void;
   getShareUrl(): string;
   locateUser(): Promise<'denied' | 'failed' | 'success'>;
   rebuild(features: CyclingSegmentFeature[], activeClasses: Set<ComfortClass>): void;
   setOverlayVisibility(overlay: MapOverlay, visible: boolean): void;
   setParkingFeatures(features: BicycleParkingFeature[]): void;
+  setDestination(destination: MapDestination): void;
   setClassVisibility(cls: ComfortClass, visible: boolean): void;
   resetView(): void;
 }
@@ -91,8 +96,11 @@ export function createCyclingMap(
   let activeClasses = new Set<ComfortClass>();
   let parkingFeatures: BicycleParkingFeature[] = [];
   let parkingLayer = L.layerGroup();
+  const parkingMarkerById = new Map<string, L.CircleMarker>();
   let locationAccuracyLayer: L.Circle | undefined;
   let locationMarker: L.CircleMarker | undefined;
+  let destination: MapDestination | undefined;
+  let destinationMarker: L.CircleMarker | undefined;
   let selection: MapSelection | undefined;
   let dataReady = false;
 
@@ -100,6 +108,7 @@ export function createCyclingMap(
   map.createPane('comfortLinePane');
   map.createPane('parkingPane');
   map.createPane('locationPane');
+  map.createPane('destinationPane');
   const comfortCasingPane = map.getPane('comfortCasingPane');
   const comfortLinePane = map.getPane('comfortLinePane');
   if (comfortCasingPane) {
@@ -111,10 +120,13 @@ export function createCyclingMap(
   }
   const parkingPane = map.getPane('parkingPane');
   const locationPane = map.getPane('locationPane');
+  const destinationPane = map.getPane('destinationPane');
   if (parkingPane) parkingPane.style.zIndex = '420';
   if (locationPane) locationPane.style.zIndex = '430';
+  if (destinationPane) destinationPane.style.zIndex = '440';
   const parkingRenderer = L.svg({ pane: 'parkingPane' });
   const locationRenderer = L.svg({ pane: 'locationPane' });
+  const destinationRenderer = L.svg({ pane: 'destinationPane' });
 
   const tileConfig = getTileConfig();
   L.tileLayer(tileConfig.url, {
@@ -142,6 +154,7 @@ export function createCyclingMap(
     if (selection?.type === 'parking') clearSelection();
     const wasVisible = map.hasLayer(parkingLayer);
     if (wasVisible) map.removeLayer(parkingLayer);
+    parkingMarkerById.clear();
 
     parkingLayer = L.layerGroup(
       parkingFeatures.map((feature) => {
@@ -160,12 +173,14 @@ export function createCyclingMap(
         marker.on('click', (event: L.LeafletMouseEvent) => {
           selectParking(marker, feature, event.latlng);
         });
+        parkingMarkerById.set(feature.properties.id, marker);
 
         return marker;
       })
     );
 
     if (activeOverlays.has('parking')) parkingLayer.addTo(map);
+    if (!selection) renderFallbackDetail();
   }
   function updateCount(): void {
     visibleCount.textContent = String(countByClass(features, activeClasses));
@@ -243,8 +258,25 @@ export function createCyclingMap(
   function clearSelection(focusMap = false): void {
     resetSelectedStyle();
     selection = undefined;
-    detailPanel.innerHTML = renderDefaultDetail(language);
+    renderFallbackDetail();
     if (focusMap) map.getContainer().focus({ preventScroll: true });
+  }
+
+  function renderFallbackDetail(): void {
+    detailPanel.innerHTML = destination
+      ? renderDestinationDetail(
+          destination,
+          findNearbyParking(parkingFeatures, destination.latitude, destination.longitude),
+          language
+        )
+      : renderDefaultDetail(language);
+  }
+
+  function scrollDetailIntoView(): void {
+    detailPanel.scrollIntoView({
+      behavior: 'smooth',
+      block: window.matchMedia('(max-width: 780px)').matches ? 'start' : 'nearest'
+    });
   }
 
   function showSelectedDetail(): void {
@@ -252,12 +284,15 @@ export function createCyclingMap(
       ? renderSegmentDetail(selection.feature, language)
       : selection?.type === 'parking'
       ? renderParkingDetail(selection.feature, language)
+      : destination
+      ? renderDestinationDetail(
+          destination,
+          findNearbyParking(parkingFeatures, destination.latitude, destination.longitude),
+          language
+        )
       : renderDefaultDetail(language);
 
-    detailPanel.scrollIntoView({
-      behavior: 'smooth',
-      block: window.matchMedia('(max-width: 780px)').matches ? 'start' : 'nearest'
-    });
+    scrollDetailIntoView();
   }
 
   function selectSegment(
@@ -282,6 +317,59 @@ export function createCyclingMap(
     showSelectedDetail();
   }
 
+  function focusParking(parkingId: string): void {
+    const feature = parkingFeatures.find((item) => item.properties.id === parkingId);
+    const marker = parkingMarkerById.get(parkingId);
+    if (!feature || !marker) return;
+    const [longitude, latitude] = feature.geometry.coordinates;
+    map.flyTo([latitude, longitude], Math.max(map.getZoom(), 17), { duration: 0.7 });
+    selectParking(marker, feature, L.latLng(latitude, longitude));
+  }
+
+  function setDestination(nextDestination: MapDestination): void {
+    resetSelectedStyle();
+    selection = undefined;
+    destinationMarker?.removeFrom(map);
+    destination = nextDestination;
+    destinationMarker = L.circleMarker(
+      [nextDestination.latitude, nextDestination.longitude],
+      {
+        bubblingMouseEvents: false,
+        pane: 'destinationPane',
+        renderer: destinationRenderer,
+        radius: 9,
+        color: '#ffffff',
+        weight: 3,
+        fillColor: '#a52f25',
+        fillOpacity: 1
+      }
+    )
+      .bindTooltip(nextDestination.name, { direction: 'top' })
+      .on('click', () => clearSelection())
+      .addTo(map);
+    map.flyTo(
+      [nextDestination.latitude, nextDestination.longitude],
+      16,
+      { duration: 0.7 }
+    );
+    renderFallbackDetail();
+    scrollDetailIntoView();
+  }
+
+  function clearDestination(focusMap = false): void {
+    const hadDestination = Boolean(destination);
+    resetSelectedStyle();
+    selection = undefined;
+    destinationMarker?.removeFrom(map);
+    destinationMarker = undefined;
+    destination = undefined;
+    renderFallbackDetail();
+    if (hadDestination) {
+      document.dispatchEvent(new CustomEvent('tokyo-bike-map:destination-cleared'));
+    }
+    if (focusMap) map.getContainer().focus({ preventScroll: true });
+  }
+
   function feedbackRequestForSelection(): FeedbackOpenRequest {
     if (selection?.type === 'segment') {
       return {
@@ -302,7 +390,9 @@ export function createCyclingMap(
       };
     }
 
-    const center = map.getCenter();
+    const center = destination
+      ? L.latLng(destination.latitude, destination.longitude)
+      : map.getCenter();
     return {
       mapUrl: shareUrlAt(center.lat, center.lng),
       subjectType: 'map_location',
@@ -423,7 +513,7 @@ export function createCyclingMap(
     return new Promise((resolveLocation) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          clearSelection();
+          clearDestination();
           const center: L.LatLngExpression = [position.coords.latitude, position.coords.longitude];
           locationMarker?.removeFrom(map);
           locationAccuracyLayer?.removeFrom(map);
@@ -457,7 +547,7 @@ export function createCyclingMap(
     });
   }
 
-  detailPanel.innerHTML = renderDefaultDetail(language);
+  renderFallbackDetail();
   detailPanel.addEventListener('click', (event) => {
     const target = event.target as HTMLElement;
     const actionButton = target.closest<HTMLButtonElement>('[data-detail-action]');
@@ -465,6 +555,11 @@ export function createCyclingMap(
 
     if (actionButton.dataset.detailAction === 'clear') {
       clearSelection(true);
+    } else if (actionButton.dataset.detailAction === 'clear-destination') {
+      clearDestination(true);
+    } else if (actionButton.dataset.detailAction === 'select-parking') {
+      const parkingId = actionButton.dataset.parkingId;
+      if (parkingId) focusParking(parkingId);
     } else if (actionButton.dataset.detailAction === 'report') {
       requestFeedback(feedbackRequestForSelection());
     }
@@ -474,7 +569,9 @@ export function createCyclingMap(
     if (selection) clearSelection();
   });
   map.getContainer().addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && selection) clearSelection(true);
+    if (event.key !== 'Escape') return;
+    if (selection) clearSelection(true);
+    else if (destination) clearDestination(true);
   });
 
   map.on('zoomend', () => {
@@ -487,8 +584,9 @@ export function createCyclingMap(
   map.on('moveend', () => syncUrl());
 
   return {
+    clearDestination,
     flyTo: (center, zoom) => {
-      clearSelection();
+      clearDestination();
       map.flyTo(center, zoom, { duration: 0.7 });
     },
     getShareUrl: () => {
@@ -497,6 +595,7 @@ export function createCyclingMap(
     },
     locateUser,
     rebuild,
+    setDestination,
     setOverlayVisibility,
     setParkingFeatures: (nextFeatures) => {
       parkingFeatures = nextFeatures;
@@ -504,7 +603,7 @@ export function createCyclingMap(
     },
     setClassVisibility,
     resetView: () => {
-      clearSelection();
+      clearDestination();
       map.flyTo(tokyoInitialView.center, tokyoInitialView.zoom);
     }
   };

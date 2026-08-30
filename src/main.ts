@@ -22,6 +22,7 @@ import {
   renderParkingCoverage
 } from './ui/controls';
 import { setLoadingFailure } from './ui/detailPanel';
+import { initializeDestinationSearch } from './ui/destinationSearch';
 import { initializeFeedbackDialog } from './ui/feedback';
 import { renderSourceRegistry } from './ui/sources';
 import { initializeViewCounter } from './ui/viewCounter';
@@ -103,6 +104,7 @@ document.querySelectorAll<HTMLInputElement>('[data-map-layer]').forEach((input) 
 });
 bindControls(cyclingMap, language);
 initializeFeedbackDialog(cyclingMap, language);
+initializeDestinationSearch(cyclingMap, language);
 
 const viewCounter = document.getElementById('viewCounter');
 if (viewCounter) {

@@ -1,7 +1,12 @@
 import { classMeta } from '../config';
 import { classText, localeByLanguage, messages, type Language } from '../i18n';
 import { createParkingMapLinks } from '../map/parkingLinks';
-import type { BicycleParkingFeature, CyclingSegmentFeature } from '../types';
+import type {
+  BicycleParkingFeature,
+  CyclingSegmentFeature,
+  MapDestination,
+  NearbyParking
+} from '../types';
 
 const facilitySummaries: Record<Language, Record<string, string>> = {
   ja: {
@@ -114,13 +119,19 @@ function ridingFacts(feature: CyclingSegmentFeature, language: Language): string
   return facts;
 }
 
-function renderHeading(language: Language, clearable: boolean): string {
+function renderHeading(
+  language: Language,
+  clearAction?: 'clear' | 'clear-destination'
+): string {
   const copy = messages[language];
+  const clearLabel = clearAction === 'clear-destination'
+    ? copy.destinationClear
+    : copy.clearSelection;
   return `<div class="detail-heading-row">
     <h2>${escapeHtml(copy.detailHeading)}</h2>
     ${
-      clearable
-        ? `<button class="detail-clear-button" type="button" data-detail-action="clear" aria-label="${escapeHtml(copy.clearSelection)}" title="${escapeHtml(copy.clearSelection)}">&times;</button>`
+      clearAction
+        ? `<button class="detail-clear-button" type="button" data-detail-action="${clearAction}" aria-label="${escapeHtml(clearLabel)}" title="${escapeHtml(clearLabel)}">&times;</button>`
         : ''
     }
   </div>`;
@@ -128,7 +139,7 @@ function renderHeading(language: Language, clearable: boolean): string {
 
 export function renderDefaultDetail(language: Language): string {
   const copy = messages[language];
-  return `${renderHeading(language, false)}
+  return `${renderHeading(language)}
     <p class="muted">${escapeHtml(copy.detailPrompt)}</p>
     <button class="report-button" type="button" data-detail-action="report">${escapeHtml(copy.reportAction)}</button>
     <small class="detail-report-note">${escapeHtml(copy.reportNote)}</small>`;
@@ -147,7 +158,7 @@ export function renderSegmentDetail(feature: CyclingSegmentFeature, language: La
   const summary =
     facilitySummaries[language][properties.facility_type] ?? properties.facility_type;
 
-  return `${renderHeading(language, true)}
+  return `${renderHeading(language, 'clear')}
     <h3 class="detail-title">${escapeHtml(properties.name)}</h3>
     <div class="badge" style="background:${meta.color}">${escapeHtml(classText[language][properties.comfort_class].label)}</div>
     ${properties.warning ? `<p class="warning">${escapeHtml(properties.warning)}</p>` : ''}
@@ -165,7 +176,7 @@ export function renderParkingDetail(feature: BicycleParkingFeature, language: La
   const mapLinks = createParkingMapLinks(feature);
   const sourceUrl = safeExternalUrl(properties.source_url);
 
-  return `${renderHeading(language, true)}
+  return `${renderHeading(language, 'clear')}
     <h3 class="detail-title">${escapeHtml(properties.name)}</h3>
     <div class="badge parking-detail-badge"><span aria-hidden="true">P</span>${escapeHtml(copy.parkingDetailLabel)}</div>
     <p class="parking-detail-municipality">${escapeHtml(properties.municipality)}</p>
@@ -182,7 +193,44 @@ export function renderParkingDetail(feature: BicycleParkingFeature, language: La
     <button class="report-button detail-selection-report" type="button" data-detail-action="report">${escapeHtml(copy.parkingReportAction)}</button>`;
 }
 
+function formatDistance(distanceMeters: number, language: Language): string {
+  if (distanceMeters < 1_000) {
+    const roundedMeters = Math.max(10, Math.round(distanceMeters / 10) * 10);
+    return `${new Intl.NumberFormat(localeByLanguage[language]).format(roundedMeters)} m`;
+  }
+
+  return `${new Intl.NumberFormat(localeByLanguage[language], {
+    maximumFractionDigits: 1
+  }).format(distanceMeters / 1_000)} km`;
+}
+
+export function renderDestinationDetail(
+  destination: MapDestination,
+  nearbyParking: NearbyParking[],
+  language: Language
+): string {
+  const copy = messages[language];
+  const parkingList = nearbyParking.length > 0
+    ? `<div class="destination-parking-list">${nearbyParking
+        .map(({ distanceMeters, feature }) => `<button class="destination-parking-result" type="button" data-detail-action="select-parking" data-parking-id="${escapeHtml(feature.properties.id)}">
+          <span><strong>${escapeHtml(feature.properties.name)}</strong><small>${escapeHtml(feature.properties.municipality)}</small></span>
+          <b>${escapeHtml(formatDistance(distanceMeters, language))}</b>
+        </button>`)
+        .join('')}</div>`
+    : `<p class="destination-parking-empty">${escapeHtml(copy.destinationNearbyEmpty)}</p>`;
+
+  return `${renderHeading(language, 'clear-destination')}
+    <h3 class="detail-title">${escapeHtml(destination.name)}</h3>
+    <div class="badge destination-detail-badge">${escapeHtml(copy.destinationType)}</div>
+    ${destination.context ? `<p class="destination-context">${escapeHtml(destination.context)}</p>` : ''}
+    <h4 class="destination-nearby-heading">${escapeHtml(copy.destinationNearbyHeading)}</h4>
+    <p class="destination-nearby-help">${escapeHtml(copy.destinationNearbyHelp)}</p>
+    ${parkingList}
+    <button class="report-button destination-report-button" type="button" data-detail-action="report">${escapeHtml(copy.reportAction)}</button>
+    <small class="detail-report-note">${escapeHtml(copy.reportNote)}</small>`;
+}
+
 export function setLoadingFailure(panel: HTMLElement, language: Language): void {
   const copy = messages[language];
-  panel.innerHTML = `${renderHeading(language, false)}<p>${escapeHtml(copy.loadingFailed)}</p>`;
+  panel.innerHTML = `${renderHeading(language)}<p>${escapeHtml(copy.loadingFailed)}</p>`;
 }

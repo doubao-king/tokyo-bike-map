@@ -95,6 +95,22 @@ export interface BicycleParkingProperties {
 
 export type BicycleParkingFeature = Feature<Point, BicycleParkingProperties>;
 
+export interface DestinationSuggestion {
+  context: string;
+  id: string;
+  name: string;
+}
+
+export interface MapDestination extends DestinationSuggestion {
+  latitude: number;
+  longitude: number;
+}
+
+export interface NearbyParking {
+  distanceMeters: number;
+  feature: BicycleParkingFeature;
+}
+
 export interface BicycleParkingMetadata {
   coverage: {
     cities: number;

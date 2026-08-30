@@ -27,6 +27,18 @@ interface Messages {
   dataPill: string;
   detailHeading: string;
   detailPrompt: string;
+  destinationClear: string;
+  destinationNearbyEmpty: string;
+  destinationNearbyHeading: string;
+  destinationNearbyHelp: string;
+  destinationResultsLabel: string;
+  destinationSearchAction: string;
+  destinationSearchError: string;
+  destinationSearchLabel: string;
+  destinationSearchLoading: string;
+  destinationSearchNoResults: string;
+  destinationSearchPlaceholder: string;
+  destinationType: string;
   documentTitle: string;
   eyebrow: string;
   feedbackCancel: string;
@@ -128,6 +140,18 @@ export const messages: Record<Language, Messages> = {
     dataPill: 'OSM暫定',
     detailHeading: '地図上の情報',
     detailPrompt: '色付きの道または駐輪場を選んでください。',
+    destinationClear: '目的地を解除',
+    destinationNearbyEmpty: '2km以内に登録済みの駐輪場が見つかりません。',
+    destinationNearbyHeading: '近くの駐輪場',
+    destinationNearbyHelp: '直線距離2km以内から、近い順に最大5件を表示しています。',
+    destinationResultsLabel: '目的地の検索候補',
+    destinationSearchAction: '検索',
+    destinationSearchError: '目的地を検索できませんでした。少し時間をおいてお試しください。',
+    destinationSearchLabel: '目的地を検索',
+    destinationSearchLoading: '検索中…',
+    destinationSearchNoResults: '東京都内の候補が見つかりません。',
+    destinationSearchPlaceholder: '駅・施設・住所を検索',
+    destinationType: '目的地',
     documentTitle: '東京の自転車マップ | 走りやすい道・自転車レーン・駐輪場',
     eyebrow: '東京都内の自転車通行環境',
     feedbackCancel: 'キャンセル',
@@ -229,6 +253,18 @@ export const messages: Record<Language, Messages> = {
     dataPill: 'OSM estimate',
     detailHeading: 'Map information',
     detailPrompt: 'Select a colored road or bicycle parking marker.',
+    destinationClear: 'Clear destination',
+    destinationNearbyEmpty: 'No registered bicycle parking was found within 2 km.',
+    destinationNearbyHeading: 'Nearby bicycle parking',
+    destinationNearbyHelp: 'Up to five facilities within 2 km, ordered by straight-line distance.',
+    destinationResultsLabel: 'Destination suggestions',
+    destinationSearchAction: 'Search',
+    destinationSearchError: 'The destination search is unavailable. Please try again shortly.',
+    destinationSearchLabel: 'Search for a destination',
+    destinationSearchLoading: 'Searching…',
+    destinationSearchNoResults: 'No matching destination was found in Tokyo.',
+    destinationSearchPlaceholder: 'Search stations, places or addresses',
+    destinationType: 'Destination',
     documentTitle: 'Tokyo Bicycle Map | Comfortable roads, bicycle lanes and parking',
     eyebrow: 'Cycling conditions across Tokyo',
     feedbackCancel: 'Cancel',
@@ -330,6 +366,18 @@ export const messages: Record<Language, Messages> = {
     dataPill: 'OSM 推测',
     detailHeading: '地图信息',
     detailPrompt: '请选择彩色道路或自行车停车场标记。',
+    destinationClear: '清除目的地',
+    destinationNearbyEmpty: '2公里内未找到已登记的自行车停车场。',
+    destinationNearbyHeading: '附近的自行车停车场',
+    destinationNearbyHelp: '按直线距离显示2公里内最近的最多5处设施。',
+    destinationResultsLabel: '目的地搜索结果',
+    destinationSearchAction: '搜索',
+    destinationSearchError: '暂时无法搜索目的地，请稍后再试。',
+    destinationSearchLabel: '搜索目的地',
+    destinationSearchLoading: '正在搜索…',
+    destinationSearchNoResults: '在东京都内未找到匹配的目的地。',
+    destinationSearchPlaceholder: '搜索车站、设施或地址',
+    destinationType: '目的地',
     documentTitle: '东京自行车地图 | 舒适道路、自行车专用车道与停车场',
     eyebrow: '东京都内自行车通行环境',
     feedbackCancel: '取消',
@@ -573,6 +621,10 @@ export function applyStaticTranslations(language: Language): void {
   document.querySelectorAll<HTMLElement>('[data-i18n-title]').forEach((element) => {
     const key = element.dataset.i18nTitle as keyof Messages | undefined;
     if (key && copy[key]) element.setAttribute('title', copy[key]);
+  });
+  document.querySelectorAll<HTMLInputElement>('[data-i18n-placeholder]').forEach((element) => {
+    const key = element.dataset.i18nPlaceholder as keyof Messages | undefined;
+    if (key && copy[key]) element.setAttribute('placeholder', copy[key]);
   });
 
   (['A', 'B', 'C', 'D'] as ComfortClass[]).forEach((cls) => {

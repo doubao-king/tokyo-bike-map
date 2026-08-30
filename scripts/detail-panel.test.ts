@@ -1,10 +1,15 @@
 import assert from 'node:assert/strict';
 import {
   renderDefaultDetail,
+  renderDestinationDetail,
   renderParkingDetail,
   renderSegmentDetail
 } from '../src/ui/detailPanel';
-import type { BicycleParkingFeature, CyclingSegmentFeature } from '../src/types';
+import type {
+  BicycleParkingFeature,
+  CyclingSegmentFeature,
+  MapDestination
+} from '../src/types';
 
 const segment: CyclingSegmentFeature = {
   type: 'Feature',
@@ -43,6 +48,14 @@ const parking: BicycleParkingFeature = {
   }
 };
 
+const destination: MapDestination = {
+  context: 'Chiyoda City, Tokyo',
+  id: 'destination-test',
+  latitude: 35.6812,
+  longitude: 139.7671,
+  name: 'Tokyo <Station>'
+};
+
 for (const language of ['ja', 'en', 'zh'] as const) {
   const defaultDetail = renderDefaultDetail(language);
   assert.equal((defaultDetail.match(/data-detail-action="report"/g) ?? []).length, 1);
@@ -61,6 +74,17 @@ for (const language of ['ja', 'en', 'zh'] as const) {
   assert.match(parkingDetail, /Apple Maps/);
   assert.match(parkingDetail, /42/);
   assert.doesNotMatch(parkingDetail, /parking-report-button/);
+
+  const destinationDetail = renderDestinationDetail(
+    destination,
+    [{ distanceMeters: 640, feature: parking }],
+    language
+  );
+  assert.equal((destinationDetail.match(/data-detail-action="clear-destination"/g) ?? []).length, 1);
+  assert.equal((destinationDetail.match(/data-detail-action="select-parking"/g) ?? []).length, 1);
+  assert.equal((destinationDetail.match(/data-detail-action="report"/g) ?? []).length, 1);
+  assert.match(destinationDetail, /Tokyo &lt;Station&gt;/);
+  assert.match(destinationDetail, /640 m/);
 }
 
 console.log('Unified map selection details passed.');

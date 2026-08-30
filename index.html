@@ -106,6 +106,18 @@
           <button id="resetBtn" class="ghost" type="button" data-i18n="reset">東京本土</button>
         </div>
       </div>
+      <div class="destination-search" id="destinationSearch">
+        <form id="destinationSearchForm" class="destination-search-form" role="search" autocomplete="off">
+          <label class="visually-hidden" for="destinationSearchInput" data-i18n="destinationSearchLabel">目的地を検索</label>
+          <div class="destination-search-row">
+            <input id="destinationSearchInput" type="search" maxlength="120" spellcheck="false" aria-controls="destinationSearchResults" aria-expanded="false" data-i18n-placeholder="destinationSearchPlaceholder" placeholder="駅・施設・住所を検索" />
+            <button id="destinationSearchClear" class="destination-search-clear" type="button" aria-label="目的地を解除" title="目的地を解除" data-i18n-aria="destinationClear" data-i18n-title="destinationClear" hidden>&times;</button>
+            <button id="destinationSearchSubmit" class="destination-search-submit" type="submit" data-i18n="destinationSearchAction">検索</button>
+          </div>
+        </form>
+        <div id="destinationSearchResults" class="destination-search-results" role="listbox" aria-label="目的地の検索候補" data-i18n-aria="destinationResultsLabel" hidden></div>
+        <p id="destinationSearchStatus" class="destination-search-status" role="status" aria-live="polite" hidden></p>
+      </div>
       <div id="map" aria-label="東京の自転車通行環境地図" data-i18n-aria="mapAria"></div>
       <div class="map-notice" id="mapNotice" role="status" aria-live="polite" hidden></div>
       <div class="legend-mobile">
