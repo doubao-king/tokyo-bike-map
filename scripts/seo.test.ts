@@ -32,6 +32,11 @@ assert.match(sitemap, new RegExp(`<loc>${homeSeo.canonicalUrl}</loc>`));
 assert.match(wrangler, /"\/area\/\*"/);
 assert.match(wrangler, /"\/parking\/\*"/);
 
+['about', 'methodology', 'updates', 'contact', 'privacy', 'terms'].forEach((page) => {
+  assert.match(sitemap, new RegExp(`<loc>${canonicalOrigin}/${page}/</loc>`));
+});
+assert.doesNotMatch(sitemap, /\/(?:about|methodology|updates|contact|privacy|terms)\/index\.html/);
+
 areaTargets.forEach((area) => {
   const path = areaPath(area.id);
   assert.equal(areaTargetFromPath(path)?.id, area.id);
