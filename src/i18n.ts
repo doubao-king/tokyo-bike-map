@@ -28,6 +28,8 @@ interface Messages {
   detailHeading: string;
   detailPrompt: string;
   destinationClear: string;
+  destinationDocumentTitle: string;
+  destinationMetaDescription: string;
   destinationNearbyEmpty: string;
   destinationNearbyHeading: string;
   destinationNearbyHelp: string;
@@ -38,6 +40,8 @@ interface Messages {
   destinationSearchLoading: string;
   destinationSearchNoResults: string;
   destinationSearchPlaceholder: string;
+  destinationPageTagline: string;
+  destinationPageTitle: string;
   destinationType: string;
   documentTitle: string;
   eyebrow: string;
@@ -91,6 +95,7 @@ interface Messages {
   parkingSpaces: string;
   parkingStatusCheck: string;
   parkingReportAction: string;
+  popularDestinationsHeading: string;
   privacy: string;
   reportAction: string;
   reportNote: string;
@@ -118,7 +123,7 @@ interface Messages {
 
 export const messages: Record<Language, Messages> = {
   ja: {
-    about: 'このマップについて',
+    about: 'このサイトを作った理由',
     ad: '広告',
     areaDocumentTitle: '{area}の自転車マップ | 走りやすい道・駐輪場',
     areaHeading: 'エリアから見る',
@@ -141,6 +146,9 @@ export const messages: Record<Language, Messages> = {
     detailHeading: '地図上の情報',
     detailPrompt: '色付きの道または駐輪場を選んでください。',
     destinationClear: '目的地を解除',
+    destinationDocumentTitle: '{destination}周辺の駐輪場 | 東京じてんしゃマップ',
+    destinationMetaDescription:
+      '{destination}周辺の駐輪場を近い順に確認。所在地、駐輪台数、公式データへのリンクと、周辺の走りやすい道・自転車レーンを地図で見られます。',
     destinationNearbyEmpty: '2km以内に登録済みの駐輪場が見つかりません。',
     destinationNearbyHeading: '近くの駐輪場',
     destinationNearbyHelp: '直線距離2km以内から、近い順に最大5件を表示しています。',
@@ -151,6 +159,8 @@ export const messages: Record<Language, Messages> = {
     destinationSearchLoading: '検索中…',
     destinationSearchNoResults: '東京都内の候補が見つかりません。',
     destinationSearchPlaceholder: '駅・施設・住所を検索',
+    destinationPageTagline: '駅から近い駐輪場と、周辺の自転車通行環境を確認できます。',
+    destinationPageTitle: '{destination}周辺の駐輪場',
     destinationType: '目的地',
     documentTitle: '東京の自転車マップ | 走りやすい道・自転車レーン・駐輪場',
     eyebrow: '東京都内の自転車通行環境',
@@ -206,6 +216,7 @@ export const messages: Record<Language, Messages> = {
     parkingSpaces: '台',
     parkingStatusCheck: '閉鎖・移転などが未反映の場合があります。現地情報をご確認ください。',
     parkingReportAction: 'この駐輪場の情報を報告',
+    popularDestinationsHeading: '駅から駐輪場を探す',
     privacy: 'プライバシー',
     reportAction: '地図にない情報を報告',
     reportNote: 'アカウント不要で送信できます。内容は確認のため非公開で保存します。',
@@ -231,7 +242,7 @@ export const messages: Record<Language, Messages> = {
     visibleRoads: '表示する道'
   },
   en: {
-    about: 'About this map',
+    about: 'Why we built this site',
     ad: 'Advertisement',
     areaDocumentTitle: '{area} Bicycle Map | Comfortable roads and parking',
     areaHeading: 'Explore by area',
@@ -254,6 +265,9 @@ export const messages: Record<Language, Messages> = {
     detailHeading: 'Map information',
     detailPrompt: 'Select a colored road or bicycle parking marker.',
     destinationClear: 'Clear destination',
+    destinationDocumentTitle: 'Bicycle parking near {destination} | Tokyo Bicycle Map',
+    destinationMetaDescription:
+      'Find bicycle parking near {destination}, ordered by distance, with locations, capacity, official sources and nearby comfortable cycling roads.',
     destinationNearbyEmpty: 'No registered bicycle parking was found within 2 km.',
     destinationNearbyHeading: 'Nearby bicycle parking',
     destinationNearbyHelp: 'Up to five facilities within 2 km, ordered by straight-line distance.',
@@ -264,6 +278,8 @@ export const messages: Record<Language, Messages> = {
     destinationSearchLoading: 'Searching…',
     destinationSearchNoResults: 'No matching destination was found in Tokyo.',
     destinationSearchPlaceholder: 'Search stations, places or addresses',
+    destinationPageTagline: 'Compare nearby bicycle parking and the surrounding cycling environment.',
+    destinationPageTitle: 'Bicycle parking near {destination}',
     destinationType: 'Destination',
     documentTitle: 'Tokyo Bicycle Map | Comfortable roads, bicycle lanes and parking',
     eyebrow: 'Cycling conditions across Tokyo',
@@ -319,6 +335,7 @@ export const messages: Record<Language, Messages> = {
     parkingSpaces: 'spaces',
     parkingStatusCheck: 'Closures or relocations may not yet be reflected. Check current information on site.',
     parkingReportAction: 'Report this bicycle parking facility',
+    popularDestinationsHeading: 'Parking near major stations',
     privacy: 'Privacy',
     reportAction: 'Report missing map information',
     reportNote: 'No account is needed. Reports are stored privately for review.',
@@ -344,7 +361,7 @@ export const messages: Record<Language, Messages> = {
     visibleRoads: 'Roads to show'
   },
   zh: {
-    about: '关于本地图',
+    about: '为什么制作这个网站',
     ad: '广告',
     areaDocumentTitle: '{area}自行车地图 | 舒适道路与停车场',
     areaHeading: '按地区查看',
@@ -367,6 +384,9 @@ export const messages: Record<Language, Messages> = {
     detailHeading: '地图信息',
     detailPrompt: '请选择彩色道路或自行车停车场标记。',
     destinationClear: '清除目的地',
+    destinationDocumentTitle: '{destination}附近的自行车停车场 | 东京自行车地图',
+    destinationMetaDescription:
+      '按距离查看{destination}附近的自行车停车场，包括地址、停车数量、官方来源及周边舒适骑行道路。',
     destinationNearbyEmpty: '2公里内未找到已登记的自行车停车场。',
     destinationNearbyHeading: '附近的自行车停车场',
     destinationNearbyHelp: '按直线距离显示2公里内最近的最多5处设施。',
@@ -377,6 +397,8 @@ export const messages: Record<Language, Messages> = {
     destinationSearchLoading: '正在搜索…',
     destinationSearchNoResults: '在东京都内未找到匹配的目的地。',
     destinationSearchPlaceholder: '搜索车站、设施或地址',
+    destinationPageTagline: '查看附近的自行车停车场和周边骑行环境。',
+    destinationPageTitle: '{destination}附近的自行车停车场',
     destinationType: '目的地',
     documentTitle: '东京自行车地图 | 舒适道路、自行车专用车道与停车场',
     eyebrow: '东京都内自行车通行环境',
@@ -432,6 +454,7 @@ export const messages: Record<Language, Messages> = {
     parkingSpaces: '辆',
     parkingStatusCheck: '关闭或搬迁等变化可能尚未更新，请确认现场最新信息。',
     parkingReportAction: '报告此自行车停车场',
+    popularDestinationsHeading: '按车站查找停车场',
     privacy: '隐私政策',
     reportAction: '报告地图缺少的信息',
     reportNote: '无需账号。报告将以非公开方式保存，供核查使用。',

@@ -1,7 +1,7 @@
 import { loadDestination, searchDestinations } from '../data/destinationSearch';
 import type { CyclingMap } from '../map/createMap';
 import { messages, type Language } from '../i18n';
-import type { DestinationSuggestion } from '../types';
+import type { DestinationSuggestion, MapDestination } from '../types';
 
 function isAbortError(error: unknown): boolean {
   return error instanceof DOMException && error.name === 'AbortError';
@@ -9,7 +9,8 @@ function isAbortError(error: unknown): boolean {
 
 export function initializeDestinationSearch(
   cyclingMap: CyclingMap,
-  language: Language
+  language: Language,
+  initialDestination?: MapDestination
 ): void {
   const formElement = document.getElementById('destinationSearchForm') as HTMLFormElement | null;
   const inputElement = document.getElementById('destinationSearchInput') as HTMLInputElement | null;
@@ -34,7 +35,12 @@ export function initializeDestinationSearch(
   let searchController: AbortController | undefined;
   let lookupController: AbortController | undefined;
   let debounceTimer: ReturnType<typeof setTimeout> | undefined;
-  let hasDestination = false;
+  let hasDestination = Boolean(initialDestination);
+
+  if (initialDestination) {
+    input.value = initialDestination.name;
+    clearButton.hidden = false;
+  }
 
   function setStatus(message?: string, isError = false): void {
     status.textContent = message ?? '';

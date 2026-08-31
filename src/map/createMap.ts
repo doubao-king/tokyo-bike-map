@@ -19,6 +19,10 @@ import type {
 import { getTileConfig } from './tileConfig';
 import { areaTargetFromPath } from '../seo';
 import { findNearbyParking } from './nearbyParking';
+import {
+  destinationTargetFromPath,
+  writeDestinationToUrl
+} from '../destinations';
 
 export interface CyclingMap {
   clearDestination(): void;
@@ -66,6 +70,7 @@ export function createCyclingMap(
   const requestedLongitude = Number(urlParams.get('lng'));
   const requestedZoom = Number(urlParams.get('z'));
   const requestedArea = areaTargetFromPath(window.location.pathname);
+  const requestedDestination = destinationTargetFromPath(window.location.pathname);
   const hasRequestedView =
     Number.isFinite(requestedLatitude) &&
     Number.isFinite(requestedLongitude) &&
@@ -78,11 +83,15 @@ export function createCyclingMap(
     requestedZoom <= 19;
   const initialCenter = hasRequestedView
     ? ([requestedLatitude, requestedLongitude] as [number, number])
+    : requestedDestination
+    ? ([requestedDestination.latitude, requestedDestination.longitude] as [number, number])
     : requestedArea
     ? requestedArea.center
     : tokyoInitialView.center;
   const initialZoom = hasRequestedView
     ? requestedZoom
+    : requestedDestination
+    ? 16
     : requestedArea
     ? requestedArea.zoom
     : tokyoInitialView.zoom;
@@ -327,6 +336,10 @@ export function createCyclingMap(
   }
 
   function setDestination(nextDestination: MapDestination): void {
+    const pathDestination = destinationTargetFromPath(window.location.pathname);
+    if (pathDestination && nextDestination.id !== `curated:${pathDestination.id}`) {
+      window.history.replaceState(null, '', `/${window.location.search}`);
+    }
     resetSelectedStyle();
     selection = undefined;
     destinationMarker?.removeFrom(map);
@@ -363,6 +376,10 @@ export function createCyclingMap(
     destinationMarker?.removeFrom(map);
     destinationMarker = undefined;
     destination = undefined;
+    if (hadDestination && destinationTargetFromPath(window.location.pathname)) {
+      window.history.replaceState(null, '', `/${window.location.search}`);
+    }
+    syncUrl();
     renderFallbackDetail();
     if (hadDestination) {
       document.dispatchEvent(new CustomEvent('tokyo-bike-map:destination-cleared'));
@@ -425,6 +442,7 @@ export function createCyclingMap(
     } else {
       params.set('lang', language);
     }
+    writeDestinationToUrl(params, destination, window.location.pathname);
     window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
   }
 

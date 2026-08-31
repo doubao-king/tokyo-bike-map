@@ -11,6 +11,11 @@ import {
 import type { ComfortClass, CyclingSegmentFeature, MapOverlay } from '../types';
 import type { CyclingMap } from '../map/createMap';
 import { areaPath } from '../seo';
+import {
+  destinationPath,
+  destinationTargets,
+  localizedDestination
+} from '../destinations';
 
 const comfortableClasses: ComfortClass[] = ['A', 'B'];
 
@@ -53,6 +58,18 @@ function populateAreaButtons(
       event.preventDefault();
       cyclingMap.flyTo(area.center, area.zoom);
     });
+    container.append(link);
+  });
+}
+
+function populateDestinationLinks(container: HTMLElement, language: Language): void {
+  destinationTargets.forEach((target) => {
+    const destination = localizedDestination(target, language);
+    const link = document.createElement('a');
+    const url = new URL(destinationPath(target.id), window.location.origin);
+    if (language !== 'ja') url.searchParams.set('lang', language);
+    link.href = `${url.pathname}${url.search}`;
+    link.textContent = destination.name;
     container.append(link);
   });
 }
@@ -127,6 +144,9 @@ export function bindControls(cyclingMap: CyclingMap, language: Language): void {
   if (areaButtons) {
     populateAreaButtons(areaButtons, cyclingMap, language);
   }
+
+  const destinationLinks = document.getElementById('destinationLinks');
+  if (destinationLinks) populateDestinationLinks(destinationLinks, language);
 
   document.querySelectorAll<HTMLInputElement>('[data-map-layer]').forEach((input) => {
     input.addEventListener('change', () => {

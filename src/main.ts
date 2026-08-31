@@ -4,6 +4,11 @@ import { classUrlValues, comfortClasses, defaultVisibleClasses } from './config'
 import { loadParking } from './data/loadParking';
 import { loadSegments } from './data/loadSegments';
 import {
+  destinationFromUrl,
+  destinationTargetFromPath,
+  localizedDestination
+} from './destinations';
+import {
   applyStaticTranslations,
   areaText,
   getLanguage,
@@ -31,8 +36,34 @@ const language = getLanguage();
 rememberLanguage(language);
 applyStaticTranslations(language);
 
+const searchParams = new URLSearchParams(window.location.search);
 const initialArea = areaTargetFromPath(window.location.pathname);
-if (initialArea) {
+const initialDestinationTarget = destinationTargetFromPath(window.location.pathname);
+const initialDestination = destinationFromUrl(window.location.pathname, searchParams, language);
+if (initialDestinationTarget) {
+  const copy = messages[language];
+  const destination = localizedDestination(initialDestinationTarget, language);
+  const replaceDestination = (template: string): string =>
+    template.replace('{destination}', destination.name);
+  const description = replaceDestination(copy.destinationMetaDescription);
+  document.title = replaceDestination(copy.destinationDocumentTitle);
+  document.querySelector<HTMLHeadingElement>('h1[data-i18n="title"]')!.textContent =
+    replaceDestination(copy.destinationPageTitle);
+  document.querySelector<HTMLElement>('[data-i18n="tagline"]')!.textContent =
+    copy.destinationPageTagline;
+  document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute(
+    'content',
+    description
+  );
+  document.querySelector<HTMLMetaElement>('meta[property="og:title"]')?.setAttribute(
+    'content',
+    document.title
+  );
+  document.querySelector<HTMLMetaElement>('meta[property="og:description"]')?.setAttribute(
+    'content',
+    description
+  );
+} else if (initialArea) {
   const copy = messages[language];
   const areaLabel = areaText[language][initialArea.id] ?? initialArea.label;
   const replaceArea = (template: string): string => template.replace('{area}', areaLabel);
@@ -62,13 +93,13 @@ if (!detailPanel || !visibleCount) {
   throw new Error('Required map UI elements are missing.');
 }
 
-const searchParams = new URLSearchParams(window.location.search);
 const supportedOverlays: MapOverlay[] = ['parking'];
 const initialOverlays = new Set(
   (searchParams.get('layers') ?? '')
     .split(',')
     .filter((value): value is MapOverlay => supportedOverlays.includes(value as MapOverlay))
 );
+if (initialDestination) initialOverlays.add('parking');
 const cyclingMap = createCyclingMap(
   'map',
   detailPanel,
@@ -104,7 +135,8 @@ document.querySelectorAll<HTMLInputElement>('[data-map-layer]').forEach((input) 
 });
 bindControls(cyclingMap, language);
 initializeFeedbackDialog(cyclingMap, language);
-initializeDestinationSearch(cyclingMap, language);
+initializeDestinationSearch(cyclingMap, language, initialDestination);
+if (initialDestination) cyclingMap.setDestination(initialDestination);
 
 const viewCounter = document.getElementById('viewCounter');
 if (viewCounter) {

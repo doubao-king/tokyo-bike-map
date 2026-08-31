@@ -17,17 +17,17 @@ const language = supportedLanguages.includes(requestedLanguage)
 
 const labels = {
   ja: {
-    about: 'このマップについて', contact: '情報の修正・お問い合わせ', language: '表示言語',
+    about: 'このサイトを作った理由', contact: '情報の修正・お問い合わせ', language: '表示言語',
     map: '← 地図に戻る', methodology: 'データと判定方法', privacy: 'プライバシー', site: 'サイト情報',
     terms: '利用規約', title: '東京じてんしゃマップ', updates: '更新履歴'
   },
   en: {
-    about: 'About this map', contact: 'Corrections and contact', language: 'Language',
+    about: 'Why we built this site', contact: 'Corrections and contact', language: 'Language',
     map: '← Back to the map', methodology: 'Data and methodology', privacy: 'Privacy', site: 'Site information',
     terms: 'Terms', title: 'Tokyo Bicycle Map', updates: 'Updates'
   },
   zh: {
-    about: '关于本地图', contact: '信息修正与联系', language: '显示语言',
+    about: '为什么制作这个网站', contact: '信息修正与联系', language: '显示语言',
     map: '← 返回地图', methodology: '数据与判定方法', privacy: '隐私政策', site: '网站信息',
     terms: '使用条款', title: '东京自行车地图', updates: '更新记录'
   }
@@ -36,9 +36,9 @@ const labels = {
 const pages = {
   en: {
     about: {
-      description: 'The purpose, coverage, capabilities and limitations of Tokyo Bicycle Map.',
-      lede: 'Tokyo Bicycle Map is a static information map that helps people who feel uneasy riding near cars compare cycling conditions across Tokyo.',
-      html: `<section><h2>Purpose</h2><p>Cycle tracks, shared sidewalk spaces, riverbanks, bicycle lanes and mixed-traffic markings can look similar on a conventional map. This map separates them by riding environment so suitable areas are easier to find.</p><p>It is not navigation and does not calculate the shortest route or journey time. Use it to research an area before setting out.</p></section><section><h2>Coverage</h2><p>The map covers the 23 wards, Tama and Tokyo's islands. OpenStreetMap coverage varies by area, so a place with few colored segments may still have cycling infrastructure on the ground.</p></section><section><h2>Follow conditions on site</h2><div class="notice"><p>Roadworks, time restrictions, sign changes, congestion and surface conditions may not be reflected. Always follow signs, traffic rules and conditions on site.</p></div></section>`
+      description: 'Why Tokyo Bicycle Map was created, what it aims to do and what it can do today.',
+      lede: 'We wanted a calm place where people cycling in Tokyo could check which roads may feel comfortable and whether bicycle parking exists near their destination before setting out.',
+      html: `<section><h2>Why we built it</h2><p>Cycle tracks, shared sidewalk spaces, greenways, riverbanks and bicycle lanes can look alike on a conventional map. For someone uneasy about riding near cars, the shortest route alone may not provide enough information to choose a road.</p><p>This map brings those spaces together by riding environment and shows registered bicycle parking near stations and other destinations. It is a small research tool intended to make cycling a more approachable everyday option.</p></section><section><h2>What we are working toward</h2><ul><li>Make differences between separated routes, greenways, riverbanks and bicycle lanes easy to understand</li><li>Let people search for a destination and find registered bicycle parking nearby</li><li>Let anyone report information that differs on site without creating an account</li><li>Gradually reduce gaps in information across all of Tokyo</li></ul><p>In time, carefully reviewed observations from users may also help make the improvements Tokyo cyclists need more visible. Our first priority is to grow a useful, trusted map for everyday trips.</p></section><section><h2>What it does today</h2><p>The map covers the 23 wards, Tama and Tokyo's islands, and searches for registered bicycle parking near a station, place or address. Road display uses OpenStreetMap and bicycle-parking information uses published data from Tokyo and municipalities.</p><p>It is not turn-by-turn navigation and does not calculate the shortest route or journey time. Use it to research an area before setting out.</p></section><section><h2>Follow conditions on site</h2><div class="notice"><p>Roadworks, time restrictions, sign changes, congestion and surface conditions may not be reflected. Always follow signs, traffic rules and conditions on site.</p></div></section>`
     },
     methodology: {
       description: 'Data sources, road classifications, additional layers and limitations of Tokyo Bicycle Map.',
@@ -48,7 +48,7 @@ const pages = {
     updates: {
       description: 'Data and feature updates for Tokyo Bicycle Map.',
       lede: 'This page records data dates and changes that affect classification or display.',
-      html: `<section><h2>31 August 2026</h2><ul><li>Added destination search for stations, places and addresses, with up to five registered bicycle-parking facilities within 2 km ordered by straight-line distance.</li><li>Unified clearing and correction-report behavior across destinations, roads, parking facilities and general map locations.</li></ul></section><section><h2>27 August 2026</h2><ul><li>Added Japanese, English and Chinese interfaces.</li><li>Added current-location display.</li><li>Expanded bicycle parking to 1,768 facilities across 51 municipalities, including all 23 wards and 26 cities, using Tokyo's consolidated official data.</li><li>Added Google Maps and Apple Maps links for parking facilities, with a warning that closures or relocations may not yet be reflected.</li><li>Added area-specific URLs, page metadata and a sitemap for search discovery.</li><li>Added a private, account-free correction form that attaches the selected road or parking data ID and location.</li><li>Removed the terrain layer after initial review.</li></ul></section><section><h2>26 August 2026</h2><ul><li>Added public hosting, security settings and a commercial map-tile provider.</li><li>Added public pages covering methodology, privacy and terms.</li><li>Organized Tokyo-wide area shortcuts and official references.</li></ul></section><section><h2>25 August 2026</h2><ul><li>Imported Tokyo-wide cycling-related OpenStreetMap data.</li><li>Omitted short bicycle-crossing strokes.</li><li>Resolved overlaps between mixed-traffic and more comfortable classes.</li></ul></section><p class="updated">Data is refreshed according to source availability and review capacity.</p>`
+      html: `<section><h2>31 August 2026</h2><ul><li>Added destination search for stations, places and addresses, with up to five registered bicycle-parking facilities within 2 km ordered by straight-line distance.</li><li>Added bicycle-parking pages for 14 major stations and share links that retain the selected destination.</li><li>Added the reason this site was created and its longer-term aims to the public information page.</li><li>Unified clearing and correction-report behavior across destinations, roads, parking facilities and general map locations.</li></ul></section><section><h2>27 August 2026</h2><ul><li>Added Japanese, English and Chinese interfaces.</li><li>Added current-location display.</li><li>Expanded bicycle parking to 1,768 facilities across 51 municipalities, including all 23 wards and 26 cities, using Tokyo's consolidated official data.</li><li>Added Google Maps and Apple Maps links for parking facilities, with a warning that closures or relocations may not yet be reflected.</li><li>Added area-specific URLs, page metadata and a sitemap for search discovery.</li><li>Added a private, account-free correction form that attaches the selected road or parking data ID and location.</li><li>Removed the terrain layer after initial review.</li></ul></section><section><h2>26 August 2026</h2><ul><li>Added public hosting, security settings and a commercial map-tile provider.</li><li>Added public pages covering methodology, privacy and terms.</li><li>Organized Tokyo-wide area shortcuts and official references.</li></ul></section><section><h2>25 August 2026</h2><ul><li>Imported Tokyo-wide cycling-related OpenStreetMap data.</li><li>Omitted short bicycle-crossing strokes.</li><li>Resolved overlaps between mixed-traffic and more comfortable classes.</li></ul></section><p class="updated">Data is refreshed according to source availability and review capacity.</p>`
     },
     contact: {
       description: 'How to suggest corrections or contact Tokyo Bicycle Map.',
@@ -68,9 +68,9 @@ const pages = {
   },
   zh: {
     about: {
-      description: '介绍东京自行车地图的目的、范围、功能与限制。',
-      lede: '东京自行车地图是一张静态信息地图，帮助对机动车感到不安的骑行者比较东京各地的自行车通行环境。',
-      html: `<section><h2>目的</h2><p>在普通地图上，自行车道、人行道内的骑行空间、河岸、自行车专用车道和混合车流标线可能看起来相似。本地图按骑行环境将它们区分显示，方便寻找合适区域。</p><p>本地图不是导航工具，不计算最短路线或所需时间。请用于出发前了解地区情况。</p></section><section><h2>显示范围</h2><p>范围包括东京23区、多摩地区和岛屿地区。OpenStreetMap 的登记量因地区而异，彩色路段较少不代表现场没有自行车设施。</p></section><section><h2>请以现场状况为准</h2><div class="notice"><p>道路施工、时段限制、标志变化、拥堵和路面状况可能尚未反映。骑行时请遵守现场标志、交通规则并留意周围环境。</p></div></section>`
+      description: '介绍制作东京自行车地图的原因、目标与目前可以使用的功能。',
+      lede: '我们希望为在东京骑车的人提供一个安心的查询空间，让大家在出发前了解哪些道路可能更舒适，以及目的地附近是否有自行车停车场。',
+      html: `<section><h2>为什么制作这个网站</h2><p>在普通地图上，自行车道、人行道内的骑行空间、绿道、河岸和自行车专用车道可能看起来相似。对于不安于在机动车附近骑行的人来说，仅有最短路线并不足以判断该走哪条路。</p><p>因此，本地图按骑行环境整理东京各处的自行车通行空间，并同时显示车站及其他目的地附近已登记的自行车停车场。这是一个帮助人们更轻松选择自行车作为日常交通方式的出行前查询工具。</p></section><section><h2>我们的目标</h2><ul><li>清楚区分与机动车隔离的道路、绿道、河岸和自行车专用车道</li><li>搜索目的地并查找附近已登记的自行车停车场</li><li>无需账号即可报告与现场不符的信息</li><li>逐步减少东京各地区之间的信息差异</li></ul><p>未来，经过认真核查的用户现场信息也可以帮助大家更清楚地看到东京骑行者需要哪些改善。目前最优先的是把它发展为一张对日常出行真正有用、值得信赖的地图。</p></section><section><h2>目前可以做什么</h2><p>地图覆盖东京23区、多摩地区和岛屿地区，也可以按车站、设施或地址查找附近已登记的自行车停车场。道路显示使用 OpenStreetMap，停车场信息使用东京都及各地方政府的公开数据。</p><p>本地图不是导航工具，不计算最短路线或所需时间。请用于出发前了解地区情况。</p></section><section><h2>请以现场状况为准</h2><div class="notice"><p>道路施工、时段限制、标志变化、拥堵和路面状况可能尚未反映。骑行时请遵守现场标志、交通规则并留意周围环境。</p></div></section>`
     },
     methodology: {
       description: '介绍东京自行车地图的数据来源、道路分类、附加图层和限制。',
@@ -80,7 +80,7 @@ const pages = {
     updates: {
       description: '东京自行车地图的数据与功能更新记录。',
       lede: '本页记录数据日期以及影响分类或显示方式的变更。',
-      html: `<section><h2>2026年8月31日</h2><ul><li>增加车站、设施和地址的目的地搜索，并按直线距离显示2公里内最近的最多5处已登记自行车停车场。</li><li>统一目的地、道路、停车场和一般地图位置的清除与修正报告操作。</li></ul></section><section><h2>2026年8月27日</h2><ul><li>增加日语、英语和中文界面。</li><li>增加当前位置显示。</li><li>使用东京都整合的官方数据，将自行车停车场扩大至51个区市町的1,768处设施，覆盖全部23区和26市。</li><li>为停车场增加 Google Maps 与 Apple Maps 链接，并提示关闭或搬迁等变化可能尚未更新。</li><li>增加供搜索发现的地区专属网址、页面信息和网站地图。</li><li>增加无需账号、可附上所选道路或停车场数据 ID 及地点的非公开修正表单。</li><li>初步确认后移除地形图层。</li></ul></section><section><h2>2026年8月26日</h2><ul><li>增加公开托管、安全设置和商用地图图块服务。</li><li>增加数据方法、隐私政策和使用条款等页面。</li><li>整理覆盖东京全域的地区按钮与官方参考资料。</li></ul></section><section><h2>2026年8月25日</h2><ul><li>导入东京全域的 OpenStreetMap 自行车相关数据。</li><li>暂不显示短小的自行车横穿带。</li><li>整理混合车流与更舒适分类的重合部分。</li></ul></section><p class="updated">数据将根据来源的公开情况和核查能力进行更新。</p>`
+      html: `<section><h2>2026年8月31日</h2><ul><li>增加车站、设施和地址的目的地搜索，并按直线距离显示2公里内最近的最多5处已登记自行车停车场。</li><li>增加14个主要车站的自行车停车场页面，以及可保留所选目的地的分享链接。</li><li>在公开信息页面中增加制作本网站的原因与未来目标。</li><li>统一目的地、道路、停车场和一般地图位置的清除与修正报告操作。</li></ul></section><section><h2>2026年8月27日</h2><ul><li>增加日语、英语和中文界面。</li><li>增加当前位置显示。</li><li>使用东京都整合的官方数据，将自行车停车场扩大至51个区市町的1,768处设施，覆盖全部23区和26市。</li><li>为停车场增加 Google Maps 与 Apple Maps 链接，并提示关闭或搬迁等变化可能尚未更新。</li><li>增加供搜索发现的地区专属网址、页面信息和网站地图。</li><li>增加无需账号、可附上所选道路或停车场数据 ID 及地点的非公开修正表单。</li><li>初步确认后移除地形图层。</li></ul></section><section><h2>2026年8月26日</h2><ul><li>增加公开托管、安全设置和商用地图图块服务。</li><li>增加数据方法、隐私政策和使用条款等页面。</li><li>整理覆盖东京全域的地区按钮与官方参考资料。</li></ul></section><section><h2>2026年8月25日</h2><ul><li>导入东京全域的 OpenStreetMap 自行车相关数据。</li><li>暂不显示短小的自行车横穿带。</li><li>整理混合车流与更舒适分类的重合部分。</li></ul></section><p class="updated">数据将根据来源的公开情况和核查能力进行更新。</p>`
     },
     contact: {
       description: '如何向东京自行车地图提出修正或联系。',

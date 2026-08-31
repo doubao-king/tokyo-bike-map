@@ -3,6 +3,12 @@ import {
   parseDestinationDetails,
   parseDestinationSuggestions
 } from '../src/data/destinationSearch';
+import {
+  destinationFromUrl,
+  destinationPath,
+  destinationTargets,
+  writeDestinationToUrl
+} from '../src/destinations';
 import { distanceMeters, findNearbyParking } from '../src/map/nearbyParking';
 import type { BicycleParkingFeature } from '../src/types';
 
@@ -106,5 +112,52 @@ const nearby = findNearbyParking(
 assert.deepEqual(nearby.map(({ feature }) => feature.properties.id), ['near', 'middle']);
 assert.ok(distanceMeters(35.6812, 139.7671, 35.682, 139.7671) > 80);
 assert.ok(distanceMeters(35.6812, 139.7671, 35.682, 139.7671) < 100);
+
+assert.equal(new Set(destinationTargets.map(({ id }) => id)).size, destinationTargets.length);
+assert.equal(destinationPath('tokyo-station'), '/parking/tokyo-station/');
+assert.deepEqual(
+  destinationFromUrl('/parking/tokyo-station/', new URLSearchParams(), 'en'),
+  {
+    context: 'Marunouchi, Chiyoda',
+    id: 'curated:tokyo-station',
+    latitude: 35.68124,
+    longitude: 139.76712,
+    name: 'Tokyo Station'
+  }
+);
+
+const sharedDestination = destinationFromUrl(
+  '/',
+  new URLSearchParams({
+    destination: '東京タワー',
+    destinationContext: '港区, 東京都',
+    dlat: '35.65858',
+    dlng: '139.74543'
+  }),
+  'ja'
+);
+assert.equal(sharedDestination?.name, '東京タワー');
+assert.equal(sharedDestination?.latitude, 35.65858);
+assert.equal(
+  destinationFromUrl(
+    '/',
+    new URLSearchParams({ destination: 'Invalid', dlat: '0', dlng: '0' }),
+    'en'
+  ),
+  undefined
+);
+
+const sharedParams = new URLSearchParams();
+writeDestinationToUrl(sharedParams, sharedDestination, '/');
+assert.equal(sharedParams.get('destination'), '東京タワー');
+assert.equal(sharedParams.get('dlat'), '35.65858');
+
+const curatedParams = new URLSearchParams({ destination: 'old value' });
+writeDestinationToUrl(
+  curatedParams,
+  destinationFromUrl('/parking/tokyo-station/', new URLSearchParams(), 'ja'),
+  '/parking/tokyo-station/'
+);
+assert.equal(curatedParams.has('destination'), false);
 
 console.log('Destination search parsing and nearby parking checks passed.');

@@ -54,7 +54,10 @@ h1 { font-size: 30px; line-height: 1.08; margin: 7px 0 8px; }
 .area-group-title:first-child { margin-top: 0; }
 .area-grid a { display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 48px; border: 1px solid var(--line); border-radius: 8px; padding: 9px 8px; color: var(--ink); background: white; line-height: 1.25; text-align: center; text-decoration: none; cursor: pointer; overflow-wrap: anywhere; }
 .area-grid a:hover { border-color: #91a49a; background: #f5f8f6; }
-.area-grid a:focus-visible, .ghost:focus-visible, .language-switcher button:focus-visible, .report-button:focus-visible, .detail-clear-button:focus-visible, .destination-search button:focus-visible, .destination-parking-result:focus-visible { outline: 2px solid #2463a6; outline-offset: 2px; }
+.destination-link-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+.destination-link-grid a { display: flex; align-items: center; min-width: 0; min-height: 38px; border: 1px solid var(--line); border-radius: 7px; padding: 7px 9px; color: #174f42; background: #f8faf8; font-size: 12px; font-weight: 700; line-height: 1.25; text-decoration: none; overflow-wrap: anywhere; }
+.destination-link-grid a:hover { border-color: #7f9d90; background: #eef5f1; }
+.area-grid a:focus-visible, .destination-link-grid a:focus-visible, .ghost:focus-visible, .language-switcher button:focus-visible, .report-button:focus-visible, .detail-clear-button:focus-visible, .destination-search button:focus-visible, .destination-parking-result:focus-visible { outline: 2px solid #2463a6; outline-offset: 2px; }
 .ghost { border: 1px solid var(--line); background: white; padding: 9px 10px; border-radius: 8px; cursor: pointer; }
 .ghost:hover { border-color: #aeb2a8; background: #fafaf7; }
 .muted { color: var(--muted); }

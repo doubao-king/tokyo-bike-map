@@ -1,6 +1,13 @@
 /// <reference types="@cloudflare/workers-types" />
 
-import { areaSeo, areaTargetFromPath, canonicalOrigin, homeSeo } from '../src/seo';
+import {
+  areaSeo,
+  areaTargetFromPath,
+  canonicalOrigin,
+  destinationSeo,
+  destinationTargetFromPath,
+  homeSeo
+} from '../src/seo';
 import {
   isFeedbackHoneypotFilled,
   validateFeedbackSubmission,
@@ -159,6 +166,8 @@ function createNonce(): string {
 interface MapSeo {
   canonicalUrl: string;
   description: string;
+  heading?: string;
+  tagline?: string;
   title: string;
 }
 
@@ -220,6 +229,16 @@ function prepareMapHtml(response: Response, seo: MapSeo): Response {
         element.setAttribute('href', seo.canonicalUrl);
       }
     })
+    .on('h1[data-i18n="title"]', {
+      element(element) {
+        if (seo.heading) element.setInnerContent(seo.heading);
+      }
+    })
+    .on('[data-i18n="tagline"]', {
+      element(element) {
+        if (seo.tagline) element.setInnerContent(seo.tagline);
+      }
+    })
     .on('script', {
       element(element) {
         element.setAttribute('nonce', nonce);
@@ -267,16 +286,20 @@ export default {
     }
 
     const area = areaTargetFromPath(url.pathname);
-    const assetRequest = area
+    const destination = destinationTargetFromPath(url.pathname);
+    const assetRequest = area || destination
       ? new Request(new URL('/', request.url), request)
       : request;
     const assetResponse = await env.ASSETS.fetch(assetRequest);
     if (
       request.method === 'GET' &&
-      (url.pathname === '/' || url.pathname === '/index.html' || area) &&
+      (url.pathname === '/' || url.pathname === '/index.html' || area || destination) &&
       assetResponse.headers.get('Content-Type')?.includes('text/html')
     ) {
-      return prepareMapHtml(assetResponse, area ? areaSeo(area) : homeSeo);
+      return prepareMapHtml(
+        assetResponse,
+        destination ? destinationSeo(destination) : area ? areaSeo(area) : homeSeo
+      );
     }
     return assetResponse;
   }
