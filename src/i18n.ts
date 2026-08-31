@@ -123,7 +123,7 @@ interface Messages {
 
 export const messages: Record<Language, Messages> = {
   ja: {
-    about: 'このサイトを作った理由',
+    about: 'このマップについて',
     ad: '広告',
     areaDocumentTitle: '{area}の自転車マップ | 走りやすい道・駐輪場',
     areaHeading: 'エリアから見る',
@@ -242,7 +242,7 @@ export const messages: Record<Language, Messages> = {
     visibleRoads: '表示する道'
   },
   en: {
-    about: 'Why we built this site',
+    about: 'About this map',
     ad: 'Advertisement',
     areaDocumentTitle: '{area} Bicycle Map | Comfortable roads and parking',
     areaHeading: 'Explore by area',
@@ -361,7 +361,7 @@ export const messages: Record<Language, Messages> = {
     visibleRoads: 'Roads to show'
   },
   zh: {
-    about: '为什么制作这个网站',
+    about: '关于这张地图',
     ad: '广告',
     areaDocumentTitle: '{area}自行车地图 | 舒适道路与停车场',
     areaHeading: '按地区查看',
