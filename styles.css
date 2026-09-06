@@ -83,6 +83,7 @@ h1 { font-size: 30px; line-height: 1.08; margin: 7px 0 8px; }
 .parking-detail-badge { background: #2367a7; }
 .pump-detail-badge { background: #c2410c; }
 .pump-facts { margin-bottom: 12px; }
+.pump-community-evidence { margin: -3px 0 12px; color: var(--muted); font-size: 12px; }
 .pump-detail-sources { display: flex; flex-wrap: wrap; gap: 5px 12px; margin: 10px 0 0; font-size: 12px; }
 .pump-detail-sources a { color: #2367a7; font-weight: 650; }
 .pump-detail-sources small { width: 100%; color: var(--muted); }

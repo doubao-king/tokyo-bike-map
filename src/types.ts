@@ -132,6 +132,12 @@ export type BicyclePumpCost = 'free' | 'paid' | 'unknown';
 
 export type BicyclePumpFacilityType = 'parking_facility' | 'public_pump' | 'bicycle_shop';
 
+export type BicyclePumpVerification =
+  | 'official'
+  | 'osm'
+  | 'official+osm'
+  | 'official+community';
+
 export interface BicyclePumpProperties {
   id: string;
   name: string;
@@ -145,7 +151,7 @@ export interface BicyclePumpProperties {
   service_source_title?: string;
   service_source_url?: string;
   source_checked_at: string;
-  verification: 'official' | 'osm' | 'official+osm';
+  verification: BicyclePumpVerification;
 }
 
 export type BicyclePumpFeature = Feature<Point, BicyclePumpProperties>;

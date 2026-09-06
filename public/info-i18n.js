@@ -103,15 +103,15 @@ const pages = {
 const pageAdditions = {
   en: {
     contact: `<section><h2>Report a bicycle pump</h2><p>Select a pump marker and use Report this bicycle pump. Its data ID, displayed name and selected location are attached automatically, just like reports for roads and bicycle parking.</p></section>`,
-    methodology: `<section><h2>Bicycle-pump data</h2><p>The optional pump layer combines pumps explicitly marked for public use in OpenStreetMap, OSM locations for bicycle-shop chains whose own websites promise free pumps, and municipal parking facilities documented as having pumps. Cost is recorded as free, paid or unknown and is never inferred when a source is silent. The published map serves a static GeoJSON file and does not query these sources while you use it.</p></section>`,
+    methodology: `<section><h2>Bicycle-pump data</h2><p>The optional pump layer combines pumps explicitly marked for public use in OpenStreetMap, bicycle shops whose own websites promise free pumps, municipal parking facilities documented as having pumps, and rider observations cross-checked against official facility records. Cost is recorded as free, paid or unknown and is never inferred when a source is silent. Aggregate installation counts are not converted into individual markers when facility names are unpublished. The published map serves a static GeoJSON file and does not query these sources while you use it.</p></section>`,
     privacy: `<section><h2>Bicycle-pump reports</h2><p>When a pump is selected, a correction report also stores its data type, ID and displayed name. The same private storage and personal-information rules described below apply.</p></section>`,
-    updates: `<section><h2>6 September 2026</h2><ul><li>Added an optional bicycle-pump layer with 134 free locations and 11 whose cost is not published, each carrying its source and check date.</li><li>Added cost, hours, valve information, map-app links and reports attached to the selected pump.</li></ul></section>`
+    updates: `<section><h2>6 September 2026</h2><ul><li>Added an optional bicycle-pump layer with 137 free locations and 12 whose cost is not published, each carrying its source and check date.</li><li>Added Minami-Oizumi Bicycle Parking from a rider's on-site observation cross-checked with Nerima and operator records.</li><li>Added cost, hours, valve information, map-app links and reports attached to the selected pump.</li></ul></section>`
   },
   zh: {
     contact: `<section><h2>报告自行车打气设施</h2><p>选择打气设施标记并使用报告按钮，系统会像道路和停车场报告一样，自动附上数据 ID、显示名称和所选位置。</p></section>`,
-    methodology: `<section><h2>自行车打气设施数据</h2><p>可选图层综合了 OpenStreetMap 中明确可供公众使用的打气设施、由官方网站说明提供免费打气服务的自行车连锁店 OSM 位置，以及自治体资料中确认设有打气设备的停车场。费用分为免费、收费或不明；来源未说明时不会推测。公开地图只读取预先生成的静态 GeoJSON，使用时不会查询这些来源。</p></section>`,
+    methodology: `<section><h2>自行车打气设施数据</h2><p>可选图层综合了 OpenStreetMap 中明确可供公众使用的打气设施、由官方网站说明提供免费打气服务的自行车店、自治体资料中确认设有打气设备的停车场，以及与官方设施资料核对过的骑行者现场信息。费用分为免费、收费或不明；来源未说明时不会推测。若公开资料只给出安装总数而未列出设施名称，也不会推测并生成单个标记。公开地图只读取预先生成的静态 GeoJSON，使用时不会查询这些来源。</p></section>`,
     privacy: `<section><h2>打气设施修正报告</h2><p>选择打气设施后，修正报告还会保存其数据类型、ID 和显示名称。下述非公开保存方式与个人信息规则同样适用。</p></section>`,
-    updates: `<section><h2>2026年9月6日</h2><ul><li>增加可选的自行车打气设施图层，收录134处免费设施和11处费用未公开设施，并附来源与确认日期。</li><li>增加费用、开放时间、气门嘴信息、地图应用链接，以及与所选设施关联的修正报告。</li></ul></section>`
+    updates: `<section><h2>2026年9月6日</h2><ul><li>增加可选的自行车打气设施图层，收录137处免费设施和12处费用未公开设施，并附来源与确认日期。</li><li>根据骑行者现场信息及练马区、运营方公开资料，增加南大泉自行车停车场。</li><li>增加费用、开放时间、气门嘴信息、地图应用链接，以及与所选设施关联的修正报告。</li></ul></section>`
   }
 };
 

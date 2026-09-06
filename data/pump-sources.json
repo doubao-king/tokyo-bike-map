@@ -23,6 +23,58 @@
       "url": "https://www.daiwa-cycle.co.jp/service"
     }
   ],
+  "direct_facilities": [
+    {
+      "id": "community-parking-minamioizumi",
+      "name": "南大泉自転車駐車場",
+      "facility_type": "parking_facility",
+      "cost": "unknown",
+      "coordinates": [139.568226, 35.746606],
+      "opening_hours": "24/7",
+      "operator": "公益財団法人 練馬区環境まちづくり公社",
+      "source_title": "南大泉自転車駐車場 施設情報",
+      "source_url": "https://www.nkm.or.jp/bicycle/archives/facility/pa-minamioizumi",
+      "service_source_title": "電動空気入れの設置実績（40施設）",
+      "service_source_url": "https://www.city.nerima.tokyo.jp/kusei/gaikakudantai.files/05_R5hyouka_kankyomachidukurikousha.pdf",
+      "verification": "official+community"
+    },
+    {
+      "id": "official-shop-seo-cycle-nakano",
+      "name": "セオサイクル 中野店",
+      "facility_type": "bicycle_shop",
+      "cost": "free",
+      "coordinates": [139.667172, 35.700026],
+      "opening_hours": "10:30-19:00; We, 3rd Th off",
+      "operator": "セオサイクル 中野店",
+      "source_title": "店舗紹介（空気入れ無料・仏式対応）",
+      "source_url": "https://nakano.seocycle.biz/shop",
+      "verification": "official"
+    },
+    {
+      "id": "official-shop-rinrin-kameido",
+      "name": "自転車や りんりん 亀戸店",
+      "facility_type": "bicycle_shop",
+      "cost": "free",
+      "coordinates": [139.83206, 35.69728],
+      "opening_hours": "Mar-Oct 10:00-19:00; Nov-Feb 10:00-18:00",
+      "operator": "ベルウッドコーポレーション",
+      "source_title": "亀戸店（店外の空気入れ無料）",
+      "source_url": "https://www.e-bwc.net/bicycle2/shop/kameido/",
+      "verification": "official"
+    },
+    {
+      "id": "official-shop-rinrin-mizue",
+      "name": "自転車や りんりん 瑞江店",
+      "facility_type": "bicycle_shop",
+      "cost": "free",
+      "coordinates": [139.895935, 35.693874],
+      "opening_hours": "Mar-Oct 10:00-19:00; Nov-Feb 10:00-18:00",
+      "operator": "ベルウッドコーポレーション",
+      "source_title": "瑞江店（店外の空気入れ無料）",
+      "source_url": "https://www.e-bwc.net/bicycle2/shop/mizue/",
+      "verification": "official"
+    }
+  ],
   "official_facilities": [
     {
       "parking_id": "official-parking-tokyo-18014",

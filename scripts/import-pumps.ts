@@ -5,6 +5,7 @@ import type {
   BicyclePumpCollection,
   BicyclePumpCost,
   BicyclePumpFeature,
+  BicyclePumpFacilityType,
   BicyclePumpProperties
 } from '../src/types';
 import pumpManifest from '../data/pump-sources.json';
@@ -37,6 +38,21 @@ interface OfficialFacility {
   url: string;
 }
 
+interface DirectFacility {
+  coordinates: [number, number];
+  cost: BicyclePumpCost;
+  facility_type: BicyclePumpFacilityType;
+  id: string;
+  name: string;
+  opening_hours?: string;
+  operator?: string;
+  service_source_title?: string;
+  service_source_url?: string;
+  source_title: string;
+  source_url: string;
+  verification: BicyclePumpProperties['verification'];
+}
+
 const tokyoMainlandRegions = [
   '35.45,138.90,35.92,139.52',
   '35.45,139.52,35.69,139.74',
@@ -49,6 +65,7 @@ const overpassEndpoints = [
   'https://overpass.kumi.systems/api/interpreter'
 ] as const;
 const chains = pumpManifest.chains as ChainSource[];
+const directFacilities = pumpManifest.direct_facilities as DirectFacility[];
 const officialFacilities = pumpManifest.official_facilities as OfficialFacility[];
 const cacheDirectory = resolve('data/cache/pumps');
 const outputPath = resolve('public/data/bicycle-pumps.geojson');
@@ -183,6 +200,31 @@ function officialFeatures(parking: BicycleParkingCollection): BicyclePumpFeature
   });
 }
 
+function directFeatures(): BicyclePumpFeature[] {
+  return directFacilities.map((facility) => ({
+    type: 'Feature',
+    properties: {
+      id: facility.id,
+      name: facility.name,
+      facility_type: facility.facility_type,
+      cost: facility.cost,
+      ...(facility.opening_hours ? { opening_hours: facility.opening_hours } : {}),
+      ...(facility.operator ? { operator: facility.operator } : {}),
+      source_title: facility.source_title,
+      source_url: facility.source_url,
+      ...(facility.service_source_title
+        ? { service_source_title: facility.service_source_title }
+        : {}),
+      ...(facility.service_source_url
+        ? { service_source_url: facility.service_source_url }
+        : {}),
+      source_checked_at: pumpManifest.last_checked,
+      verification: facility.verification
+    },
+    geometry: { type: 'Point', coordinates: facility.coordinates }
+  }));
+}
+
 const responses: OverpassResponse[] = [];
 for (let index = 0; index < tokyoMainlandRegions.length; index += 1) {
   console.log(`Fetching bicycle pumps for Tokyo region ${index + 1}/${tokyoMainlandRegions.length}...`);
@@ -200,7 +242,8 @@ const parking = JSON.parse(
 ) as BicycleParkingCollection;
 const features = [
   ...[...elements.values()].map(osmFeature).filter((value): value is BicyclePumpFeature => Boolean(value)),
-  ...officialFeatures(parking)
+  ...officialFeatures(parking),
+  ...directFeatures()
 ].sort((left, right) => left.properties.name.localeCompare(right.properties.name, 'ja'));
 const counts: Record<BicyclePumpCost, number> = { free: 0, paid: 0, unknown: 0 };
 features.forEach((feature) => {

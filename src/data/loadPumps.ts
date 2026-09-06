@@ -2,7 +2,7 @@ import type { BicyclePumpCollection, BicyclePumpCost } from '../types';
 
 const costs = new Set<BicyclePumpCost>(['free', 'paid', 'unknown']);
 const facilityTypes = new Set(['parking_facility', 'public_pump', 'bicycle_shop']);
-const verificationValues = new Set(['official', 'osm', 'official+osm']);
+const verificationValues = new Set(['official', 'osm', 'official+osm', 'official+community']);
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
@@ -66,7 +66,7 @@ export function assertPumpCollection(value: unknown): asserts value is BicyclePu
 }
 
 export async function loadPumps(
-  path = '/data/bicycle-pumps.geojson?v=2026-09-06-1'
+  path = '/data/bicycle-pumps.geojson?v=2026-09-06-2'
 ): Promise<BicyclePumpCollection> {
   const response = await fetch(path);
   if (!response.ok) throw new Error(`Unable to load bicycle-pump data: ${response.status}`);

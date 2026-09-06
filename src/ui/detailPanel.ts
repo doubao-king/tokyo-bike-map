@@ -221,6 +221,7 @@ export function renderPumpDetail(feature: BicyclePumpFeature, language: Language
       <li>${escapeHtml(facilityType)}</li>
       <li>${escapeHtml(copy.pumpCost)}: ${escapeHtml(cost)}</li>
     </ul>
+    ${properties.verification === 'official+community' ? `<p class="pump-community-evidence">${escapeHtml(copy.pumpCommunityEvidence)}</p>` : ''}
     ${properties.opening_hours || properties.valves ? `<div class="parking-detail-meta">
       ${properties.opening_hours ? `<p><span>${escapeHtml(copy.pumpOpeningHours)}</span><strong>${escapeHtml(properties.opening_hours)}</strong></p>` : ''}
       ${properties.valves ? `<p><span>${escapeHtml(copy.pumpValves)}</span><strong>${escapeHtml(properties.valves)}</strong></p>` : ''}

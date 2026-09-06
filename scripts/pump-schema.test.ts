@@ -27,6 +27,17 @@ const valid = {
 };
 
 assert.doesNotThrow(() => assertPumpCollection(valid));
+assert.doesNotThrow(() =>
+  assertPumpCollection({
+    ...valid,
+    features: [
+      {
+        ...valid.features[0],
+        properties: { ...valid.features[0].properties, verification: 'official+community' }
+      }
+    ]
+  })
+);
 assert.throws(
   () => assertPumpCollection({ ...valid, metadata: undefined }),
   /metadata is missing source information/

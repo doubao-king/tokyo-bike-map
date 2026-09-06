@@ -6,6 +6,7 @@ import {
   renderPumpDetail,
   renderSegmentDetail
 } from '../src/ui/detailPanel';
+import { messages } from '../src/i18n';
 import type {
   BicycleParkingFeature,
   BicyclePumpFeature,
@@ -68,6 +69,11 @@ const pump: BicyclePumpFeature = {
   }
 };
 
+const communityPump: BicyclePumpFeature = {
+  ...pump,
+  properties: { ...pump.properties, verification: 'official+community' }
+};
+
 const destination: MapDestination = {
   context: 'Chiyoda City, Tokyo',
   id: 'destination-test',
@@ -101,6 +107,7 @@ for (const language of ['ja', 'en', 'zh'] as const) {
   assert.match(pumpDetail, /Test Pump/);
   assert.match(pumpDetail, /Google Maps/);
   assert.match(pumpDetail, /2026-09-06/);
+  assert.match(renderPumpDetail(communityPump, language), new RegExp(messages[language].pumpCommunityEvidence));
 
   const destinationDetail = renderDestinationDetail(
     destination,
