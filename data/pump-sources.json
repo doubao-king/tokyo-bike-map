@@ -39,6 +39,17 @@
       "verification": "official+community"
     },
     {
+      "id": "community-shop-oizumi-cycle",
+      "name": "大泉サイクル",
+      "facility_type": "bicycle_shop",
+      "cost": "unknown",
+      "coordinates": [139.5785433, 35.7399592],
+      "operator": "大泉サイクル",
+      "source_title": "東京都自転車商協同組合 加盟店一覧",
+      "source_url": "https://zzone.tokyo/ku/%E7%B7%B4%E9%A6%AC%E5%8C%BA/",
+      "verification": "official+community"
+    },
+    {
       "id": "official-shop-seo-cycle-nakano",
       "name": "セオサイクル 中野店",
       "facility_type": "bicycle_shop",

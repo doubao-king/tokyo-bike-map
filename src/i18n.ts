@@ -245,7 +245,7 @@ export const messages: Record<Language, Messages> = {
     pumpCostFree: '無料',
     pumpCostPaid: '有料',
     pumpCostUnknown: '不明',
-    pumpCommunityEvidence: '利用者の現地情報と公式施設資料を組み合わせて確認',
+    pumpCommunityEvidence: '利用者の現地情報と公開されている施設情報を組み合わせて確認',
     pumpDataWarning:
       '空気入れの設置、故障、営業時間、利用条件は変わる場合があります。利用前に出典や現地表示を確認してください。',
     pumpDetailLabel: '空気入れ',
@@ -386,7 +386,7 @@ export const messages: Record<Language, Messages> = {
     pumpCostFree: 'Free',
     pumpCostPaid: 'Paid',
     pumpCostUnknown: 'Unknown',
-    pumpCommunityEvidence: 'Confirmed from an on-site rider report and official facility records',
+    pumpCommunityEvidence: 'Confirmed from an on-site rider report and published facility records',
     pumpDataWarning:
       'Pump availability, condition, opening hours and access rules can change. Check the linked source and signs on site before relying on it.',
     pumpDetailLabel: 'Bicycle pump',
@@ -527,7 +527,7 @@ export const messages: Record<Language, Messages> = {
     pumpCostFree: '免费',
     pumpCostPaid: '收费',
     pumpCostUnknown: '不明',
-    pumpCommunityEvidence: '根据骑行者现场报告及官方设施资料核实',
+    pumpCommunityEvidence: '根据骑行者现场报告及公开设施资料核实',
     pumpDataWarning:
       '打气设施的设置、故障、开放时间和使用条件可能发生变化。使用前请确认来源信息和现场告示。',
     pumpDetailLabel: '自行车打气设施',

@@ -66,7 +66,7 @@ export function assertPumpCollection(value: unknown): asserts value is BicyclePu
 }
 
 export async function loadPumps(
-  path = '/data/bicycle-pumps.geojson?v=2026-09-06-2'
+  path = '/data/bicycle-pumps.geojson?v=2026-09-06-3'
 ): Promise<BicyclePumpCollection> {
   const response = await fetch(path);
   if (!response.ok) throw new Error(`Unable to load bicycle-pump data: ${response.status}`);

@@ -36,8 +36,8 @@ OpenStreetMap-derived locations remain subject to the ODbL 1.0. Operator and
 municipal pages are linked as evidence that a pump service or facility was
 published when the source was checked; their text and images are not
 republished. A feature marked `official+community` combines a rider's on-site
-report with official facility and operator records; it does not claim that the
-official facility page individually lists the pump.
+report with published facility, operator, or industry-directory records; it does
+not claim that the linked facility page individually lists the pump.
 
 - Location data: OpenStreetMap contributors, https://www.openstreetmap.org/copyright
 - Service evidence: the operator and municipal pages linked from each feature
