@@ -8,7 +8,12 @@ import {
   rememberLanguage,
   type Language
 } from '../i18n';
-import type { ComfortClass, CyclingSegmentFeature, MapOverlay } from '../types';
+import type {
+  BicyclePumpMetadata,
+  ComfortClass,
+  CyclingSegmentFeature,
+  MapOverlay
+} from '../types';
 import type { CyclingMap } from '../map/createMap';
 import { areaPath } from '../seo';
 import {
@@ -114,6 +119,23 @@ export function renderParkingCoverage(count: number, language: Language): void {
     '{count}',
     new Intl.NumberFormat(localeByLanguage[language]).format(count)
   );
+}
+
+export function renderPumpSummary(
+  count: number,
+  counts: BicyclePumpMetadata['counts'],
+  language: Language
+): void {
+  const formatter = new Intl.NumberFormat(localeByLanguage[language]);
+  const countTarget = document.getElementById('pumpCount');
+  const coverageTarget = document.getElementById('pumpCoverage');
+  if (countTarget) countTarget.textContent = formatter.format(count);
+  if (coverageTarget) {
+    coverageTarget.textContent = messages[language].bicyclePumpsHelp
+      .replace('{free}', formatter.format(counts.free))
+      .replace('{paid}', formatter.format(counts.paid))
+      .replace('{unknown}', formatter.format(counts.unknown));
+  }
 }
 
 export function bindControls(cyclingMap: CyclingMap, language: Language): void {

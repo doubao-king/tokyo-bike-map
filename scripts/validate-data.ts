@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { assertParkingCollection } from '../src/data/loadParking';
+import { assertPumpCollection } from '../src/data/loadPumps';
 import { assertSegmentCollection } from '../src/data/segmentSchema';
 
 const dataPath = resolve('public/data/osm-segments.geojson');
@@ -69,4 +70,18 @@ if (
 
 console.log(
   `Validated ${parkingPayload.features.length} official bicycle-parking facilities (${municipalities.size} municipalities)`
+);
+
+const pumpPath = resolve('public/data/bicycle-pumps.geojson');
+const pumpPayload: unknown = JSON.parse(await readFile(pumpPath, 'utf8'));
+assertPumpCollection(pumpPayload);
+
+if (pumpPayload.features.length < 100 || pumpPayload.metadata.counts.free < 100) {
+  throw new Error('Bicycle-pump coverage dropped below the expected minimum.');
+}
+
+console.log(
+  `Validated ${pumpPayload.features.length} bicycle pumps ` +
+    `(free ${pumpPayload.metadata.counts.free}, paid ${pumpPayload.metadata.counts.paid}, ` +
+    `unknown ${pumpPayload.metadata.counts.unknown})`
 );

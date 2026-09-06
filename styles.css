@@ -43,6 +43,8 @@ h1 { font-size: 30px; line-height: 1.08; margin: 7px 0 8px; }
 .layer-row { grid-template-columns: 18px 22px minmax(0, 1fr) auto; }
 .layer-swatch { display: grid; place-items: center; width: 20px; height: 20px; margin-top: 1px; border-radius: 5px; overflow: hidden; }
 .parking-swatch { border: 1px solid #165b94; color: white; background: #2367a7; font-size: 11px; font-weight: 800; }
+.pump-swatch { border: 1px solid #9a3412; background: #c2410c; }
+.pump-swatch i { width: 7px; height: 7px; border: 2px solid white; border-radius: 50%; }
 .a { background: var(--a); }
 .b { background: var(--b); }
 .c { background: var(--c); }
@@ -79,6 +81,11 @@ h1 { font-size: 30px; line-height: 1.08; margin: 7px 0 8px; }
 .detail-selection-report { margin-top: 14px; }
 .detail-report-note { display: block; margin-top: 8px; color: var(--muted); font-size: 11px; line-height: 1.45; }
 .parking-detail-badge { background: #2367a7; }
+.pump-detail-badge { background: #c2410c; }
+.pump-facts { margin-bottom: 12px; }
+.pump-detail-sources { display: flex; flex-wrap: wrap; gap: 5px 12px; margin: 10px 0 0; font-size: 12px; }
+.pump-detail-sources a { color: #2367a7; font-weight: 650; }
+.pump-detail-sources small { width: 100%; color: var(--muted); }
 .parking-detail-badge span { display: grid; place-items: center; width: 17px; height: 17px; border: 1px solid rgba(255,255,255,.72); border-radius: 4px; font-size: 10px; }
 .parking-detail-municipality { margin: 0 0 10px; color: var(--muted); font-size: 13px; font-weight: 650; }
 .parking-detail-meta { display: grid; gap: 7px; margin-bottom: 12px; }
@@ -150,7 +157,8 @@ h1 { font-size: 30px; line-height: 1.08; margin: 7px 0 8px; }
 .feedback-success p { max-width: 370px; margin: 0 auto 22px; color: var(--muted); font-size: 13px; line-height: 1.6; }
 .warning { margin: 4px 0 12px; padding: 8px 10px; border-left: 3px solid var(--c); background: #fff7df; font-size: 13px; line-height: 1.45; }
 .note p { font-size: 13px; line-height: 1.55; }
-.parking-data-warning { margin-bottom: 0; padding: 9px 10px; border-left: 3px solid var(--c); background: #fff7df; }
+.parking-data-warning, .pump-data-warning { padding: 9px 10px; border-left: 3px solid var(--c); background: #fff7df; }
+.pump-data-warning { margin-bottom: 0; }
 .source-disclosure { font-size: 13px; }
 .source-disclosure summary { cursor: pointer; font-size: 14px; font-weight: 700; list-style-position: outside; margin-left: 16px; }
 .source-disclosure summary::marker { color: var(--muted); }

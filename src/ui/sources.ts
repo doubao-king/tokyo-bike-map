@@ -1,6 +1,6 @@
 import sourceRegistry from '../../data/source-registry.json';
 import { messages, type Language } from '../i18n';
-import type { BicycleParkingFeature } from '../types';
+import type { BicycleParkingFeature, BicyclePumpFeature } from '../types';
 
 interface RegisteredSource {
   map_role: string;
@@ -29,10 +29,43 @@ function parkingSourcesFromFeatures(features: BicycleParkingFeature[]): Register
   );
 }
 
+function pumpSourcesFromFeatures(features: BicyclePumpFeature[]): RegisteredSource[] {
+  const bySource = new Map<string, RegisteredSource>();
+
+  features.forEach(({ properties }) => {
+    const isOsmLocation = properties.source_url.startsWith('https://www.openstreetmap.org/');
+    const sourceUrl = isOsmLocation
+      ? 'https://www.openstreetmap.org/copyright'
+      : properties.source_url;
+    if (!bySource.has(sourceUrl)) {
+      bySource.set(sourceUrl, {
+        map_role: 'bicycle_pumps',
+        publisher: isOsmLocation ? 'OpenStreetMap contributors' : properties.operator ?? '',
+        reference_dates: [properties.source_checked_at],
+        title: isOsmLocation ? 'OpenStreetMap public bicycle pumps' : properties.source_title,
+        url: sourceUrl
+      });
+    }
+
+    if (properties.service_source_url && !bySource.has(properties.service_source_url)) {
+      bySource.set(properties.service_source_url, {
+        map_role: 'bicycle_pumps',
+        publisher: properties.service_source_title ?? '',
+        reference_dates: [properties.source_checked_at],
+        title: properties.service_source_title ?? properties.name,
+        url: properties.service_source_url
+      });
+    }
+  });
+
+  return [...bySource.values()].sort((left, right) => left.title.localeCompare(right.title, 'ja'));
+}
+
 export function renderSourceRegistry(
   container: HTMLElement,
   language: Language,
-  parkingFeatures: BicycleParkingFeature[] = []
+  parkingFeatures: BicycleParkingFeature[] = [],
+  pumpFeatures: BicyclePumpFeature[] = []
 ): void {
   const copy = messages[language];
   const sources = sourceRegistry.sources as RegisteredSource[];
@@ -41,6 +74,7 @@ export function renderSourceRegistry(
     (source) => source.map_role === 'comfort_geometry_and_tag_inference'
   );
   const parkingSources = parkingSourcesFromFeatures(parkingFeatures);
+  const pumpSources = pumpSourcesFromFeatures(pumpFeatures);
   const referenceSources = sources.filter(
     (source) =>
       source.map_role !== 'comfort_geometry_and_tag_inference' &&
@@ -75,6 +109,7 @@ export function renderSourceRegistry(
 
   renderGroup(copy.sourceCurrent, renderedSources);
   if (parkingSources.length > 0) renderGroup(copy.sourceParking, parkingSources);
+  if (pumpSources.length > 0) renderGroup(copy.sourcePumps, pumpSources);
   renderGroup(copy.sourceReferences, referenceSources);
 
   const osmWayNote = document.createElement('p');

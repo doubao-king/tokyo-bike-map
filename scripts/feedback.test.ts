@@ -34,6 +34,21 @@ if (valid.ok) {
   assert.equal(valid.value.subjectType, 'parking');
 }
 
+const pumpReport = validateFeedbackSubmission(
+  {
+    ...validSubmission,
+    category: 'pump_change',
+    mapUrl: `${origin}/parking/tokyo-station/?lat=35.6812&lng=139.7671&z=16`,
+    subjectId: 'osm-node-1',
+    subjectName: 'Test pump',
+    subjectType: 'pump'
+  },
+  origin,
+  now
+);
+assert.equal(pumpReport.ok, true);
+if (pumpReport.ok) assert.equal(pumpReport.value.subjectType, 'pump');
+
 assert.equal(
   validateFeedbackSubmission({ ...validSubmission, details: ' too short ' }, origin, now).ok,
   false
@@ -109,5 +124,9 @@ const subjectMigration = readFileSync('migrations/0003_add_feedback_subject.sql'
 assert.match(subjectMigration, /subject_type/);
 assert.match(subjectMigration, /subject_id/);
 assert.match(subjectMigration, /subject_name/);
+
+const pumpMigration = readFileSync('migrations/0004_add_pump_feedback.sql', 'utf8');
+assert.match(pumpMigration, /pump_change/);
+assert.match(pumpMigration, /'pump'/);
 
 console.log('Account-free feedback validation passed.');

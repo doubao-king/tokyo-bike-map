@@ -10,8 +10,8 @@ export const canonicalOrigin = 'https://tokyo-bike-map.manymao.com';
 export const homeSeo = {
   canonicalUrl: `${canonicalOrigin}/`,
   description:
-    '東京都内の走りやすい道、自転車レーン、緑道、河川敷、駐輪場を地図で確認。車との分離や通行環境を色分けした無料の東京自転車マップです。',
-  title: '東京の自転車マップ | 走りやすい道・自転車レーン・駐輪場'
+    '東京都内の走りやすい道、自転車レーン、緑道、河川敷、駐輪場、無料の空気入れを地図で確認できる東京自転車マップです。',
+  title: '東京の自転車マップ | 走りやすい道・駐輪場・空気入れ'
 };
 
 export type AreaTarget = (typeof areaTargets)[number];

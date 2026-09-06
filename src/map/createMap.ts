@@ -7,10 +7,12 @@ import {
   renderDefaultDetail,
   renderDestinationDetail,
   renderParkingDetail,
+  renderPumpDetail,
   renderSegmentDetail
 } from '../ui/detailPanel';
 import type {
   BicycleParkingFeature,
+  BicyclePumpFeature,
   ComfortClass,
   CyclingSegmentFeature,
   MapDestination,
@@ -32,6 +34,7 @@ export interface CyclingMap {
   rebuild(features: CyclingSegmentFeature[], activeClasses: Set<ComfortClass>): void;
   setOverlayVisibility(overlay: MapOverlay, visible: boolean): void;
   setParkingFeatures(features: BicycleParkingFeature[]): void;
+  setPumpFeatures(features: BicyclePumpFeature[]): void;
   setDestination(destination: MapDestination): void;
   setClassVisibility(cls: ComfortClass, visible: boolean): void;
   resetView(): void;
@@ -55,6 +58,12 @@ type MapSelection =
       marker: L.CircleMarker;
       reportLocation: L.LatLng;
       type: 'parking';
+    }
+  | {
+      feature: BicyclePumpFeature;
+      marker: L.CircleMarker;
+      reportLocation: L.LatLng;
+      type: 'pump';
     };
 
 export function createCyclingMap(
@@ -106,6 +115,8 @@ export function createCyclingMap(
   let parkingFeatures: BicycleParkingFeature[] = [];
   let parkingLayer = L.layerGroup();
   const parkingMarkerById = new Map<string, L.CircleMarker>();
+  let pumpFeatures: BicyclePumpFeature[] = [];
+  let pumpLayer = L.layerGroup();
   let locationAccuracyLayer: L.Circle | undefined;
   let locationMarker: L.CircleMarker | undefined;
   let destination: MapDestination | undefined;
@@ -116,6 +127,7 @@ export function createCyclingMap(
   map.createPane('comfortCasingPane');
   map.createPane('comfortLinePane');
   map.createPane('parkingPane');
+  map.createPane('pumpPane');
   map.createPane('locationPane');
   map.createPane('destinationPane');
   const comfortCasingPane = map.getPane('comfortCasingPane');
@@ -128,12 +140,15 @@ export function createCyclingMap(
     comfortLinePane.style.zIndex = '410';
   }
   const parkingPane = map.getPane('parkingPane');
+  const pumpPane = map.getPane('pumpPane');
   const locationPane = map.getPane('locationPane');
   const destinationPane = map.getPane('destinationPane');
   if (parkingPane) parkingPane.style.zIndex = '420';
+  if (pumpPane) pumpPane.style.zIndex = '425';
   if (locationPane) locationPane.style.zIndex = '430';
   if (destinationPane) destinationPane.style.zIndex = '440';
   const parkingRenderer = L.svg({ pane: 'parkingPane' });
+  const pumpRenderer = L.svg({ pane: 'pumpPane' });
   const locationRenderer = L.svg({ pane: 'locationPane' });
   const destinationRenderer = L.svg({ pane: 'destinationPane' });
 
@@ -189,6 +204,48 @@ export function createCyclingMap(
     );
 
     if (activeOverlays.has('parking')) parkingLayer.addTo(map);
+    if (!selection) renderFallbackDetail();
+  }
+
+  function pumpColor(feature: BicyclePumpFeature): string {
+    if (feature.properties.cost === 'paid') return '#a52f25';
+    if (feature.properties.cost === 'unknown') return '#68716a';
+    return '#c2410c';
+  }
+
+  function pumpDisplayName(feature: BicyclePumpFeature): string {
+    return feature.properties.name === '公共の空気入れ'
+      ? copy.pumpDetailLabel
+      : feature.properties.name;
+  }
+
+  function rebuildPumpLayer(): void {
+    if (selection?.type === 'pump') clearSelection();
+    const wasVisible = map.hasLayer(pumpLayer);
+    if (wasVisible) map.removeLayer(pumpLayer);
+
+    pumpLayer = L.layerGroup(
+      pumpFeatures.map((feature) => {
+        const [longitude, latitude] = feature.geometry.coordinates;
+        const marker = L.circleMarker([latitude, longitude], {
+          bubblingMouseEvents: false,
+          pane: 'pumpPane',
+          renderer: pumpRenderer,
+          radius: 6,
+          color: '#ffffff',
+          weight: 2,
+          fillColor: pumpColor(feature),
+          fillOpacity: 0.96
+        }).bindTooltip(pumpDisplayName(feature), { direction: 'top' });
+
+        marker.on('click', (event: L.LeafletMouseEvent) => {
+          selectPump(marker, feature, event.latlng);
+        });
+        return marker;
+      })
+    );
+
+    if (activeOverlays.has('pumps')) pumpLayer.addTo(map);
     if (!selection) renderFallbackDetail();
   }
   function updateCount(): void {
@@ -247,6 +304,15 @@ export function createCyclingMap(
         weight: 3
       });
       selection.marker.bringToFront();
+    } else if (selection?.type === 'pump') {
+      selection.marker.setRadius(9);
+      selection.marker.setStyle({
+        color: '#ffffff',
+        fillColor: pumpColor(selection.feature),
+        fillOpacity: 1,
+        weight: 3
+      });
+      selection.marker.bringToFront();
     }
   }
 
@@ -260,6 +326,14 @@ export function createCyclingMap(
         fillColor: '#2367a7',
         fillOpacity: 0.94,
         weight: 1.8
+      });
+    } else if (selection?.type === 'pump') {
+      selection.marker.setRadius(6);
+      selection.marker.setStyle({
+        color: '#ffffff',
+        fillColor: pumpColor(selection.feature),
+        fillOpacity: 0.96,
+        weight: 2
       });
     }
   }
@@ -293,6 +367,8 @@ export function createCyclingMap(
       ? renderSegmentDetail(selection.feature, language)
       : selection?.type === 'parking'
       ? renderParkingDetail(selection.feature, language)
+      : selection?.type === 'pump'
+      ? renderPumpDetail(selection.feature, language)
       : destination
       ? renderDestinationDetail(
           destination,
@@ -322,6 +398,17 @@ export function createCyclingMap(
   ): void {
     resetSelectedStyle();
     selection = { feature, marker, reportLocation, type: 'parking' };
+    applySelectedStyle();
+    showSelectedDetail();
+  }
+
+  function selectPump(
+    marker: L.CircleMarker,
+    feature: BicyclePumpFeature,
+    reportLocation: L.LatLng
+  ): void {
+    resetSelectedStyle();
+    selection = { feature, marker, reportLocation, type: 'pump' };
     applySelectedStyle();
     showSelectedDetail();
   }
@@ -404,6 +491,15 @@ export function createCyclingMap(
         subjectName: selection.feature.properties.name,
         subjectType: 'parking',
         suggestedCategory: 'parking_change'
+      };
+    }
+    if (selection?.type === 'pump') {
+      return {
+        mapUrl: shareUrlAt(selection.reportLocation.lat, selection.reportLocation.lng),
+        subjectId: selection.feature.properties.id,
+        subjectName: pumpDisplayName(selection.feature),
+        subjectType: 'pump',
+        suggestedCategory: 'pump_change'
       };
     }
 
@@ -513,12 +609,13 @@ export function createCyclingMap(
   }
 
   function setOverlayVisibility(overlay: MapOverlay, visible: boolean): void {
-    const layer = parkingLayer;
+    const layer = overlay === 'parking' ? parkingLayer : pumpLayer;
     if (visible) {
       activeOverlays.add(overlay);
       if (!map.hasLayer(layer)) layer.addTo(map);
     } else {
-      if (selection?.type === 'parking') clearSelection();
+      const selectedOverlay = selection?.type === 'pump' ? 'pumps' : selection?.type;
+      if (selectedOverlay === overlay) clearSelection();
       activeOverlays.delete(overlay);
       if (map.hasLayer(layer)) map.removeLayer(layer);
     }
@@ -618,6 +715,10 @@ export function createCyclingMap(
     setParkingFeatures: (nextFeatures) => {
       parkingFeatures = nextFeatures;
       rebuildParkingLayer();
+    },
+    setPumpFeatures: (nextFeatures) => {
+      pumpFeatures = nextFeatures;
+      rebuildPumpLayer();
     },
     setClassVisibility,
     resetView: () => {

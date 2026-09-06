@@ -1,6 +1,7 @@
 export const feedbackCategories = [
   'road_change',
   'parking_change',
+  'pump_change',
   'missing_information',
   'difficult_location',
   'other'
@@ -8,7 +9,7 @@ export const feedbackCategories = [
 
 export type FeedbackCategory = (typeof feedbackCategories)[number];
 export type FeedbackLanguage = 'ja' | 'en' | 'zh';
-export type FeedbackSubjectType = 'map_location' | 'parking' | 'segment';
+export type FeedbackSubjectType = 'map_location' | 'parking' | 'pump' | 'segment';
 
 export const feedbackOpenEvent = 'tokyo-bike-map:open-feedback';
 
@@ -56,6 +57,7 @@ const supportedCategories = new Set<string>(feedbackCategories);
 const supportedSubjectTypes = new Set<FeedbackSubjectType>([
   'map_location',
   'parking',
+  'pump',
   'segment'
 ]);
 
@@ -101,7 +103,8 @@ function parseMapUrl(value: string, requestOrigin: string): Omit<
     const validPath =
       mapUrl.pathname === '/' ||
       mapUrl.pathname === '/index.html' ||
-      /^\/area\/[a-z0-9-]+\/?$/.test(mapUrl.pathname);
+      /^\/area\/[a-z0-9-]+\/?$/.test(mapUrl.pathname) ||
+      /^\/parking\/[a-z0-9-]+\/?$/.test(mapUrl.pathname);
     if (mapUrl.origin !== requestOrigin || !validPath || mapUrl.hash) return null;
 
     const latitude = Number(mapUrl.searchParams.get('lat'));

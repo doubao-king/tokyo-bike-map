@@ -1,8 +1,9 @@
 import { classMeta } from '../config';
 import { classText, localeByLanguage, messages, type Language } from '../i18n';
-import { createParkingMapLinks } from '../map/parkingLinks';
+import { createParkingMapLinks, createPointMapLinks } from '../map/parkingLinks';
 import type {
   BicycleParkingFeature,
+  BicyclePumpFeature,
   CyclingSegmentFeature,
   MapDestination,
   NearbyParking
@@ -191,6 +192,50 @@ export function renderParkingDetail(feature: BicycleParkingFeature, language: La
     </div>
     ${sourceUrl ? `<a class="parking-detail-source" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(copy.parkingSource)}</a>` : ''}
     <button class="report-button detail-selection-report" type="button" data-detail-action="report">${escapeHtml(copy.parkingReportAction)}</button>`;
+}
+
+export function renderPumpDetail(feature: BicyclePumpFeature, language: Language): string {
+  const properties = feature.properties;
+  const copy = messages[language];
+  const displayName = properties.name === '公共の空気入れ'
+    ? copy.pumpDetailLabel
+    : properties.name;
+  const mapLinks = createPointMapLinks(feature);
+  const sourceUrl = safeExternalUrl(properties.source_url);
+  const serviceSourceUrl = safeExternalUrl(properties.service_source_url);
+  const cost = {
+    free: copy.pumpCostFree,
+    paid: copy.pumpCostPaid,
+    unknown: copy.pumpCostUnknown
+  }[properties.cost];
+  const facilityType = {
+    bicycle_shop: copy.pumpFacilityShop,
+    parking_facility: copy.pumpFacilityParking,
+    public_pump: copy.pumpFacilityPublic
+  }[properties.facility_type];
+
+  return `${renderHeading(language, 'clear')}
+    <h3 class="detail-title">${escapeHtml(displayName)}</h3>
+    <div class="badge pump-detail-badge">${escapeHtml(copy.pumpDetailLabel)}</div>
+    <ul class="riding-facts pump-facts">
+      <li>${escapeHtml(facilityType)}</li>
+      <li>${escapeHtml(copy.pumpCost)}: ${escapeHtml(cost)}</li>
+    </ul>
+    ${properties.opening_hours || properties.valves ? `<div class="parking-detail-meta">
+      ${properties.opening_hours ? `<p><span>${escapeHtml(copy.pumpOpeningHours)}</span><strong>${escapeHtml(properties.opening_hours)}</strong></p>` : ''}
+      ${properties.valves ? `<p><span>${escapeHtml(copy.pumpValves)}</span><strong>${escapeHtml(properties.valves)}</strong></p>` : ''}
+    </div>` : ''}
+    <p class="parking-detail-caveat">${escapeHtml(copy.pumpStatusCheck)}</p>
+    <div class="parking-detail-actions" aria-label="${escapeHtml(copy.parkingOpenMaps)}">
+      <a href="${escapeHtml(mapLinks.google)}" target="_blank" rel="noreferrer">Google Maps</a>
+      <a href="${escapeHtml(mapLinks.apple)}" target="_blank" rel="noreferrer">Apple Maps</a>
+    </div>
+    <p class="pump-detail-sources">
+      ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(copy.pumpSource)}</a>` : ''}
+      ${serviceSourceUrl ? `<a href="${escapeHtml(serviceSourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(copy.pumpServiceSource)}</a>` : ''}
+      <small>${escapeHtml(copy.sourceChecked)} ${escapeHtml(properties.source_checked_at)}</small>
+    </p>
+    <button class="report-button detail-selection-report" type="button" data-detail-action="report">${escapeHtml(copy.pumpReportAction)}</button>`;
 }
 
 function formatDistance(distanceMeters: number, language: Language): string {

@@ -7,18 +7,18 @@
   <meta name="google-adsense-account" content="ca-pub-7790484437974346" />
   <meta name="google-site-verification" content="agio_yKHyQuWKC9Gf_zywUfFjZN1jj_W1KO3dJDOk04" />
   <meta name="theme-color" content="#fffef9" />
-  <title>東京の自転車マップ | 走りやすい道・自転車レーン・駐輪場</title>
-  <meta name="description" content="東京都内の走りやすい道、自転車レーン、緑道、河川敷、駐輪場を地図で確認。車との分離や通行環境を色分けした無料の東京自転車マップです。" />
+  <title>東京の自転車マップ | 走りやすい道・駐輪場・空気入れ</title>
+  <meta name="description" content="東京都内の走りやすい道、自転車レーン、緑道、河川敷、駐輪場、無料の空気入れを地図で確認できる東京自転車マップです。" />
   <link rel="canonical" href="https://tokyo-bike-map.manymao.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="東京じてんしゃマップ" />
   <meta property="og:locale" content="ja_JP" />
-  <meta property="og:title" content="東京の自転車マップ | 走りやすい道・自転車レーン・駐輪場" />
-  <meta property="og:description" content="東京都内の走りやすい道、自転車レーン、緑道、河川敷、駐輪場を地図で確認できます。" />
+  <meta property="og:title" content="東京の自転車マップ | 走りやすい道・駐輪場・空気入れ" />
+  <meta property="og:description" content="東京都内の走りやすい道、自転車レーン、緑道、河川敷、駐輪場、無料の空気入れを地図で確認できます。" />
   <meta property="og:url" content="https://tokyo-bike-map.manymao.com/" />
   <meta name="twitter:card" content="summary" />
   <script type="application/ld+json">
-    {"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://tokyo-bike-map.manymao.com/#website","url":"https://tokyo-bike-map.manymao.com/","name":"東京じてんしゃマップ","alternateName":["Tokyo Bicycle Map","东京自行车地图"],"inLanguage":["ja","en","zh-CN"]},{"@type":"WebApplication","@id":"https://tokyo-bike-map.manymao.com/#app","url":"https://tokyo-bike-map.manymao.com/","name":"東京じてんしゃマップ","description":"東京都内の走りやすい道、自転車レーン、緑道、河川敷、駐輪場を確認できる地図です。","applicationCategory":"TravelApplication","operatingSystem":"Any","isAccessibleForFree":true,"areaServed":{"@type":"AdministrativeArea","name":"東京都"},"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}}]}
+    {"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://tokyo-bike-map.manymao.com/#website","url":"https://tokyo-bike-map.manymao.com/","name":"東京じてんしゃマップ","alternateName":["Tokyo Bicycle Map","东京自行车地图"],"inLanguage":["ja","en","zh-CN"]},{"@type":"WebApplication","@id":"https://tokyo-bike-map.manymao.com/#app","url":"https://tokyo-bike-map.manymao.com/","name":"東京じてんしゃマップ","description":"東京都内の走りやすい道、自転車レーン、緑道、河川敷、駐輪場、空気入れを確認できる地図です。","applicationCategory":"TravelApplication","operatingSystem":"Any","isAccessibleForFree":true,"areaServed":{"@type":"AdministrativeArea","name":"東京都"},"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}}]}
   </script>
 </head>
 <body>
@@ -52,6 +52,7 @@
       <section class="panel">
         <h2 data-i18n="layersHeading">地図レイヤー</h2>
         <label class="filter-row layer-row"><input type="checkbox" data-map-layer="parking"><span class="layer-swatch parking-swatch" aria-hidden="true">P</span><span><b data-i18n="officialParking">駐輪場（東京都公開データ）</b><small id="parkingCoverage" data-i18n="officialParkingHelp">東京都の公式データを読み込み中</small></span><span class="filter-count" id="parkingCount">—</span></label>
+        <label class="filter-row layer-row"><input type="checkbox" data-map-layer="pumps"><span class="layer-swatch pump-swatch" aria-hidden="true"><i></i></span><span><b data-i18n="bicyclePumps">空気入れ</b><small id="pumpCoverage">データを読み込み中</small></span><span class="filter-count" id="pumpCount">—</span></label>
       </section>
 
       <section class="panel destination-link-panel">
@@ -81,6 +82,7 @@
         <p data-i18n="dataNoteBody">現在の安心度表示にはOpenStreetMapを使用し、東京都・区市町村・国の公式公開資料を調査・参照しています。公開時点や工事などにより、実際の道路状況と異なる場合があります。</p>
         <p class="muted" data-i18n="dataNoteSecondary">安心度は主にOSMタグからの暫定分類です。公式公開情報を定期的に確認して更新します。地域により公開情報量に差があります。走行時は現地の標識・規制を優先してください。</p>
         <p class="parking-data-warning" data-i18n="parkingDataWarning">駐輪場情報も公開時点の内容です。閉鎖・休止・移転、営業時間や利用条件の変更が反映されていない場合があります。利用前に施設・自治体の最新情報や現地表示を確認してください。</p>
+        <p class="pump-data-warning" data-i18n="pumpDataWarning">空気入れの設置、故障、営業時間、利用条件は変わる場合があります。利用前に出典や現地表示を確認してください。</p>
       </section>
 
       <details class="panel source-disclosure">
@@ -146,6 +148,7 @@
             <option value="" data-i18n="feedbackCategoryPlaceholder">選んでください</option>
             <option value="road_change" data-i18n="feedbackCategoryRoad">道路・自転車通行空間が変わった</option>
             <option value="parking_change" data-i18n="feedbackCategoryParking">駐輪場が閉鎖・移転した</option>
+            <option value="pump_change" data-i18n="feedbackCategoryPump">空気入れが使えない・情報が違う</option>
             <option value="missing_information" data-i18n="feedbackCategoryMissing">地図に情報がない</option>
             <option value="difficult_location" data-i18n="feedbackCategoryDifficult">走りにくい・危険に感じる場所</option>
             <option value="other" data-i18n="feedbackCategoryOther">その他</option>

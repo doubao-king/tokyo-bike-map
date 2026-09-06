@@ -2,6 +2,7 @@ import 'leaflet/dist/leaflet.css';
 import '../styles.css';
 import { classUrlValues, comfortClasses, defaultVisibleClasses } from './config';
 import { loadParking } from './data/loadParking';
+import { loadPumps } from './data/loadPumps';
 import { loadSegments } from './data/loadSegments';
 import {
   destinationFromUrl,
@@ -18,13 +19,14 @@ import {
 } from './i18n';
 import { createCyclingMap } from './map/createMap';
 import { areaTargetFromPath } from './seo';
-import type { MapOverlay } from './types';
+import type { BicycleParkingFeature, BicyclePumpFeature, MapOverlay } from './types';
 import { initializeAds } from './ui/ads';
 import {
   bindControls,
   renderClassCounts,
   renderParkingCount,
-  renderParkingCoverage
+  renderParkingCoverage,
+  renderPumpSummary
 } from './ui/controls';
 import { setLoadingFailure } from './ui/detailPanel';
 import { initializeDestinationSearch } from './ui/destinationSearch';
@@ -93,7 +95,7 @@ if (!detailPanel || !visibleCount) {
   throw new Error('Required map UI elements are missing.');
 }
 
-const supportedOverlays: MapOverlay[] = ['parking'];
+const supportedOverlays: MapOverlay[] = ['parking', 'pumps'];
 const initialOverlays = new Set(
   (searchParams.get('layers') ?? '')
     .split(',')
@@ -149,8 +151,13 @@ if (adPanel) {
 }
 
 const sourceList = document.getElementById('sourceList');
+let parkingForSources: BicycleParkingFeature[] = [];
+let pumpsForSources: BicyclePumpFeature[] = [];
+const refreshSources = (): void => {
+  if (sourceList) renderSourceRegistry(sourceList, language, parkingForSources, pumpsForSources);
+};
 if (sourceList) {
-  renderSourceRegistry(sourceList, language);
+  refreshSources();
 }
 
 void Promise.allSettled([
@@ -162,7 +169,14 @@ void Promise.allSettled([
     cyclingMap.setParkingFeatures(parking.features);
     renderParkingCount(parking.features.length, language);
     renderParkingCoverage(parking.metadata.municipalities.length, language);
-    if (sourceList) renderSourceRegistry(sourceList, language, parking.features);
+    parkingForSources = parking.features;
+    refreshSources();
+  }),
+  loadPumps().then((pumps) => {
+    cyclingMap.setPumpFeatures(pumps.features);
+    renderPumpSummary(pumps.features.length, pumps.metadata.counts, language);
+    pumpsForSources = pumps.features;
+    refreshSources();
   })
 ]).then((results) => {
   const segmentResult = results[0];
@@ -175,5 +189,11 @@ void Promise.allSettled([
   if (parkingResult.status === 'rejected') {
     console.error(parkingResult.reason);
     renderParkingCount(0, language);
+  }
+
+  const pumpResult = results[2];
+  if (pumpResult.status === 'rejected') {
+    console.error(pumpResult.reason);
+    renderPumpSummary(0, { free: 0, paid: 0, unknown: 0 }, language);
   }
 });

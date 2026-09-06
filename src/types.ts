@@ -2,7 +2,7 @@ import type { Feature, FeatureCollection, LineString, MultiLineString, Point } f
 
 export type ComfortClass = 'A' | 'B' | 'C' | 'D';
 
-export type MapOverlay = 'parking';
+export type MapOverlay = 'parking' | 'pumps';
 
 export type SegmentStatus = 'built' | 'planned' | 'under_construction' | 'unknown';
 
@@ -126,4 +126,36 @@ export interface BicycleParkingMetadata {
 
 export type BicycleParkingCollection = FeatureCollection<Point, BicycleParkingProperties> & {
   metadata: BicycleParkingMetadata;
+};
+
+export type BicyclePumpCost = 'free' | 'paid' | 'unknown';
+
+export type BicyclePumpFacilityType = 'parking_facility' | 'public_pump' | 'bicycle_shop';
+
+export interface BicyclePumpProperties {
+  id: string;
+  name: string;
+  facility_type: BicyclePumpFacilityType;
+  cost: BicyclePumpCost;
+  opening_hours?: string;
+  operator?: string;
+  valves?: string;
+  source_title: string;
+  source_url: string;
+  service_source_title?: string;
+  service_source_url?: string;
+  source_checked_at: string;
+  verification: 'official' | 'osm' | 'official+osm';
+}
+
+export type BicyclePumpFeature = Feature<Point, BicyclePumpProperties>;
+
+export interface BicyclePumpMetadata {
+  counts: Record<BicyclePumpCost, number>;
+  generated_at: string;
+  source_checked: string;
+}
+
+export type BicyclePumpCollection = FeatureCollection<Point, BicyclePumpProperties> & {
+  metadata: BicyclePumpMetadata;
 };

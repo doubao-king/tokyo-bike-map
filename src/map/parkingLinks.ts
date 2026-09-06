@@ -1,11 +1,13 @@
-import type { BicycleParkingFeature } from '../types';
+import type { BicycleParkingFeature, BicyclePumpFeature } from '../types';
 
 export interface ParkingMapLinks {
   apple: string;
   google: string;
 }
 
-export function createParkingMapLinks(feature: BicycleParkingFeature): ParkingMapLinks {
+export function createPointMapLinks(
+  feature: BicycleParkingFeature | BicyclePumpFeature
+): ParkingMapLinks {
   const [longitude, latitude] = feature.geometry.coordinates;
   const coordinates = `${latitude},${longitude}`;
   const google = new URL('https://www.google.com/maps/search/');
@@ -17,4 +19,8 @@ export function createParkingMapLinks(feature: BicycleParkingFeature): ParkingMa
   apple.searchParams.set('q', feature.properties.name);
 
   return { apple: apple.toString(), google: google.toString() };
+}
+
+export function createParkingMapLinks(feature: BicycleParkingFeature): ParkingMapLinks {
+  return createPointMapLinks(feature);
 }

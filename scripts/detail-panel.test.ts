@@ -3,10 +3,12 @@ import {
   renderDefaultDetail,
   renderDestinationDetail,
   renderParkingDetail,
+  renderPumpDetail,
   renderSegmentDetail
 } from '../src/ui/detailPanel';
 import type {
   BicycleParkingFeature,
+  BicyclePumpFeature,
   CyclingSegmentFeature,
   MapDestination
 } from '../src/types';
@@ -48,6 +50,24 @@ const parking: BicycleParkingFeature = {
   }
 };
 
+const pump: BicyclePumpFeature = {
+  type: 'Feature',
+  geometry: { type: 'Point', coordinates: [139.7002, 35.6003] },
+  properties: {
+    cost: 'free',
+    facility_type: 'bicycle_shop',
+    id: 'pump-test',
+    name: 'Test Pump',
+    opening_hours: '10:00-19:00',
+    source_checked_at: '2026-09-06',
+    source_title: 'OpenStreetMap',
+    source_url: 'https://www.openstreetmap.org/node/1',
+    service_source_title: 'Free pump service',
+    service_source_url: 'https://example.com/pump-service',
+    verification: 'official+osm'
+  }
+};
+
 const destination: MapDestination = {
   context: 'Chiyoda City, Tokyo',
   id: 'destination-test',
@@ -74,6 +94,13 @@ for (const language of ['ja', 'en', 'zh'] as const) {
   assert.match(parkingDetail, /Apple Maps/);
   assert.match(parkingDetail, /42/);
   assert.doesNotMatch(parkingDetail, /parking-report-button/);
+
+  const pumpDetail = renderPumpDetail(pump, language);
+  assert.equal((pumpDetail.match(/data-detail-action="report"/g) ?? []).length, 1);
+  assert.equal((pumpDetail.match(/data-detail-action="clear"/g) ?? []).length, 1);
+  assert.match(pumpDetail, /Test Pump/);
+  assert.match(pumpDetail, /Google Maps/);
+  assert.match(pumpDetail, /2026-09-06/);
 
   const destinationDetail = renderDestinationDetail(
     destination,

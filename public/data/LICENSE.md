@@ -28,6 +28,21 @@ feature keeps a link to its official source page.
 - Adaptations: source tables are decoded, normalized, filtered to bicycle-parking
   records with valid coordinates, merged, and converted to GeoJSON.
 
+## Bicycle-pump data
+
+`bicycle-pumps.geojson` combines OpenStreetMap locations with factual service
+information published by bicycle-shop operators and Tokyo municipalities.
+OpenStreetMap-derived locations remain subject to the ODbL 1.0. Operator and
+municipal pages are linked as evidence that a pump service or facility was
+published when the source was checked; their text and images are not
+republished.
+
+- Location data: OpenStreetMap contributors, https://www.openstreetmap.org/copyright
+- Service evidence: the operator and municipal pages linked from each feature
+- Adaptations: explicit public-pump tags and supported shop names are selected,
+  matched to service evidence, combined with documented parking facilities,
+  deduplicated, and converted to GeoJSON.
+
 ## Archived Tokyo Metropolitan Government data
 
 The project archive at `data/processed/official-reference.geojson` is a conversion

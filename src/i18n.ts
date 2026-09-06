@@ -51,6 +51,7 @@ interface Messages {
   feedbackCategoryMissing: string;
   feedbackCategoryOther: string;
   feedbackCategoryParking: string;
+  feedbackCategoryPump: string;
   feedbackCategoryPlaceholder: string;
   feedbackCategoryRoad: string;
   feedbackClose: string;
@@ -72,6 +73,7 @@ interface Messages {
   feedbackSuccessTitle: string;
   feedbackSubjectLocation: string;
   feedbackSubjectParking: string;
+  feedbackSubjectPump: string;
   feedbackSubjectSegment: string;
   language: string;
   layersHeading: string;
@@ -95,6 +97,23 @@ interface Messages {
   parkingSpaces: string;
   parkingStatusCheck: string;
   parkingReportAction: string;
+  bicyclePumps: string;
+  bicyclePumpsHelp: string;
+  pumpCost: string;
+  pumpCostFree: string;
+  pumpCostPaid: string;
+  pumpCostUnknown: string;
+  pumpDataWarning: string;
+  pumpDetailLabel: string;
+  pumpFacilityParking: string;
+  pumpFacilityPublic: string;
+  pumpFacilityShop: string;
+  pumpOpeningHours: string;
+  pumpReportAction: string;
+  pumpServiceSource: string;
+  pumpSource: string;
+  pumpStatusCheck: string;
+  pumpValves: string;
   popularDestinationsHeading: string;
   privacy: string;
   reportAction: string;
@@ -110,6 +129,7 @@ interface Messages {
   sourceLicense: string;
   sourceNote: string;
   sourceParking: string;
+  sourcePumps: string;
   sourceReferences: string;
   sources: string;
   tagline: string;
@@ -144,7 +164,7 @@ export const messages: Record<Language, Messages> = {
       '安心度は主にOSMタグからの暫定分類です。公式公開情報を定期的に確認して更新します。地域により公開情報量に差があります。走行時は現地の標識・規制を優先してください。',
     dataPill: 'OSM暫定',
     detailHeading: '地図上の情報',
-    detailPrompt: '色付きの道または駐輪場を選んでください。',
+    detailPrompt: '色付きの道、駐輪場、空気入れを選んでください。',
     destinationClear: '目的地を解除',
     destinationDocumentTitle: '{destination}周辺の駐輪場 | 東京じてんしゃマップ',
     destinationMetaDescription:
@@ -170,6 +190,7 @@ export const messages: Record<Language, Messages> = {
     feedbackCategoryMissing: '地図に情報がない',
     feedbackCategoryOther: 'その他',
     feedbackCategoryParking: '駐輪場が閉鎖・移転した',
+    feedbackCategoryPump: '空気入れが使えない・情報が違う',
     feedbackCategoryPlaceholder: '選んでください',
     feedbackCategoryRoad: '道路・自転車通行空間が変わった',
     feedbackClose: '閉じる',
@@ -191,6 +212,7 @@ export const messages: Record<Language, Messages> = {
     feedbackSuccessTitle: '報告を受け付けました',
     feedbackSubjectLocation: '対象地点: 地図中心 {lat}, {lng}',
     feedbackSubjectParking: '対象駐輪場: {name}',
+    feedbackSubjectPump: '対象の空気入れ: {name}',
     feedbackSubjectSegment: '対象区間: {name}',
     language: '表示言語',
     layersHeading: '地図レイヤー',
@@ -201,7 +223,7 @@ export const messages: Record<Language, Messages> = {
     mapAria: '東京の自転車通行環境地図',
     methodology: 'データと判定方法',
     metaDescription:
-      '東京都内の走りやすい道、自転車レーン、緑道、河川敷、駐輪場を地図で確認。車との分離や通行環境を色分けした無料の東京自転車マップです。',
+      '東京都内の走りやすい道、自転車レーン、緑道、河川敷、駐輪場、無料の空気入れを地図で確認できる東京自転車マップです。',
     officialParking: '駐輪場（東京都公開データ）',
     officialParkingHelp: '東京都の公式データを読み込み中',
     parkingAddress: '所在地',
@@ -216,6 +238,24 @@ export const messages: Record<Language, Messages> = {
     parkingSpaces: '台',
     parkingStatusCheck: '閉鎖・移転などが未反映の場合があります。現地情報をご確認ください。',
     parkingReportAction: 'この駐輪場の情報を報告',
+    bicyclePumps: '空気入れ',
+    bicyclePumpsHelp: '無料 {free}件・有料 {paid}件・料金不明 {unknown}件',
+    pumpCost: '利用料金',
+    pumpCostFree: '無料',
+    pumpCostPaid: '有料',
+    pumpCostUnknown: '不明',
+    pumpDataWarning:
+      '空気入れの設置、故障、営業時間、利用条件は変わる場合があります。利用前に出典や現地表示を確認してください。',
+    pumpDetailLabel: '空気入れ',
+    pumpFacilityParking: '駐輪場内',
+    pumpFacilityPublic: '公共・セルフサービス',
+    pumpFacilityShop: '自転車店',
+    pumpOpeningHours: '利用可能時間',
+    pumpReportAction: 'この空気入れの情報を報告',
+    pumpServiceSource: 'サービス案内',
+    pumpSource: '位置・設備の出典',
+    pumpStatusCheck: '利用条件や故障・撤去が未反映の場合があります。現地情報をご確認ください。',
+    pumpValves: '対応バルブ',
     popularDestinationsHeading: '駅から駐輪場を探す',
     privacy: 'プライバシー',
     reportAction: '地図にない情報を報告',
@@ -231,6 +271,7 @@ export const messages: Record<Language, Messages> = {
     sourceLicense: 'データライセンスを見る',
     sourceNote: '各区間のOpenStreetMap元データは、地図上の区間を選ぶと個別に確認できます。',
     sourceParking: '駐輪場レイヤーに使用',
+    sourcePumps: '空気入れレイヤーに使用',
     sourceReferences: '調査・参考資料（現在の地図には未反映）',
     sources: 'データ出典一覧',
     tagline: '車が怖い人のための自転車マップ。',
@@ -263,7 +304,7 @@ export const messages: Record<Language, Messages> = {
       'Most comfort classifications are preliminary inferences from OSM tags. We regularly review official sources, but coverage varies by area. Always follow signs and restrictions on site.',
     dataPill: 'OSM estimate',
     detailHeading: 'Map information',
-    detailPrompt: 'Select a colored road or bicycle parking marker.',
+    detailPrompt: 'Select a colored road, bicycle parking marker or bicycle pump.',
     destinationClear: 'Clear destination',
     destinationDocumentTitle: 'Bicycle parking near {destination} | Tokyo Bicycle Map',
     destinationMetaDescription:
@@ -289,6 +330,7 @@ export const messages: Record<Language, Messages> = {
     feedbackCategoryMissing: 'Information is missing from the map',
     feedbackCategoryOther: 'Something else',
     feedbackCategoryParking: 'Bicycle parking has closed or moved',
+    feedbackCategoryPump: 'A pump is unavailable or its information is wrong',
     feedbackCategoryPlaceholder: 'Choose one',
     feedbackCategoryRoad: 'A road or cycling space has changed',
     feedbackClose: 'Close',
@@ -310,6 +352,7 @@ export const messages: Record<Language, Messages> = {
     feedbackSuccessTitle: 'Report received',
     feedbackSubjectLocation: 'Location: map center at {lat}, {lng}',
     feedbackSubjectParking: 'Bicycle parking: {name}',
+    feedbackSubjectPump: 'Bicycle pump: {name}',
     feedbackSubjectSegment: 'Road segment: {name}',
     language: 'Language',
     layersHeading: 'Map layers',
@@ -320,7 +363,7 @@ export const messages: Record<Language, Messages> = {
     mapAria: 'Map of cycling conditions in Tokyo',
     methodology: 'Data and methodology',
     metaDescription:
-      'Explore comfortable roads, physically separated cycling space, greenways, riverbanks, bicycle lanes and bicycle parking across Tokyo.',
+      'Explore comfortable roads, separated cycling space, greenways, bicycle parking and free bicycle pumps across Tokyo.',
     officialParking: 'Bicycle parking (Tokyo data)',
     officialParkingHelp: 'Loading official Tokyo data',
     parkingAddress: 'Address',
@@ -335,6 +378,24 @@ export const messages: Record<Language, Messages> = {
     parkingSpaces: 'spaces',
     parkingStatusCheck: 'Closures or relocations may not yet be reflected. Check current information on site.',
     parkingReportAction: 'Report this bicycle parking facility',
+    bicyclePumps: 'Bicycle pumps',
+    bicyclePumpsHelp: '{free} free · {paid} paid · {unknown} price unknown',
+    pumpCost: 'Cost',
+    pumpCostFree: 'Free',
+    pumpCostPaid: 'Paid',
+    pumpCostUnknown: 'Unknown',
+    pumpDataWarning:
+      'Pump availability, condition, opening hours and access rules can change. Check the linked source and signs on site before relying on it.',
+    pumpDetailLabel: 'Bicycle pump',
+    pumpFacilityParking: 'At bicycle parking',
+    pumpFacilityPublic: 'Public self-service pump',
+    pumpFacilityShop: 'Bicycle shop',
+    pumpOpeningHours: 'Available hours',
+    pumpReportAction: 'Report this bicycle pump',
+    pumpServiceSource: 'Service information',
+    pumpSource: 'Location or facility source',
+    pumpStatusCheck: 'Access conditions, faults or removal may not yet be reflected. Check current information on site.',
+    pumpValves: 'Supported valves',
     popularDestinationsHeading: 'Parking near major stations',
     privacy: 'Privacy',
     reportAction: 'Report missing map information',
@@ -350,6 +411,7 @@ export const messages: Record<Language, Messages> = {
     sourceLicense: 'View data licenses',
     sourceNote: 'Select a segment on the map to inspect its original OpenStreetMap record.',
     sourceParking: 'Used for the bicycle-parking layer',
+    sourcePumps: 'Used for the bicycle-pump layer',
     sourceReferences: 'Research and reference material (not yet reflected on the map)',
     sources: 'Data sources',
     tagline: 'A cycling map for people who feel uneasy around cars.',
@@ -382,7 +444,7 @@ export const messages: Record<Language, Messages> = {
       '舒适度主要依据 OSM 标签进行初步分类。我们会定期核对官方公开信息，但各地区的数据量不同。骑行时请以现场标志和交通规定为准。',
     dataPill: 'OSM 推测',
     detailHeading: '地图信息',
-    detailPrompt: '请选择彩色道路或自行车停车场标记。',
+    detailPrompt: '请选择彩色道路、自行车停车场或打气设施。',
     destinationClear: '清除目的地',
     destinationDocumentTitle: '{destination}附近的自行车停车场 | 东京自行车地图',
     destinationMetaDescription:
@@ -408,6 +470,7 @@ export const messages: Record<Language, Messages> = {
     feedbackCategoryMissing: '地图缺少信息',
     feedbackCategoryOther: '其他',
     feedbackCategoryParking: '自行车停车场已关闭或搬迁',
+    feedbackCategoryPump: '打气设施无法使用或信息有误',
     feedbackCategoryPlaceholder: '请选择',
     feedbackCategoryRoad: '道路或自行车通行空间已发生变化',
     feedbackClose: '关闭',
@@ -429,6 +492,7 @@ export const messages: Record<Language, Messages> = {
     feedbackSuccessTitle: '已收到报告',
     feedbackSubjectLocation: '目标地点：地图中心 {lat}, {lng}',
     feedbackSubjectParking: '目标停车场：{name}',
+    feedbackSubjectPump: '目标打气设施：{name}',
     feedbackSubjectSegment: '目标路段：{name}',
     language: '显示语言',
     layersHeading: '地图图层',
@@ -439,7 +503,7 @@ export const messages: Record<Language, Messages> = {
     mapAria: '东京都自行车通行环境地图',
     methodology: '数据与判定方法',
     metaDescription:
-      '查看东京都内的舒适道路、与机动车分隔的骑行空间、绿道、河岸、自行车专用车道和自行车停车场。',
+      '查看东京都内的舒适道路、与机动车分隔的骑行空间、绿道、自行车停车场和免费打气设施。',
     officialParking: '自行车停车场（东京都公开数据）',
     officialParkingHelp: '正在加载东京都官方数据',
     parkingAddress: '地址',
@@ -454,6 +518,24 @@ export const messages: Record<Language, Messages> = {
     parkingSpaces: '辆',
     parkingStatusCheck: '关闭或搬迁等变化可能尚未更新，请确认现场最新信息。',
     parkingReportAction: '报告此自行车停车场',
+    bicyclePumps: '自行车打气设施',
+    bicyclePumpsHelp: '免费 {free} 处 · 收费 {paid} 处 · 费用不明 {unknown} 处',
+    pumpCost: '使用费用',
+    pumpCostFree: '免费',
+    pumpCostPaid: '收费',
+    pumpCostUnknown: '不明',
+    pumpDataWarning:
+      '打气设施的设置、故障、开放时间和使用条件可能发生变化。使用前请确认来源信息和现场告示。',
+    pumpDetailLabel: '自行车打气设施',
+    pumpFacilityParking: '位于自行车停车场',
+    pumpFacilityPublic: '公共自助设施',
+    pumpFacilityShop: '自行车店',
+    pumpOpeningHours: '可用时间',
+    pumpReportAction: '报告此打气设施',
+    pumpServiceSource: '服务说明',
+    pumpSource: '位置或设施来源',
+    pumpStatusCheck: '使用条件、故障或撤除可能尚未更新，请确认现场最新信息。',
+    pumpValves: '支持的气门嘴',
     popularDestinationsHeading: '按车站查找停车场',
     privacy: '隐私政策',
     reportAction: '报告地图缺少的信息',
@@ -469,6 +551,7 @@ export const messages: Record<Language, Messages> = {
     sourceLicense: '查看数据许可',
     sourceNote: '选择地图上的路段即可查看对应的 OpenStreetMap 原始记录。',
     sourceParking: '用于自行车停车场图层',
+    sourcePumps: '用于自行车打气设施图层',
     sourceReferences: '调查与参考资料（尚未反映在地图中）',
     sources: '数据来源',
     tagline: '为对机动车感到不安的人准备的自行车地图。',

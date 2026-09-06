@@ -1,0 +1,100 @@
+{
+  "last_checked": "2026-09-06",
+  "chains": [
+    {
+      "id": "cycle-base-asahi",
+      "names": ["サイクルベースあさひ", "Cycle Base Asahi", "CYCLE BASE asahi"],
+      "publisher": "株式会社あさひ",
+      "title": "サイクルベースあさひ 店頭の空気入れ",
+      "url": "https://chiririn.cb-asahi.co.jp/portal/column/2025/04/post-169.html"
+    },
+    {
+      "id": "cycle-spot",
+      "names": ["サイクルスポット", "Cycle Spot", "ル・サイク", "Le Cyc"],
+      "publisher": "株式会社サイクルスポット",
+      "title": "サービス一覧（空気入れ無料）",
+      "url": "https://www.cyclespot.net/service/"
+    },
+    {
+      "id": "daiwa-cycle",
+      "names": ["ダイワサイクル", "DAIWA CYCLE"],
+      "publisher": "DAIWA CYCLE株式会社",
+      "title": "店舗サービス（空気入れ無料）",
+      "url": "https://www.daiwa-cycle.co.jp/service"
+    }
+  ],
+  "official_facilities": [
+    {
+      "parking_id": "official-parking-tokyo-18014",
+      "cost": "free",
+      "title": "センターまちや自転車駐車場",
+      "url": "https://www.city.arakawa.tokyo.jp/a043/shisetsuannai/koukyoushisetsu/chuurinjou002.html"
+    },
+    {
+      "parking_id": "official-parking-tokyo-23004",
+      "cost": "unknown",
+      "title": "区営自転車駐車場設備導入状況一覧",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/62418/02_betsushi5555.pdf"
+    },
+    {
+      "parking_id": "official-parking-tokyo-23032",
+      "cost": "unknown",
+      "title": "区営自転車駐車場設備導入状況一覧",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/62418/02_betsushi5555.pdf"
+    },
+    {
+      "parking_id": "official-parking-tokyo-23007",
+      "cost": "unknown",
+      "title": "区営自転車駐車場設備導入状況一覧",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/62418/02_betsushi5555.pdf"
+    },
+    {
+      "parking_id": "official-parking-tokyo-23009",
+      "cost": "unknown",
+      "title": "区営自転車駐車場設備導入状況一覧",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/62418/02_betsushi5555.pdf"
+    },
+    {
+      "parking_id": "official-parking-tokyo-23010",
+      "cost": "unknown",
+      "title": "区営自転車駐車場設備導入状況一覧",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/62418/02_betsushi5555.pdf"
+    },
+    {
+      "parking_id": "official-parking-tokyo-23015",
+      "cost": "unknown",
+      "title": "区営自転車駐車場設備導入状況一覧",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/62418/02_betsushi5555.pdf"
+    },
+    {
+      "parking_id": "official-parking-tokyo-23016",
+      "cost": "unknown",
+      "title": "区営自転車駐車場設備導入状況一覧",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/62418/02_betsushi5555.pdf"
+    },
+    {
+      "parking_id": "official-parking-tokyo-23012",
+      "cost": "unknown",
+      "title": "区営自転車駐車場設備導入状況一覧",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/62418/02_betsushi5555.pdf"
+    },
+    {
+      "parking_id": "official-parking-tokyo-23014",
+      "cost": "unknown",
+      "title": "区営自転車駐車場設備導入状況一覧",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/62418/02_betsushi5555.pdf"
+    },
+    {
+      "parking_id": "official-parking-tokyo-23020",
+      "cost": "unknown",
+      "title": "区営自転車駐車場設備導入状況一覧",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/62418/02_betsushi5555.pdf"
+    },
+    {
+      "parking_id": "official-parking-tokyo-23021",
+      "cost": "unknown",
+      "title": "区営自転車駐車場設備導入状況一覧",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/62418/02_betsushi5555.pdf"
+    }
+  ]
+}

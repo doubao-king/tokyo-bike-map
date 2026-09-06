@@ -80,6 +80,9 @@ export function initializeFeedbackDialog(cyclingMap: CyclingMap, language: Langu
     if (request.subjectType === 'parking') {
       return copy.feedbackSubjectParking.replace('{name}', request.subjectName ?? '');
     }
+    if (request.subjectType === 'pump') {
+      return copy.feedbackSubjectPump.replace('{name}', request.subjectName ?? '');
+    }
 
     const url = new URL(request.mapUrl);
     return copy.feedbackSubjectLocation
