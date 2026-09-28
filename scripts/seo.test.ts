@@ -27,6 +27,7 @@ assert.match(
   /meta name="google-site-verification" content="agio_yKHyQuWKC9Gf_zywUfFjZN1jj_W1KO3dJDOk04"/
 );
 assert.match(indexHtml, /東京の自転車マップ/);
+assert.match(indexHtml, /id="pageContext"/);
 assert.match(robots, /Sitemap: https:\/\/tokyo-bike-map\.manymao\.com\/sitemap\.xml/);
 assert.match(sitemap, new RegExp(`<loc>${homeSeo.canonicalUrl}</loc>`));
 assert.match(wrangler, /"\/area\/\*"/);
@@ -41,7 +42,12 @@ areaTargets.forEach((area) => {
   const path = areaPath(area.id);
   assert.equal(areaTargetFromPath(path)?.id, area.id);
   assert.equal(areaTargetFromPath(path.slice(0, -1))?.id, area.id);
-  assert.equal(areaSeo(area).canonicalUrl, `${canonicalOrigin}${path}`);
+  const metadata = areaSeo(area);
+  assert.equal(metadata.canonicalUrl, `${canonicalOrigin}${path}`);
+  assert.match(metadata.description, /\d+区間/);
+  assert.match(metadata.description, /\d+件/);
+  assert.match(metadata.heading, new RegExp(area.label));
+  assert.match(metadata.tagline, /\d+区間/);
   assert.match(sitemap, new RegExp(`<loc>${canonicalOrigin}${path}</loc>`));
 });
 
@@ -49,8 +55,11 @@ destinationTargets.forEach((destination) => {
   const path = destinationPath(destination.id);
   assert.equal(destinationTargetFromPath(path)?.id, destination.id);
   assert.equal(destinationTargetFromPath(path.slice(0, -1))?.id, destination.id);
-  assert.equal(destinationSeo(destination).canonicalUrl, `${canonicalOrigin}${path}`);
-  assert.match(destinationSeo(destination).title, /駐輪場/);
+  const metadata = destinationSeo(destination);
+  assert.equal(metadata.canonicalUrl, `${canonicalOrigin}${path}`);
+  assert.match(metadata.title, /駐輪場/);
+  assert.match(metadata.description, /\d+件/);
+  assert.match(metadata.tagline, /\d+件/);
   assert.match(sitemap, new RegExp(`<loc>${canonicalOrigin}${path}</loc>`));
 });
 

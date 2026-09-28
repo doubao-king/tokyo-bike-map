@@ -8,6 +8,7 @@ import {
   destinationTargetFromPath,
   homeSeo
 } from '../src/seo';
+import { renderPageContext } from '../src/pageContent';
 import {
   isFeedbackHoneypotFilled,
   validateFeedbackSubmission,
@@ -171,7 +172,7 @@ interface MapSeo {
   title: string;
 }
 
-function prepareMapHtml(response: Response, seo: MapSeo): Response {
+function prepareMapHtml(response: Response, seo: MapSeo, pageContextHtml?: string): Response {
   const nonce = createNonce();
   const headers = new Headers(response.headers);
   headers.set(
@@ -239,6 +240,13 @@ function prepareMapHtml(response: Response, seo: MapSeo): Response {
         if (seo.tagline) element.setInnerContent(seo.tagline);
       }
     })
+    .on('#pageContext', {
+      element(element) {
+        if (!pageContextHtml) return;
+        element.removeAttribute('hidden');
+        element.setInnerContent(pageContextHtml, { html: true });
+      }
+    })
     .on('script', {
       element(element) {
         element.setAttribute('nonce', nonce);
@@ -298,7 +306,8 @@ export default {
     ) {
       return prepareMapHtml(
         assetResponse,
-        destination ? destinationSeo(destination) : area ? areaSeo(area) : homeSeo
+        destination ? destinationSeo(destination) : area ? areaSeo(area) : homeSeo,
+        renderPageContext(url.pathname, 'ja')
       );
     }
     return assetResponse;

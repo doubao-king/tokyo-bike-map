@@ -19,6 +19,7 @@ import {
 } from './i18n';
 import { createCyclingMap } from './map/createMap';
 import { areaTargetFromPath } from './seo';
+import { renderPageContext } from './pageContent';
 import type { BicycleParkingFeature, BicyclePumpFeature, MapOverlay } from './types';
 import { initializeAds } from './ui/ads';
 import {
@@ -37,6 +38,13 @@ import { initializeViewCounter } from './ui/viewCounter';
 const language = getLanguage();
 rememberLanguage(language);
 applyStaticTranslations(language);
+
+const pageContext = document.getElementById('pageContext');
+const pageContextHtml = renderPageContext(window.location.pathname, language);
+if (pageContext && pageContextHtml) {
+  pageContext.innerHTML = pageContextHtml;
+  pageContext.hidden = false;
+}
 
 const searchParams = new URLSearchParams(window.location.search);
 const initialArea = areaTargetFromPath(window.location.pathname);

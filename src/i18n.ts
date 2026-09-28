@@ -1,4 +1,5 @@
 import type { ComfortClass } from './types';
+import { areaLabels } from './areaLabels';
 
 export type Language = 'ja' | 'en' | 'zh';
 
@@ -619,51 +620,7 @@ export const areaGroupText: Record<Language, Record<string, string>> = {
   }
 };
 
-export const areaText: Record<Language, Record<string, string>> = {
-  ja: {},
-  en: {
-    'ikebukuro-otsuka': 'Ikebukuro / Otsuka',
-    'kanamecho-senkawa': 'Kanamecho / Senkawa',
-    'sugamo-oji': 'Sugamo / Nishigahara / Oji',
-    bunkyo: 'Bunkyo',
-    'imperial-chiyoda': 'Imperial Palace / Chiyoda',
-    'yotsuya-gaien': 'Yotsuya / Jingu Gaien',
-    'aoyama-akasaka': 'Aoyama / Nogizaka / Akasaka',
-    'shiba-takeshiba': 'Shiba / Takeshiba',
-    'toyosu-odaiba': 'Toyosu / Ariake / Odaiba',
-    'shinkiba-yumenoshima': 'Shinkiba / Yumenoshima',
-    arakawa: 'Arakawa / Kasai Bridge',
-    'musashino-mitaka': 'Musashino / Mitaka',
-    'chofu-fuchu': 'Chofu / Fuchu',
-    'koganei-kokubunji': 'Koganei / Kokubunji',
-    'tachikawa-akishima': 'Tachikawa / Akishima',
-    'tama-machida': 'Tama / Machida',
-    hachioji: 'Hachioji',
-    'ome-okutama': 'Ome / Okutama',
-    'izu-oshima': 'Izu Oshima'
-  },
-  zh: {
-    'ikebukuro-otsuka': '池袋 / 大冢',
-    'kanamecho-senkawa': '要町 / 千川',
-    'sugamo-oji': '巢鸭 / 西原 / 王子',
-    bunkyo: '文京',
-    'imperial-chiyoda': '皇居 / 千代田',
-    'yotsuya-gaien': '四谷 / 神宫外苑',
-    'aoyama-akasaka': '青山 / 乃木坂 / 赤坂',
-    'shiba-takeshiba': '芝 / 竹芝',
-    'toyosu-odaiba': '丰洲 / 有明 / 台场',
-    'shinkiba-yumenoshima': '新木场 / 梦之岛',
-    arakawa: '荒川 / 葛西桥',
-    'musashino-mitaka': '武藏野 / 三鹰',
-    'chofu-fuchu': '调布 / 府中',
-    'koganei-kokubunji': '小金井 / 国分寺',
-    'tachikawa-akishima': '立川 / 昭岛',
-    'tama-machida': '多摩 / 町田',
-    hachioji: '八王子',
-    'ome-okutama': '青梅 / 奥多摩',
-    'izu-oshima': '伊豆大岛'
-  }
-};
+export const areaText: Record<Language, Record<string, string>> = areaLabels;
 
 export const localeByLanguage: Record<Language, string> = {
   ja: 'ja-JP',
