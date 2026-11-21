@@ -65,6 +65,19 @@
       "format": "PDF",
       "map_role": "provenance_only",
       "notes": "National-road planning source; planned corridors are not proof of completed infrastructure."
+    },
+    {
+      "id": "chiyoda-kanda-keisatsu-phase-ii",
+      "publisher": "千代田区",
+      "title": "神田警察通りⅡ期・2026年10月末完成",
+      "url": "https://www.city.chiyoda.lg.jp/koho/kuse/kucho/aisatsu/r8-4teirei.html",
+      "format": "HTML / PDF",
+      "map_role": "official_status_and_design_on_osm_geometry",
+      "reference_dates": [
+        "2026-10",
+        "2026-11-17"
+      ],
+      "notes": "Reviewed 2026-11-21. Only 白山通り〜千代田通り. Sources, approximate centerline length, geometry limitations and refresh instructions: data/reviews/kanda-keisatsu-phase-ii.md. No official survey geometry claimed."
     }
   ]
 }

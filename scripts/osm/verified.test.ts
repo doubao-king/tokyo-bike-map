@@ -1,0 +1,26 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { assertSegmentCollection } from '../../src/data/segmentSchema';
+import { applyVerifiedSegments } from './verified';
+
+const verified = JSON.parse(readFileSync('data/verified-segments.geojson', 'utf8'));
+const published = JSON.parse(readFileSync('public/data/osm-segments.geojson', 'utf8'));
+assertSegmentCollection(verified);
+assertSegmentCollection(published);
+const phase = verified.features.find((f) => f.properties.id === 'osm-way-1143901797')!;
+assert.ok(phase);
+assert.deepEqual(published.features.filter((f) => f.properties.id === phase.properties.id), [phase]);
+const west = published.features.find((f) => f.properties.id === 'osm-way-203035385')!;
+assert.equal(phase.geometry.type, 'LineString');
+assert.equal(west.geometry.type, 'LineString');
+assert.deepEqual(west.geometry.coordinates.at(-1), phase.geometry.coordinates[0]);
+assert.deepEqual(phase.geometry.coordinates.at(-1), [139.7610772, 35.6929118]);
+const stale = structuredClone(phase);
+stale.properties.comfort_class = 'D';
+stale.properties.status = 'unknown';
+const refreshed = applyVerifiedSegments({ type: 'FeatureCollection', features: [west, stale] }, verified);
+assert.deepEqual(refreshed.features, [west, ...verified.features]);
+assert.deepEqual(applyVerifiedSegments(refreshed, verified), refreshed);
+assert.deepEqual(applyVerifiedSegments({ type: 'FeatureCollection', features: [west] }, verified), refreshed);
+assert.throws(() => applyVerifiedSegments(refreshed, { type: 'FeatureCollection', features: [phase, phase] }), /Duplicate/);
+console.log('Reviewed segment preservation, replacement, duplicate and boundary checks passed.');

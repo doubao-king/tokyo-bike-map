@@ -106,6 +106,15 @@ Large queries are split into regional requests, with a short-lived cache in
 `data/cache/osm/` so transient Overpass failures can resume without repeating
 completed requests.
 
+Reviewed additions and corrections live in `data/verified-segments.geojson`.
+The full Tokyo import applies these by OSM way ID before conflation, replacing a
+matching inferred record or adding an omitted way once. Custom bbox imports remain
+OSM-only. Review these records when OSM splits or remaps their source ways;
+ID matching cannot detect future replacement ways. Official verification covers
+facility status/design, not survey-grade geometry. See
+[data/reviews/kanda-keisatsu-phase-ii.md](data/reviews/kanda-keisatsu-phase-ii.md)
+for the Phase II extent and length audit.
+
 The classifier lives in `scripts/osm/classifier.ts` so comfort assumptions can
 be reviewed and tuned. Automated output should not be presented as authoritative
 without official or field verification. Short OSM ways representing bicycle

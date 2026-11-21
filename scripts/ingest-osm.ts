@@ -3,6 +3,8 @@ import { dirname, resolve } from 'node:path';
 import type { Feature, FeatureCollection, LineString, Position } from 'geojson';
 import { buildOsmProperties, shouldIncludeOsmWay, type OsmWayTags } from './osm/classifier';
 import { conflateComfortSegments } from './osm/conflate';
+import { applyVerifiedSegments } from './osm/verified';
+import { assertSegmentCollection } from '../src/data/segmentSchema';
 import type { CyclingSegmentCollection, CyclingSegmentProperties } from '../src/types';
 
 interface OverpassNode {
@@ -307,13 +309,21 @@ const overpassData =
 const convertedSegments = convertToSegments(overpassData) as CyclingSegmentCollection;
 const rawSegments =
   ingestArgs.area === 'tokyo' ? filterToTokyoCoverage(convertedSegments) : convertedSegments;
-const { collection: segments, stats } = conflateComfortSegments(rawSegments);
+// Apply reviewed records before conflation so an OSM refresh cannot discard them.
+// Custom bbox extracts remain OSM-only; curated records belong to the Tokyo dataset.
+let reviewedSegments = rawSegments;
+if (ingestArgs.area === 'tokyo') {
+  const verified: unknown = JSON.parse(await readFile(resolve('data/verified-segments.geojson'), 'utf8'));
+  assertSegmentCollection(verified);
+  reviewedSegments = applyVerifiedSegments(rawSegments, verified);
+}
+const { collection: segments, stats } = conflateComfortSegments(reviewedSegments);
 
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, `${JSON.stringify(segments)}\n`, 'utf8');
 
 console.log(
-  `Wrote ${segments.features.length} preliminary OSM segments to ${outputPath} ` +
+  `Wrote ${segments.features.length} segments (OSM plus reviewed records for Tokyo) to ${outputPath} ` +
     `(${stats.fullySuppressed} D features removed, ${stats.trimmed} trimmed, ` +
     `${stats.suppressedMeters} overlapping metres suppressed)`
 );

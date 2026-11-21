@@ -113,7 +113,7 @@ export const seoContentData = {
       "radiusMeters": 7000,
       "segmentCounts": {
         "A": 21,
-        "B": 204,
+        "B": 205,
         "C": 137,
         "D": 741
       }
@@ -152,7 +152,7 @@ export const seoContentData = {
       "radiusMeters": 4000,
       "segmentCounts": {
         "A": 7,
-        "B": 69,
+        "B": 70,
         "C": 100,
         "D": 577
       }
@@ -191,7 +191,7 @@ export const seoContentData = {
       "radiusMeters": 4000,
       "segmentCounts": {
         "A": 46,
-        "B": 90,
+        "B": 91,
         "C": 140,
         "D": 788
       }
@@ -229,7 +229,7 @@ export const seoContentData = {
       "radiusMeters": 4000,
       "segmentCounts": {
         "A": 52,
-        "B": 69,
+        "B": 70,
         "C": 84,
         "D": 546
       }
@@ -268,7 +268,7 @@ export const seoContentData = {
       "radiusMeters": 4000,
       "segmentCounts": {
         "A": 56,
-        "B": 77,
+        "B": 78,
         "C": 112,
         "D": 581
       }
@@ -346,7 +346,7 @@ export const seoContentData = {
       "radiusMeters": 7000,
       "segmentCounts": {
         "A": 84,
-        "B": 388,
+        "B": 389,
         "C": 222,
         "D": 749
       }
@@ -1390,10 +1390,10 @@ export const seoContentData = {
   "summary": {
     "parkingCount": 1768,
     "pumpCount": 150,
-    "segmentCount": 6701,
+    "segmentCount": 6702,
     "segmentCounts": {
       "A": 245,
-      "B": 3347,
+      "B": 3348,
       "C": 698,
       "D": 2411
     }
