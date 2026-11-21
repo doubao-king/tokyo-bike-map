@@ -1,0 +1,69 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "osm-way-1143901797",
+        "name": "神田警察通り（Ⅱ期・白山通り〜千代田通り）",
+        "comfort_class": "B",
+        "facility_type": "path_or_sidewalk_bicycle_space",
+        "car_separation": "yes",
+        "pedestrian_shared": "partial",
+        "parking_conflict": "unknown",
+        "direction": "unknown",
+        "classification_confidence": "medium",
+        "classification_method": "official",
+        "verification": "official",
+        "verified_at": "2026-11-21",
+        "source": {
+          "name": "千代田区（整備状況・構造） / OpenStreetMap（道路中心線）",
+          "url": "https://www.city.chiyoda.lg.jp/koho/kuse/kucho/aisatsu/r8-4teirei.html",
+          "source_date": "2026-11-17",
+          "reference_date": "2026-10",
+          "license": "Geometry: ODbL (OpenStreetMap contributors)"
+        },
+        "status": "built",
+        "warning": "歩道内の通行区分は標示によるものです。歩行者との物理分離を示すものではありません。線形は道路中心線による概略表示で、交差点の安全性や自転車の通行方向は未確認です。",
+        "notes": "千代田区の2026年11月17日区長招集挨拶第4節で、Ⅱ期工事の10月末完了を確認。白山通り〜千代田通りのみ。計画・構造: https://www.city.chiyoda.lg.jp/koho/machizukuri/kotsu/setsubi/keikaku.html / https://www.city.chiyoda.lg.jp/documents/27388/keikaku-image.pdf 。概略線形: https://www.openstreetmap.org/way/1143901797 （2026-11-21取得）。両側の自転車空間を1本の道路中心線で表示し、延長を二重計上しません。公式事業延長約230m: https://www.city.chiyoda.lg.jp/documents/7003/21kyogikai-gijiyoshi.pdf （道路整備の報告、本文8頁）。現地測量・実測線形ではありません。"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            139.7587725,
+            35.6928355
+          ],
+          [
+            139.7589175,
+            35.6928391
+          ],
+          [
+            139.7593247,
+            35.69285
+          ],
+          [
+            139.759723,
+            35.6928623
+          ],
+          [
+            139.7597733,
+            35.692864
+          ],
+          [
+            139.7606075,
+            35.6928993
+          ],
+          [
+            139.7609506,
+            35.6929099
+          ],
+          [
+            139.7610772,
+            35.6929118
+          ]
+        ]
+      }
+    }
+  ]
+}
